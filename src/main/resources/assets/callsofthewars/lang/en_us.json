@@ -1,0 +1,9 @@
+{
+    "entity.callsofthewars.soldier_red": "Soldier Red",
+    "entity.callsofthewars.soldier_green": "Soldier Green",
+    "entity.callsofthewars.soldier_blue": "Soldier Blue",
+
+    "item.callsofthewars.soldier_red_spawn_egg": "Soldier Red Spawn Egg",
+    "item.callsofthewars.soldier_green_spawn_egg": "Soldier Red Spawn Egg",
+    "item.callsofthewars.soldier_blue_spawn_egg": "Soldier Red Spawn Egg"
+}
