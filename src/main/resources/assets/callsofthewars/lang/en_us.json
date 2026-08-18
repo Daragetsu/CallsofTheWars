@@ -4,6 +4,10 @@
     "entity.callsofthewars.soldier_blue": "Soldier Blue",
 
     "item.callsofthewars.soldier_red_spawn_egg": "Soldier Red Spawn Egg",
-    "item.callsofthewars.soldier_green_spawn_egg": "Soldier Red Spawn Egg",
-    "item.callsofthewars.soldier_blue_spawn_egg": "Soldier Red Spawn Egg"
+    "item.callsofthewars.soldier_green_spawn_egg": "Soldier Green Spawn Egg",
+    "item.callsofthewars.soldier_blue_spawn_egg": "Soldier Blue Spawn Egg",
+    
+    "item.callsofthewars.red_belt": "Red Belt",
+    "item.callsofthewars.green_belt": "Green Belt",
+    "item.callsofthewars.blue_belt": "Blue Belt"
 }

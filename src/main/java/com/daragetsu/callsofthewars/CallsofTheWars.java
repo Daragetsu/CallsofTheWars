@@ -40,7 +40,7 @@ public class CallsofTheWars
         ModEntities.register(modEventBus);
         ModItems.register(modEventBus);
 
-        MinecraftForge.EVENT_BUS.addListener(CallsofTheWars::addCreative);
+        modEventBus.addListener(CallsofTheWars::addCreative);
     }
 
     public static void addCreative(BuildCreativeModeTabContentsEvent event){
@@ -49,46 +49,21 @@ public class CallsofTheWars
             event.accept(ModItems.SOLDIER_GREEN_SPAWN_EGG);
             event.accept(ModItems.SOLDIER_BLUE_SPAWN_EGG);
         }
+        if (event.getTabKey() == CreativeModeTabs.TOOLS_AND_UTILITIES) {
+            event.accept(ModItems.RED_BELT);
+            event.accept(ModItems.GREEN_BELT);
+            event.accept(ModItems.BLUE_BELT);
+        }
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
     }
 
-    @Mod.EventBusSubscriber(modid = CallsofTheWars.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
-    public class ModEvents{
-        @SubscribeEvent
-        public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
-            CallsofTheWars.LOGGER.info("PLAYER LOGGED IN!!!!");
-            final ServerPlayer player = (ServerPlayer) event.getEntity();
-            CompoundTag tag = new CompoundTag();
-            player.saveWithoutId(tag);
-            if(!tag.contains("belongsTo")){
-                CallsofTheWars.LOGGER.info("PLAYER NOT HAVE BELONGS TO!!!!");
-                int i = player.getRandom().nextInt(3);
-                switch (i) {
-                    case 0:
-                        tag.putString("belongsTo", BelongsTo.RED.name());
-                        CallsofTheWars.LOGGER.info("PLAYER BELONGS TO: RED!!!!");
-                        break;
-                    case 1:
-                        tag.putString("belongsTo", BelongsTo.GREEN.name());
-                        CallsofTheWars.LOGGER.info("PLAYER BELONGS TO: GREEN!!!!");
-                        break;
-                    case 2:
-                        tag.putString("belongsTo", BelongsTo.BLUE.name());
-                        CallsofTheWars.LOGGER.info("PLAYER BELONGS TO: BLUE!!!!");
-                        break;
-                    default:
-                        tag.putString("belongsTo", BelongsTo.RED.name());
-                        CallsofTheWars.LOGGER.info("PLAYER BELONGS TO: RED!!!!");
-                        break;
-                }
-                player.load(tag);
-                player.readAdditionalSaveData(tag);
-                player.save(tag);
-                CallsofTheWars.LOGGER.info("PLAYER BELONGS TO: " +player.saveWithoutId(new CompoundTag()).getString("belongsTo")+"!!!!");
-            }
-        }
-    }
-
+    // @Mod.EventBusSubscriber(modid = CallsofTheWars.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
+    // public class ModEvents{
+    //     @SubscribeEvent
+    //     public static void onPlayerChangedDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
+    //         final ServerPlayer player = (ServerPlayer) event.getEntity();
+    //     }
+    // }
 }

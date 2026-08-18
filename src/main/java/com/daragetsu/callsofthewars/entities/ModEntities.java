@@ -6,6 +6,7 @@ import com.daragetsu.callsofthewars.entities.soldier.SoldierEntityBlue;
 import com.daragetsu.callsofthewars.entities.soldier.SoldierEntityGreen;
 import com.daragetsu.callsofthewars.entities.soldier.SoldierEntityRed;
 import com.daragetsu.callsofthewars.entities.soldier.SoldierEntityRenderer;
+import com.daragetsu.callsofthewars.entities.unit_spawner.UnitSpawnerEntity;
 
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.resources.ResourceLocation;
@@ -28,9 +29,10 @@ import top.ribs.scguns.common.headshot.BasicHeadshotBox;
 public class ModEntities {
     public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, CallsofTheWars.MOD_ID);
 
-    public static final RegistryObject<EntityType<SoldierEntityRed>> SOLDIER_RED = ENTITY_TYPES.register("soldier_red", () -> EntityType.Builder.of(SoldierEntityRed::new, MobCategory.MISC).sized(0.6F, 2F).build("soldier_red"));
-    public static final RegistryObject<EntityType<SoldierEntityGreen>> SOLDIER_GREEN = ENTITY_TYPES.register("soldier_green", () -> EntityType.Builder.of(SoldierEntityGreen::new, MobCategory.MISC).sized(0.6F, 2F).build("soldier_green"));
-    public static final RegistryObject<EntityType<SoldierEntityBlue>> SOLDIER_BLUE = ENTITY_TYPES.register("soldier_blue", () -> EntityType.Builder.of(SoldierEntityBlue::new, MobCategory.MISC).sized(0.6F, 2F).build("soldier_blue"));
+    public static final RegistryObject<EntityType<SoldierEntityRed>> SOLDIER_RED = ENTITY_TYPES.register("soldier_red", () -> EntityType.Builder.of(SoldierEntityRed::new, MobCategory.CREATURE).sized(0.6F, 2F).build("soldier_red"));
+    public static final RegistryObject<EntityType<SoldierEntityGreen>> SOLDIER_GREEN = ENTITY_TYPES.register("soldier_green", () -> EntityType.Builder.of(SoldierEntityGreen::new, MobCategory.CREATURE).sized(0.6F, 2F).build("soldier_green"));
+    public static final RegistryObject<EntityType<SoldierEntityBlue>> SOLDIER_BLUE = ENTITY_TYPES.register("soldier_blue", () -> EntityType.Builder.of(SoldierEntityBlue::new, MobCategory.CREATURE).sized(0.6F, 2F).build("soldier_blue"));
+    public static final RegistryObject<EntityType<UnitSpawnerEntity>> UNIT_SPAWNER = ENTITY_TYPES.register("unit_spawner", () -> EntityType.Builder.of(UnitSpawnerEntity::new, MobCategory.CREATURE).sized(0.3F, 0.3F).build("unit_spawner"));
 
     public static final void register(IEventBus eventBus){
         ENTITY_TYPES.register(eventBus);
@@ -45,6 +47,7 @@ public class ModEntities {
         event.put(ModEntities.SOLDIER_RED.get(), BaseSoldierEntity.createAttributes().build());
         event.put(ModEntities.SOLDIER_GREEN.get(), BaseSoldierEntity.createAttributes().build());
         event.put(ModEntities.SOLDIER_BLUE.get(), BaseSoldierEntity.createAttributes().build());
+        event.put(ModEntities.UNIT_SPAWNER.get(), BaseSoldierEntity.createAttributes().build());
     }
 
     private static void onCommonSetup(FMLCommonSetupEvent event) {
@@ -58,5 +61,6 @@ public class ModEntities {
         EntityRenderers.register(ModEntities.SOLDIER_RED.get(), (ctx) -> new SoldierEntityRenderer<>(ctx, new DefaultedEntityGeoModel<>(ResourceLocation.fromNamespaceAndPath(CallsofTheWars.MOD_ID, "soldier"))));
         EntityRenderers.register(ModEntities.SOLDIER_GREEN.get(), (ctx) -> new SoldierEntityRenderer<>(ctx, new DefaultedEntityGeoModel<>(ResourceLocation.fromNamespaceAndPath(CallsofTheWars.MOD_ID, "soldier"))));
         EntityRenderers.register(ModEntities.SOLDIER_BLUE.get(), (ctx) -> new SoldierEntityRenderer<>(ctx, new DefaultedEntityGeoModel<>(ResourceLocation.fromNamespaceAndPath(CallsofTheWars.MOD_ID, "soldier"))));
+        EntityRenderers.register(ModEntities.UNIT_SPAWNER.get(), (ctx)->new SoldierEntityRenderer<>(ctx, new DefaultedEntityGeoModel<>(ResourceLocation.fromNamespaceAndPath(CallsofTheWars.MOD_ID, "soldier"))));
     }
 }

@@ -1,6 +1,7 @@
 package com.daragetsu.callsofthewars.entities.soldier;
 
 import com.daragetsu.callsofthewars.entities.common.GunnerEntity;
+import com.daragetsu.callsofthewars.item.ModItems;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -15,7 +16,9 @@ import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -39,12 +42,22 @@ public class BaseSoldierEntity extends GunnerEntity implements GeoEntity{
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, 1, true, false,
                 p -> {
-                    //probably too resource intensive, TODO: change
                     Player player = (Player) p;
-                    CompoundTag tag = new CompoundTag();
-                    player.saveWithoutId(tag);
-                    if(tag.contains("belongsTo")){
-                        return !player.isCreative() && !player.isSpectator() && (BelongsTo.valueOf(tag.getString("belongsTo")) != this.getBelongsTo());
+                    Inventory inv = player.getInventory();
+                    if(
+                        inv.contains(new ItemStack(ModItems.RED_BELT.get())) ||
+                        inv.contains(new ItemStack(ModItems.GREEN_BELT.get())) ||
+                        inv.contains(new ItemStack(ModItems.BLUE_BELT.get()))
+                    ){
+                        if(inv.contains(new ItemStack(ModItems.RED_BELT.get()))){
+                            return !player.isCreative() && !player.isSpectator() && BelongsTo.RED != this.getBelongsTo();
+                        }
+                        if(inv.contains(new ItemStack(ModItems.GREEN_BELT.get()))){
+                            return !player.isCreative() && !player.isSpectator() && BelongsTo.GREEN != this.getBelongsTo();
+                        }
+                        if(inv.contains(new ItemStack(ModItems.BLUE_BELT.get()))){
+                            return !player.isCreative() && !player.isSpectator() && BelongsTo.BLUE != this.getBelongsTo();
+                        }
                     }
                     return !player.isCreative() && !player.isSpectator();
                 }
@@ -52,8 +65,7 @@ public class BaseSoldierEntity extends GunnerEntity implements GeoEntity{
         );
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, BaseSoldierEntity.class, 1, true, false,
                 soldier -> !(((BaseSoldierEntity) soldier).getBelongsTo() == this.getBelongsTo())));
-        this.targetSelector.addGoal(2, new HurtByTargetGoal(this, Player.class));
-        this.targetSelector.addGoal(2, new HurtByTargetGoal(this, BaseSoldierEntity.class));
+        this.targetSelector.addGoal(2, new HurtByTargetGoal(this));
         this.goalSelector.addGoal(3, new WaterAvoidingRandomStrollGoal(this, 0.4f));
         this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 10));
     }
