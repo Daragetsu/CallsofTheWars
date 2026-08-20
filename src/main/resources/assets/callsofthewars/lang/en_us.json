@@ -3,11 +3,25 @@
     "entity.callsofthewars.soldier_green": "Soldier Green",
     "entity.callsofthewars.soldier_blue": "Soldier Blue",
 
+    "entity.callsofthewars.general_red": "General Red",
+    "entity.callsofthewars.general_green": "General Green",
+    "entity.callsofthewars.general_blue": "General Blue",
+
     "item.callsofthewars.soldier_red_spawn_egg": "Soldier Red Spawn Egg",
     "item.callsofthewars.soldier_green_spawn_egg": "Soldier Green Spawn Egg",
     "item.callsofthewars.soldier_blue_spawn_egg": "Soldier Blue Spawn Egg",
+
+    "item.callsofthewars.general_red_spawn_egg": "General Red Spawn Egg",
+    "item.callsofthewars.general_green_spawn_egg": "General Green Spawn Egg",
+    "item.callsofthewars.general_blue_spawn_egg": "General Blue Spawn Egg",
     
     "item.callsofthewars.red_belt": "Red Belt",
     "item.callsofthewars.green_belt": "Green Belt",
-    "item.callsofthewars.blue_belt": "Blue Belt"
+    "item.callsofthewars.blue_belt": "Blue Belt",
+
+    "item.callsofthewars.red_belt.description": "You belong to the Red Army, allied with the Red Soldiers, use this as a belt to show your allience and fight alongside the Red Army",
+    "item.callsofthewars.green_belt.description": "You belong to the Green Army, allied with the Green Soldiers, use this as a belt to show your allience and fight alongside the Green Army",
+    "item.callsofthewars.blue_belt.description": "You belong to the Blue Army, allied with the Blue Soldiers, use this as a belt to show your allience and fight alongside the Blue Army",
+
+    "dimensions.callsofthewars.warring_states": "Warring States"
 }

@@ -1,0 +1,11 @@
+{
+    "type": "callsofthewars:warring_states",
+    "generator": {
+        "type": "minecraft:noise",
+        "settings": "minecraft:overworld",
+        "biome_source": {
+            "type": "minecraft:fixed",
+            "biome": "callsofthewars:warring_states"
+        }
+    }
+}

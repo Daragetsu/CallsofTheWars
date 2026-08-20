@@ -1,0 +1,14 @@
+{
+  "id": "callsofthewars:general_blue",
+  "equipment_chance": 1.0,
+  "items": [
+    {
+      "item": "scguns:earths_corpse",
+      "weight": 10.0,
+      "drop_chance": 0.1,
+      "min_durability": 1,
+      "max_durability": 1,
+      "slot": "mainhand"
+    }
+  ]
+}

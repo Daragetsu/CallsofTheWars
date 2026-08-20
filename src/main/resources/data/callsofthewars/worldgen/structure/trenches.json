@@ -11,6 +11,6 @@
   "project_start_to_heightmap": "WORLD_SURFACE",
   "step": "surface_structures",
   "terrain_adaptation": "beard_thin",
-  "biomes": "#minecraft:is_overworld",
+  "biomes": "callsofthewars:warring_states",
   "use_expansion_hack": false
 }

@@ -2,15 +2,15 @@
   "structures": [
     {
       "structure": "callsofthewars:trenches",
-      "weight": 1
+      "weight": 10
     }
   ],
   "placement": {
     "type": "minecraft:random_spread",
-    "spacing": 10,
-    "separation": 6,
+    "spacing": 4,
+    "separation": 3,
     "spread_type": "linear",
-    "salt": 4723675,
+    "salt": 3725472,
     "frequency_reduction_method": "default",
     "frequency": 1
   }

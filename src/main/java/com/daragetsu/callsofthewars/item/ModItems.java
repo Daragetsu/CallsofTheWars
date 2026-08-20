@@ -20,13 +20,17 @@ import top.theillusivec4.curios.api.client.CuriosRendererRegistry;
 public class ModItems {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, CallsofTheWars.MOD_ID);
 
-    public static final RegistryObject<SpawnEggItem> SOLDIER_RED_SPAWN_EGG = ITEMS.register("soldier_red_spawn_egg", () -> new ForgeSpawnEggItem(ModEntities.SOLDIER_RED, 0xFF0000, 0xFF0000, new Item.Properties()));
-    public static final RegistryObject<SpawnEggItem> SOLDIER_GREEN_SPAWN_EGG = ITEMS.register("soldier_green_spawn_egg", () -> new ForgeSpawnEggItem(ModEntities.SOLDIER_GREEN, 0x00FF00, 0x00FF00, new Item.Properties()));
-    public static final RegistryObject<SpawnEggItem> SOLDIER_BLUE_SPAWN_EGG = ITEMS.register("soldier_blue_spawn_egg", () -> new ForgeSpawnEggItem(ModEntities.SOLDIER_BLUE, 0x0000FF, 0x0000FF, new Item.Properties()));
+    public static final RegistryObject<SpawnEggItem> SOLDIER_RED_SPAWN_EGG = ITEMS.register("soldier_red_spawn_egg", () -> new ForgeSpawnEggItem(ModEntities.SOLDIER_RED, 0x990000, 0x990000, new Item.Properties()));
+    public static final RegistryObject<SpawnEggItem> SOLDIER_GREEN_SPAWN_EGG = ITEMS.register("soldier_green_spawn_egg", () -> new ForgeSpawnEggItem(ModEntities.SOLDIER_GREEN, 0x009900, 0x009900, new Item.Properties()));
+    public static final RegistryObject<SpawnEggItem> SOLDIER_BLUE_SPAWN_EGG = ITEMS.register("soldier_blue_spawn_egg", () -> new ForgeSpawnEggItem(ModEntities.SOLDIER_BLUE, 0x000099, 0x000099, new Item.Properties()));
     
-    public static final RegistryObject<Item> RED_BELT = ITEMS.register("red_belt", ()->new Item(new Item.Properties()));
-    public static final RegistryObject<Item> GREEN_BELT = ITEMS.register("green_belt", ()->new Item(new Item.Properties()));
-    public static final RegistryObject<Item> BLUE_BELT = ITEMS.register("blue_belt", ()->new Item(new Item.Properties()));
+    public static final RegistryObject<SpawnEggItem> GENERAL_RED_SPAWN_EGG = ITEMS.register("general_red_spawn_egg", () -> new ForgeSpawnEggItem(ModEntities.GENERAL_RED, 0xFF0000, 0xFF0000, new Item.Properties()));
+    public static final RegistryObject<SpawnEggItem> GENERAL_GREEN_SPAWN_EGG = ITEMS.register("general_green_spawn_egg", () -> new ForgeSpawnEggItem(ModEntities.GENERAL_GREEN, 0x00FF00, 0x00FF00, new Item.Properties()));
+    public static final RegistryObject<SpawnEggItem> GENERAL_BLUE_SPAWN_EGG = ITEMS.register("general_blue_spawn_egg", () -> new ForgeSpawnEggItem(ModEntities.GENERAL_BLUE, 0x0000FF, 0x0000FF, new Item.Properties()));
+    
+    public static final RegistryObject<Item> RED_BELT = ITEMS.register("red_belt", ()->new BeltItem(new Item.Properties()));
+    public static final RegistryObject<Item> GREEN_BELT = ITEMS.register("green_belt", ()->new BeltItem(new Item.Properties()));
+    public static final RegistryObject<Item> BLUE_BELT = ITEMS.register("blue_belt", ()->new BeltItem(new Item.Properties()));
 
     public static final void register(IEventBus eventBus){
         ITEMS.register(eventBus);

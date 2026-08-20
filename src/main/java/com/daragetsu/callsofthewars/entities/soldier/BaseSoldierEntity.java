@@ -65,6 +65,8 @@ public class BaseSoldierEntity extends GunnerEntity implements GeoEntity{
         );
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, BaseSoldierEntity.class, 1, true, false,
                 soldier -> !(((BaseSoldierEntity) soldier).getBelongsTo() == this.getBelongsTo())));
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Monster.class, 1, true, false,
+                entity -> !(((entity instanceof BaseSoldierEntity) || (entity instanceof Player)))));
         this.targetSelector.addGoal(2, new HurtByTargetGoal(this));
         this.goalSelector.addGoal(3, new WaterAvoidingRandomStrollGoal(this, 0.4f));
         this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 10));
