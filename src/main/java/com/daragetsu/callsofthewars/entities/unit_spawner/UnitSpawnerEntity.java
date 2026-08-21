@@ -1,7 +1,7 @@
 package com.daragetsu.callsofthewars.entities.unit_spawner;
 
 import com.daragetsu.callsofthewars.entities.ModEntities;
-import com.daragetsu.callsofthewars.entities.soldier.BaseSoldierEntity;
+import com.daragetsu.callsofthewars.entities.common.BaseSoldierEntity;
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;

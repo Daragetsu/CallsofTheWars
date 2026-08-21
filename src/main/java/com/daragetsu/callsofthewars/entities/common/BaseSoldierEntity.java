@@ -1,6 +1,5 @@
-package com.daragetsu.callsofthewars.entities.soldier;
+package com.daragetsu.callsofthewars.entities.common;
 
-import com.daragetsu.callsofthewars.entities.common.GunnerEntity;
 import com.daragetsu.callsofthewars.item.ModItems;
 
 import net.minecraft.core.BlockPos;
@@ -11,6 +10,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -48,30 +48,14 @@ public class BaseSoldierEntity extends GunnerEntity implements GeoEntity{
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, 1, true, false,
                 p -> {
                     Player player = (Player) p;
-                    Inventory inv = player.getInventory();
-                    if(
-                        inv.contains(new ItemStack(ModItems.RED_BELT.get())) ||
-                        inv.contains(new ItemStack(ModItems.GREEN_BELT.get())) ||
-                        inv.contains(new ItemStack(ModItems.BLUE_BELT.get()))
-                    ){
-                        if(inv.contains(new ItemStack(ModItems.RED_BELT.get()))){
-                            return !player.isCreative() && !player.isSpectator() && BelongsTo.RED != this.getBelongsTo();
-                        }
-                        if(inv.contains(new ItemStack(ModItems.GREEN_BELT.get()))){
-                            return !player.isCreative() && !player.isSpectator() && BelongsTo.GREEN != this.getBelongsTo();
-                        }
-                        if(inv.contains(new ItemStack(ModItems.BLUE_BELT.get()))){
-                            return !player.isCreative() && !player.isSpectator() && BelongsTo.BLUE != this.getBelongsTo();
-                        }
-                    }
-                    return !player.isCreative() && !player.isSpectator();
+                    return !player.isCreative() && !player.isSpectator() && !this.alliedToPlayer(player);
                 }
             )
         );
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, BaseSoldierEntity.class, 1, true, false,
                 soldier -> !(((BaseSoldierEntity) soldier).getBelongsTo() == this.getBelongsTo())));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Monster.class, 1, true, false,
-                entity -> !(((entity instanceof BaseSoldierEntity) || (entity instanceof Player)))));
+                entity -> !(((entity instanceof BaseSoldierEntity)))));
         this.targetSelector.addGoal(2, new HurtByTargetGoal(this));
         this.goalSelector.addGoal(3, new WaterAvoidingRandomStrollGoal(this, 0.4f));
         this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 10));
@@ -151,6 +135,29 @@ public class BaseSoldierEntity extends GunnerEntity implements GeoEntity{
         return this.getBelongsTo() == BelongsTo.BLUE ? 1f : 0f;
     }
     public static boolean checkMonsterSpawnRules(EntityType<? extends Monster> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        return level.getDifficulty() != Difficulty.PEACEFUL && checkMobSpawnRules(type, level, spawnType, pos, random) && random.nextInt(100)<1;
+        return level.getDifficulty() != Difficulty.PEACEFUL && checkMobSpawnRules(type, level, spawnType, pos, random) && random.nextInt(100)<3;
+    }
+    @Override
+    public void setTarget(LivingEntity target) {
+        if(target instanceof Player player){
+            if(!this.alliedToPlayer(player)){
+                super.setTarget(target);
+            }
+        }else{
+            super.setTarget(target);
+        }
+    }
+    public boolean alliedToPlayer(Player player){
+        Inventory inv = player.getInventory();
+        if(inv.contains(new ItemStack(ModItems.RED_BELT.get()))){
+            return BelongsTo.RED == this.getBelongsTo() ? true : false;
+        }
+        if(inv.contains(new ItemStack(ModItems.GREEN_BELT.get()))){
+            return BelongsTo.GREEN == this.getBelongsTo() ? true : false;
+        }
+        if(inv.contains(new ItemStack(ModItems.BLUE_BELT.get()))){
+            return BelongsTo.BLUE == this.getBelongsTo() ? true : false;
+        }
+        return false;
     }
 }

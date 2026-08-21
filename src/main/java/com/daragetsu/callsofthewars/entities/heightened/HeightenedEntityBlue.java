@@ -1,4 +1,4 @@
-package com.daragetsu.callsofthewars.entities.soldier;
+package com.daragetsu.callsofthewars.entities.heightened;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.DifficultyInstance;
@@ -9,9 +9,9 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 
-public class HeightenedEntityRed extends BaseHeightenedEntity{
+public class HeightenedEntityBlue extends BaseHeightenedEntity{
 
-    public HeightenedEntityRed(EntityType<? extends Monster> entity, Level level) {
+    public HeightenedEntityBlue(EntityType<? extends Monster> entity, Level level) {
         super(entity, level);
     }
 
@@ -19,7 +19,7 @@ public class HeightenedEntityRed extends BaseHeightenedEntity{
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType reason,
             SpawnGroupData spawnData, CompoundTag dataTag) {
         if (!level.isClientSide()) {
-            this.setBelongsTo(BelongsTo.RED);
+            this.setBelongsTo(BelongsTo.BLUE);
         }
         return super.finalizeSpawn(level, difficulty, reason, spawnData, dataTag);
     }

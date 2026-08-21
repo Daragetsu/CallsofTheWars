@@ -1,11 +1,11 @@
 package com.daragetsu.callsofthewars.entities;
 
 import com.daragetsu.callsofthewars.CallsofTheWars;
-import com.daragetsu.callsofthewars.entities.soldier.BaseHeightenedEntity;
-import com.daragetsu.callsofthewars.entities.soldier.BaseSoldierEntity;
-import com.daragetsu.callsofthewars.entities.soldier.HeightenedEntityBlue;
-import com.daragetsu.callsofthewars.entities.soldier.HeightenedEntityGreen;
-import com.daragetsu.callsofthewars.entities.soldier.HeightenedEntityRed;
+import com.daragetsu.callsofthewars.entities.common.BaseSoldierEntity;
+import com.daragetsu.callsofthewars.entities.heightened.BaseHeightenedEntity;
+import com.daragetsu.callsofthewars.entities.heightened.HeightenedEntityBlue;
+import com.daragetsu.callsofthewars.entities.heightened.HeightenedEntityGreen;
+import com.daragetsu.callsofthewars.entities.heightened.HeightenedEntityRed;
 import com.daragetsu.callsofthewars.entities.soldier.SoldierEntityBlue;
 import com.daragetsu.callsofthewars.entities.soldier.SoldierEntityGreen;
 import com.daragetsu.callsofthewars.entities.soldier.SoldierEntityRed;

@@ -1,5 +1,6 @@
 package com.daragetsu.callsofthewars.entities.soldier;
 
+import com.daragetsu.callsofthewars.entities.common.BaseSoldierEntity;
 import com.daragetsu.callsofthewars.entities.common.client.GunGeoLayer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;

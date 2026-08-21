@@ -1,4 +1,6 @@
-package com.daragetsu.callsofthewars.entities.soldier;
+package com.daragetsu.callsofthewars.entities.heightened;
+
+import com.daragetsu.callsofthewars.entities.common.BaseSoldierEntity;
 
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -16,6 +18,12 @@ public class BaseHeightenedEntity extends BaseSoldierEntity{
                 .add(Attributes.MOVEMENT_SPEED, 0.4F)
                 .add(Attributes.ATTACK_DAMAGE, 4.0D)
                 .add(Attributes.ARMOR, 0.6D)
-                .add(Attributes.MAX_HEALTH, 400.0D);
+                .add(Attributes.MAX_HEALTH, 80.0D);
+    }
+
+    @Override
+    protected void registerGoals() {
+        super.registerGoals();
+        this.goalSelector.addGoal(3, new MagDumpGoal(this, 200, 200));
     }
 }

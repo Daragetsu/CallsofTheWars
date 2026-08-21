@@ -1,5 +1,7 @@
 package com.daragetsu.callsofthewars.entities.soldier;
 
+import com.daragetsu.callsofthewars.entities.common.BaseSoldierEntity;
+
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.EntityType;

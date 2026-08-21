@@ -3,12 +3,20 @@
   "equipment_chance": 1.0,
   "items": [
     {
-      "item": "scguns:earths_corpse",
+      "item": "scguns:birdfeeder",
       "weight": 10.0,
       "drop_chance": 0.0,
       "min_durability": 1,
       "max_durability": 1,
       "slot": "mainhand"
+    },
+    {
+      "item": "scguns:kalaskah",
+      "weight": 10.0,
+      "drop_chance": 0.0,
+      "min_durability": 1,
+      "max_durability": 1,
+      "slot": "offhand"
     }
   ]
 }

@@ -1,7 +1,7 @@
 package com.daragetsu.callsofthewars;
 
 import com.daragetsu.callsofthewars.entities.ModEntities;
-import com.daragetsu.callsofthewars.entities.soldier.BaseSoldierEntity.BelongsTo;
+import com.daragetsu.callsofthewars.entities.common.BaseSoldierEntity.BelongsTo;
 import com.daragetsu.callsofthewars.item.ModItems;
 import com.mojang.logging.LogUtils;
 
