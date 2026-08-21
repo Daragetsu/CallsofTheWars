@@ -93,5 +93,26 @@ public class ModEntities {
             (entityType, level, spawnType, pos, random) -> true,
             SpawnPlacementRegisterEvent.Operation.REPLACE
         );
+        event.register(
+            ModEntities.GENERAL_RED.get(),
+            SpawnPlacements.Type.ON_GROUND,
+            Heightmap.Types.WORLD_SURFACE,
+            BaseGeneralEntity::checkMonsterSpawnRules,
+            SpawnPlacementRegisterEvent.Operation.REPLACE
+        );
+        event.register(
+            ModEntities.GENERAL_GREEN.get(),
+            SpawnPlacements.Type.ON_GROUND,
+            Heightmap.Types.WORLD_SURFACE,
+            BaseGeneralEntity::checkMonsterSpawnRules,
+            SpawnPlacementRegisterEvent.Operation.REPLACE
+        );
+        event.register(
+            ModEntities.GENERAL_BLUE.get(),
+            SpawnPlacements.Type.ON_GROUND,
+            Heightmap.Types.WORLD_SURFACE,
+            BaseGeneralEntity::checkMonsterSpawnRules,
+            SpawnPlacementRegisterEvent.Operation.REPLACE
+        );
     }
 }
