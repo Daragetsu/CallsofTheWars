@@ -10,7 +10,9 @@ import software.bernie.geckolib.cache.object.GeoBone;
 import software.bernie.geckolib.core.animatable.GeoAnimatable;
 import software.bernie.geckolib.renderer.GeoRenderer;
 import software.bernie.geckolib.renderer.layer.BlockAndItemGeoLayer;
-
+/***
+ * @author Krei
+ * ***/
 import javax.annotation.Nullable;
 
 public class GunGeoLayer<T extends Mob & GeoAnimatable> extends BlockAndItemGeoLayer<T> {

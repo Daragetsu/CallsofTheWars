@@ -15,7 +15,9 @@ import top.ribs.scguns.config.EntityEquipmentConfig;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
-
+/***
+ * @author Krei
+ * ***/
 @SuppressWarnings("unused")
 @ParametersAreNonnullByDefault
 public class EquippedEntity extends Monster {

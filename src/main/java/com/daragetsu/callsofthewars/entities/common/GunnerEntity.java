@@ -16,7 +16,9 @@ import org.jetbrains.annotations.Nullable;
 import com.daragetsu.callsofthewars.entities.common.mixins.GunAttackGoalAccessor;
 
 import top.ribs.scguns.entity.ai.GunAttackGoal;
-
+/***
+ * @author Krei
+ * ***/
 @SuppressWarnings("unused")
 public abstract class GunnerEntity extends EquippedEntity {
 
