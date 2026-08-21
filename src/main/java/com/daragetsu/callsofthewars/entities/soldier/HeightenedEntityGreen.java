@@ -9,9 +9,9 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 
-public class GeneralEntityGreen extends BaseGeneralEntity{
+public class HeightenedEntityGreen extends BaseHeightenedEntity{
 
-    public GeneralEntityGreen(EntityType<? extends Monster> entity, Level level) {
+    public HeightenedEntityGreen(EntityType<? extends Monster> entity, Level level) {
         super(entity, level);
     }
 

@@ -3,17 +3,17 @@
     "entity.callsofthewars.soldier_green": "Soldier Green",
     "entity.callsofthewars.soldier_blue": "Soldier Blue",
 
-    "entity.callsofthewars.general_red": "General Red",
-    "entity.callsofthewars.general_green": "General Green",
-    "entity.callsofthewars.general_blue": "General Blue",
+    "entity.callsofthewars.heightened_red": "Heightened Red",
+    "entity.callsofthewars.heightened_green": "Heightened Green",
+    "entity.callsofthewars.heightened_blue": "Heightened Blue",
 
     "item.callsofthewars.soldier_red_spawn_egg": "Soldier Red Spawn Egg",
     "item.callsofthewars.soldier_green_spawn_egg": "Soldier Green Spawn Egg",
     "item.callsofthewars.soldier_blue_spawn_egg": "Soldier Blue Spawn Egg",
 
-    "item.callsofthewars.general_red_spawn_egg": "General Red Spawn Egg",
-    "item.callsofthewars.general_green_spawn_egg": "General Green Spawn Egg",
-    "item.callsofthewars.general_blue_spawn_egg": "General Blue Spawn Egg",
+    "item.callsofthewars.heightened_red_spawn_egg": "Heightened Red Spawn Egg",
+    "item.callsofthewars.heightened_green_spawn_egg": "Heightened Green Spawn Egg",
+    "item.callsofthewars.heightened_blue_spawn_egg": "Heightened Blue Spawn Egg",
     
     "item.callsofthewars.red_belt": "Red Belt",
     "item.callsofthewars.green_belt": "Green Belt",

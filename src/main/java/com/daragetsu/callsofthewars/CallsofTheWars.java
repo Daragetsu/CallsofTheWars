@@ -51,9 +51,9 @@ public class CallsofTheWars
             event.accept(ModItems.SOLDIER_RED_SPAWN_EGG);
             event.accept(ModItems.SOLDIER_GREEN_SPAWN_EGG);
             event.accept(ModItems.SOLDIER_BLUE_SPAWN_EGG);
-            event.accept(ModItems.GENERAL_RED_SPAWN_EGG);
-            event.accept(ModItems.GENERAL_GREEN_SPAWN_EGG);
-            event.accept(ModItems.GENERAL_BLUE_SPAWN_EGG);
+            event.accept(ModItems.HEIGHTENED_RED_SPAWN_EGG);
+            event.accept(ModItems.HEIGHTENED_GREEN_SPAWN_EGG);
+            event.accept(ModItems.HEIGHTENED_BLUE_SPAWN_EGG);
         }
         if (event.getTabKey() == CreativeModeTabs.TOOLS_AND_UTILITIES) {
             event.accept(ModItems.RED_BELT);

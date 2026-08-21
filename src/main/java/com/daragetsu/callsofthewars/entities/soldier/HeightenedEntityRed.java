@@ -9,9 +9,9 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 
-public class GeneralEntityBlue extends BaseGeneralEntity{
+public class HeightenedEntityRed extends BaseHeightenedEntity{
 
-    public GeneralEntityBlue(EntityType<? extends Monster> entity, Level level) {
+    public HeightenedEntityRed(EntityType<? extends Monster> entity, Level level) {
         super(entity, level);
     }
 
@@ -19,7 +19,7 @@ public class GeneralEntityBlue extends BaseGeneralEntity{
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType reason,
             SpawnGroupData spawnData, CompoundTag dataTag) {
         if (!level.isClientSide()) {
-            this.setBelongsTo(BelongsTo.BLUE);
+            this.setBelongsTo(BelongsTo.RED);
         }
         return super.finalizeSpawn(level, difficulty, reason, spawnData, dataTag);
     }

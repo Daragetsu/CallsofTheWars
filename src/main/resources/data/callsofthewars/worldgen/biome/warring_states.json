@@ -1,6 +1,6 @@
 {
   "carvers": {},
-  "downfall": 0.4,
+  "downfall": 0.1,
   "effects": {
     "fog_color": 9211020,
     "foliage_color": 6513507,
@@ -57,19 +57,19 @@
           "weight": 1
         },
         {
-          "type": "callsofthewars:general_red",
+          "type": "callsofthewars:heightened_red",
           "maxCount": 1,
           "minCount": 1,
           "weight": 1
         },
         {
-          "type": "callsofthewars:general_green",
+          "type": "callsofthewars:heightened_green",
           "maxCount": 1,
           "minCount": 1,
           "weight": 1
         },
         {
-          "type": "callsofthewars:general_blue",
+          "type": "callsofthewars:heightened_blue",
           "maxCount": 1,
           "minCount": 1,
           "weight": 1
@@ -78,19 +78,7 @@
           "type": "scguns:cog_minion",
           "maxCount": 1,
           "minCount": 1,
-          "weight": 3
-        },
-        {
-          "type": "scguns:cog_knight",
-          "maxCount": 1,
-          "minCount": 1,
-          "weight": 3
-        },
-        {
-          "type": "scguns:dissident",
-          "maxCount": 1,
-          "minCount": 1,
-          "weight": 2
+          "weight": 1
         }
     ],
     "underground_water_creature": [],

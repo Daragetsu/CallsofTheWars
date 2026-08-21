@@ -1,11 +1,11 @@
 package com.daragetsu.callsofthewars.entities;
 
 import com.daragetsu.callsofthewars.CallsofTheWars;
-import com.daragetsu.callsofthewars.entities.soldier.BaseGeneralEntity;
+import com.daragetsu.callsofthewars.entities.soldier.BaseHeightenedEntity;
 import com.daragetsu.callsofthewars.entities.soldier.BaseSoldierEntity;
-import com.daragetsu.callsofthewars.entities.soldier.GeneralEntityBlue;
-import com.daragetsu.callsofthewars.entities.soldier.GeneralEntityGreen;
-import com.daragetsu.callsofthewars.entities.soldier.GeneralEntityRed;
+import com.daragetsu.callsofthewars.entities.soldier.HeightenedEntityBlue;
+import com.daragetsu.callsofthewars.entities.soldier.HeightenedEntityGreen;
+import com.daragetsu.callsofthewars.entities.soldier.HeightenedEntityRed;
 import com.daragetsu.callsofthewars.entities.soldier.SoldierEntityBlue;
 import com.daragetsu.callsofthewars.entities.soldier.SoldierEntityGreen;
 import com.daragetsu.callsofthewars.entities.soldier.SoldierEntityRed;
@@ -37,11 +37,11 @@ public class ModEntities {
     public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, CallsofTheWars.MOD_ID);
     //TODO: REFACTOR ALL THESE INTO BASE CLASSES INSTEAD OF 3 DIFFERENT CLASSES
     public static final RegistryObject<EntityType<SoldierEntityRed>> SOLDIER_RED = ENTITY_TYPES.register("soldier_red", () -> EntityType.Builder.of(SoldierEntityRed::new, MobCategory.CREATURE).sized(0.6F, 2F).build("soldier_red"));
-    public static final RegistryObject<EntityType<GeneralEntityRed>> GENERAL_RED = ENTITY_TYPES.register("general_red", () -> EntityType.Builder.of(GeneralEntityRed::new, MobCategory.CREATURE).sized(0.6F, 2F).build("general_red"));
+    public static final RegistryObject<EntityType<HeightenedEntityRed>> HEIGHTENED_RED = ENTITY_TYPES.register("heightened_red", () -> EntityType.Builder.of(HeightenedEntityRed::new, MobCategory.CREATURE).sized(0.6F, 2F).build("heightened_red"));
     public static final RegistryObject<EntityType<SoldierEntityGreen>> SOLDIER_GREEN = ENTITY_TYPES.register("soldier_green", () -> EntityType.Builder.of(SoldierEntityGreen::new, MobCategory.CREATURE).sized(0.6F, 2F).build("soldier_green"));
-    public static final RegistryObject<EntityType<GeneralEntityGreen>> GENERAL_GREEN = ENTITY_TYPES.register("general_green", () -> EntityType.Builder.of(GeneralEntityGreen::new, MobCategory.CREATURE).sized(0.6F, 2F).build("general_green"));
+    public static final RegistryObject<EntityType<HeightenedEntityGreen>> HEIGHTENED_GREEN = ENTITY_TYPES.register("heightened_green", () -> EntityType.Builder.of(HeightenedEntityGreen::new, MobCategory.CREATURE).sized(0.6F, 2F).build("heightened_green"));
     public static final RegistryObject<EntityType<SoldierEntityBlue>> SOLDIER_BLUE = ENTITY_TYPES.register("soldier_blue", () -> EntityType.Builder.of(SoldierEntityBlue::new, MobCategory.CREATURE).sized(0.6F, 2F).build("soldier_blue"));
-    public static final RegistryObject<EntityType<GeneralEntityBlue>> GENERAL_BLUE = ENTITY_TYPES.register("general_blue", () -> EntityType.Builder.of(GeneralEntityBlue::new, MobCategory.CREATURE).sized(0.6F, 2F).build("general_blue"));
+    public static final RegistryObject<EntityType<HeightenedEntityBlue>> HEIGHTENED_BLUE = ENTITY_TYPES.register("heightened_blue", () -> EntityType.Builder.of(HeightenedEntityBlue::new, MobCategory.CREATURE).sized(0.6F, 2F).build("heightened_blue"));
     public static final RegistryObject<EntityType<UnitSpawnerEntity>> UNIT_SPAWNER = ENTITY_TYPES.register("unit_spawner", () -> EntityType.Builder.of(UnitSpawnerEntity::new, MobCategory.CREATURE).sized(0.3F, 0.3F).build("unit_spawner"));
 
     public static final void register(IEventBus eventBus){
@@ -58,9 +58,9 @@ public class ModEntities {
         event.put(ModEntities.SOLDIER_RED.get(), BaseSoldierEntity.createAttributes().build());
         event.put(ModEntities.SOLDIER_GREEN.get(), BaseSoldierEntity.createAttributes().build());
         event.put(ModEntities.SOLDIER_BLUE.get(), BaseSoldierEntity.createAttributes().build());
-        event.put(ModEntities.GENERAL_RED.get(), BaseGeneralEntity.createAttributes().build());
-        event.put(ModEntities.GENERAL_GREEN.get(), BaseGeneralEntity.createAttributes().build());
-        event.put(ModEntities.GENERAL_BLUE.get(), BaseGeneralEntity.createAttributes().build());
+        event.put(ModEntities.HEIGHTENED_RED.get(), BaseHeightenedEntity.createAttributes().build());
+        event.put(ModEntities.HEIGHTENED_GREEN.get(), BaseHeightenedEntity.createAttributes().build());
+        event.put(ModEntities.HEIGHTENED_BLUE.get(), BaseHeightenedEntity.createAttributes().build());
         event.put(ModEntities.UNIT_SPAWNER.get(), BaseSoldierEntity.createAttributes().build());
     }
 
@@ -68,9 +68,9 @@ public class ModEntities {
         BoundingBoxManager.registerHeadshotBox(ModEntities.SOLDIER_RED.get(), new BasicHeadshotBox<>((double)8.0F, (double)24.0F));
         BoundingBoxManager.registerHeadshotBox(ModEntities.SOLDIER_GREEN.get(), new BasicHeadshotBox<>((double)8.0F, (double)24.0F));
         BoundingBoxManager.registerHeadshotBox(ModEntities.SOLDIER_BLUE.get(), new BasicHeadshotBox<>((double)8.0F, (double)24.0F));
-        BoundingBoxManager.registerHeadshotBox(ModEntities.GENERAL_RED.get(), new BasicHeadshotBox<>((double)8.0F, (double)24.0F));
-        BoundingBoxManager.registerHeadshotBox(ModEntities.GENERAL_GREEN.get(), new BasicHeadshotBox<>((double)8.0F, (double)24.0F));
-        BoundingBoxManager.registerHeadshotBox(ModEntities.GENERAL_BLUE.get(), new BasicHeadshotBox<>((double)8.0F, (double)24.0F));
+        BoundingBoxManager.registerHeadshotBox(ModEntities.HEIGHTENED_RED.get(), new BasicHeadshotBox<>((double)8.0F, (double)24.0F));
+        BoundingBoxManager.registerHeadshotBox(ModEntities.HEIGHTENED_GREEN.get(), new BasicHeadshotBox<>((double)8.0F, (double)24.0F));
+        BoundingBoxManager.registerHeadshotBox(ModEntities.HEIGHTENED_BLUE.get(), new BasicHeadshotBox<>((double)8.0F, (double)24.0F));
     }
 
     @OnlyIn(value = Dist.CLIENT)
@@ -79,9 +79,9 @@ public class ModEntities {
         EntityRenderers.register(ModEntities.SOLDIER_GREEN.get(), (ctx) -> new SoldierEntityRenderer<>(ctx, new DefaultedEntityGeoModel<>(ResourceLocation.fromNamespaceAndPath(CallsofTheWars.MOD_ID, "soldier"))));
         EntityRenderers.register(ModEntities.SOLDIER_BLUE.get(), (ctx) -> new SoldierEntityRenderer<>(ctx, new DefaultedEntityGeoModel<>(ResourceLocation.fromNamespaceAndPath(CallsofTheWars.MOD_ID, "soldier"))));
         
-        EntityRenderers.register(ModEntities.GENERAL_RED.get(), (ctx) -> new SoldierEntityRenderer<>(ctx, new DefaultedEntityGeoModel<>(ResourceLocation.fromNamespaceAndPath(CallsofTheWars.MOD_ID, "general"))));
-        EntityRenderers.register(ModEntities.GENERAL_GREEN.get(), (ctx) -> new SoldierEntityRenderer<>(ctx, new DefaultedEntityGeoModel<>(ResourceLocation.fromNamespaceAndPath(CallsofTheWars.MOD_ID, "general"))));
-        EntityRenderers.register(ModEntities.GENERAL_BLUE.get(), (ctx) -> new SoldierEntityRenderer<>(ctx, new DefaultedEntityGeoModel<>(ResourceLocation.fromNamespaceAndPath(CallsofTheWars.MOD_ID, "general"))));
+        EntityRenderers.register(ModEntities.HEIGHTENED_RED.get(), (ctx) -> new SoldierEntityRenderer<>(ctx, new DefaultedEntityGeoModel<>(ResourceLocation.fromNamespaceAndPath(CallsofTheWars.MOD_ID, "heightened"))));
+        EntityRenderers.register(ModEntities.HEIGHTENED_GREEN.get(), (ctx) -> new SoldierEntityRenderer<>(ctx, new DefaultedEntityGeoModel<>(ResourceLocation.fromNamespaceAndPath(CallsofTheWars.MOD_ID, "heightened"))));
+        EntityRenderers.register(ModEntities.HEIGHTENED_BLUE.get(), (ctx) -> new SoldierEntityRenderer<>(ctx, new DefaultedEntityGeoModel<>(ResourceLocation.fromNamespaceAndPath(CallsofTheWars.MOD_ID, "heightened"))));
         
         EntityRenderers.register(ModEntities.UNIT_SPAWNER.get(), (ctx)->new SoldierEntityRenderer<>(ctx, new DefaultedEntityGeoModel<>(ResourceLocation.fromNamespaceAndPath(CallsofTheWars.MOD_ID, "soldier"))));
     }
@@ -90,28 +90,28 @@ public class ModEntities {
             ModEntities.UNIT_SPAWNER.get(),
             SpawnPlacements.Type.ON_GROUND,
             Heightmap.Types.WORLD_SURFACE,
-            (entityType, level, spawnType, pos, random) -> true,
+            BaseSoldierEntity::checkMonsterSpawnRules,
             SpawnPlacementRegisterEvent.Operation.REPLACE
         );
         event.register(
-            ModEntities.GENERAL_RED.get(),
+            ModEntities.HEIGHTENED_RED.get(),
             SpawnPlacements.Type.ON_GROUND,
             Heightmap.Types.WORLD_SURFACE,
-            BaseGeneralEntity::checkMonsterSpawnRules,
+            BaseSoldierEntity::checkMonsterSpawnRules,
             SpawnPlacementRegisterEvent.Operation.REPLACE
         );
         event.register(
-            ModEntities.GENERAL_GREEN.get(),
+            ModEntities.HEIGHTENED_GREEN.get(),
             SpawnPlacements.Type.ON_GROUND,
             Heightmap.Types.WORLD_SURFACE,
-            BaseGeneralEntity::checkMonsterSpawnRules,
+            BaseSoldierEntity::checkMonsterSpawnRules,
             SpawnPlacementRegisterEvent.Operation.REPLACE
         );
         event.register(
-            ModEntities.GENERAL_BLUE.get(),
+            ModEntities.HEIGHTENED_BLUE.get(),
             SpawnPlacements.Type.ON_GROUND,
             Heightmap.Types.WORLD_SURFACE,
-            BaseGeneralEntity::checkMonsterSpawnRules,
+            BaseSoldierEntity::checkMonsterSpawnRules,
             SpawnPlacementRegisterEvent.Operation.REPLACE
         );
     }

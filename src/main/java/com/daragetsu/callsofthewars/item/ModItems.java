@@ -24,9 +24,9 @@ public class ModItems {
     public static final RegistryObject<SpawnEggItem> SOLDIER_GREEN_SPAWN_EGG = ITEMS.register("soldier_green_spawn_egg", () -> new ForgeSpawnEggItem(ModEntities.SOLDIER_GREEN, 0x009900, 0x009900, new Item.Properties()));
     public static final RegistryObject<SpawnEggItem> SOLDIER_BLUE_SPAWN_EGG = ITEMS.register("soldier_blue_spawn_egg", () -> new ForgeSpawnEggItem(ModEntities.SOLDIER_BLUE, 0x000099, 0x000099, new Item.Properties()));
     
-    public static final RegistryObject<SpawnEggItem> GENERAL_RED_SPAWN_EGG = ITEMS.register("general_red_spawn_egg", () -> new ForgeSpawnEggItem(ModEntities.GENERAL_RED, 0xFF0000, 0xFF0000, new Item.Properties()));
-    public static final RegistryObject<SpawnEggItem> GENERAL_GREEN_SPAWN_EGG = ITEMS.register("general_green_spawn_egg", () -> new ForgeSpawnEggItem(ModEntities.GENERAL_GREEN, 0x00FF00, 0x00FF00, new Item.Properties()));
-    public static final RegistryObject<SpawnEggItem> GENERAL_BLUE_SPAWN_EGG = ITEMS.register("general_blue_spawn_egg", () -> new ForgeSpawnEggItem(ModEntities.GENERAL_BLUE, 0x0000FF, 0x0000FF, new Item.Properties()));
+    public static final RegistryObject<SpawnEggItem> HEIGHTENED_RED_SPAWN_EGG = ITEMS.register("heightened_red_spawn_egg", () -> new ForgeSpawnEggItem(ModEntities.HEIGHTENED_RED, 0xFF0000, 0xFF0000, new Item.Properties()));
+    public static final RegistryObject<SpawnEggItem> HEIGHTENED_GREEN_SPAWN_EGG = ITEMS.register("heightened_green_spawn_egg", () -> new ForgeSpawnEggItem(ModEntities.HEIGHTENED_GREEN, 0x00FF00, 0x00FF00, new Item.Properties()));
+    public static final RegistryObject<SpawnEggItem> HEIGHTENED_BLUE_SPAWN_EGG = ITEMS.register("heightened_blue_spawn_egg", () -> new ForgeSpawnEggItem(ModEntities.HEIGHTENED_BLUE, 0x0000FF, 0x0000FF, new Item.Properties()));
     
     public static final RegistryObject<Item> RED_BELT = ITEMS.register("red_belt", ()->new BeltItem(new Item.Properties()));
     public static final RegistryObject<Item> GREEN_BELT = ITEMS.register("green_belt", ()->new BeltItem(new Item.Properties()));
