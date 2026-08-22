@@ -111,7 +111,7 @@ public class CallsofTheWars
                 return;
             }
             if(ogPlayer.level().dimension().location().compareTo(ResourceLocation.fromNamespaceAndPath(CallsofTheWars.MOD_ID, "warring_states")) == 0){
-                EnlistHandler.demobilize(player, ogPlayer);
+                EnlistHandler.demobilize(player);
             }
         }
     }

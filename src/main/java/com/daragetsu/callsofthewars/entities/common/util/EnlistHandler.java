@@ -2,8 +2,6 @@ package com.daragetsu.callsofthewars.entities.common.util;
 
 import java.util.List;
 
-import javax.annotation.Nullable;
-
 import com.daragetsu.callsofthewars.CallsofTheWars;
 import com.daragetsu.callsofthewars.entities.ModEntities;
 import com.daragetsu.callsofthewars.entities.container.ContainerEntity;
@@ -54,12 +52,12 @@ public class EnlistHandler {
                 ObjectiveCriteria.RenderType.INTEGER
             );
         }
-        scoreboard.getOrCreatePlayerScore(player.getStringUUID(), x).setScore((int)player.getX());
-        scoreboard.getOrCreatePlayerScore(player.getStringUUID(), y).setScore((int)player.getY());
-        scoreboard.getOrCreatePlayerScore(player.getStringUUID(), z).setScore((int)player.getZ());
+        scoreboard.getOrCreatePlayerScore(player.getName().getString(), x).setScore((int)player.getX());
+        scoreboard.getOrCreatePlayerScore(player.getName().getString(), y).setScore((int)player.getY());
+        scoreboard.getOrCreatePlayerScore(player.getName().getString(), z).setScore((int)player.getZ());
         ContainerEntity conen = new ContainerEntity(ModEntities.CONTAINER_ENTITY.get(), player.level());
         conen.moveTo(player.getX(), player.getY(), player.getZ());
-        conen.setContainerOwner(player.getStringUUID());
+        conen.setContainerOwner(player.getName().getString());
         conen.serializeInventory(player);
         player.level().addFreshEntity(conen);
         player.getInventory().clearContent();
@@ -92,14 +90,14 @@ public class EnlistHandler {
                 break;
         }
     }
-    public static void demobilize(ServerPlayer player, @Nullable ServerPlayer og){
+    public static void demobilize(ServerPlayer player){
         ServerScoreboard scoreboard = player.level().getServer().getScoreboard();
         Objective xObj = scoreboard.getObjective("x");
         Objective yObj = scoreboard.getObjective("y");
         Objective zObj = scoreboard.getObjective("z");
-        int x = scoreboard.getOrCreatePlayerScore(player.getStringUUID(), xObj).getScore();
-        int y = scoreboard.getOrCreatePlayerScore(player.getStringUUID(), yObj).getScore();
-        int z = scoreboard.getOrCreatePlayerScore(player.getStringUUID(), zObj).getScore();
+        int x = scoreboard.getOrCreatePlayerScore(player.getName().getString(), xObj).getScore();
+        int y = scoreboard.getOrCreatePlayerScore(player.getName().getString(), yObj).getScore();
+        int z = scoreboard.getOrCreatePlayerScore(player.getName().getString(), zObj).getScore();
         player.moveTo(x, y, z);
         List<ContainerEntity> list = player.level().getEntitiesOfClass(ContainerEntity.class, new AABB(
             player.getX()-10,
@@ -111,13 +109,7 @@ public class EnlistHandler {
         ));
         if(!list.isEmpty()){
             for(ContainerEntity conen : list){
-                ServerPlayer ogPlayer = null;
-                if(og!=null){
-                    ogPlayer = og;
-                }else{
-                    ogPlayer = player;
-                }
-                if(conen.getContainerOwner() == ogPlayer.getStringUUID()){
+                if(conen.getContainerOwner().equals(player.getName().getString())){
                     player.getInventory().clearContent();
                     conen.deserializeInventory(player);
                     conen.remove(RemovalReason.DISCARDED);

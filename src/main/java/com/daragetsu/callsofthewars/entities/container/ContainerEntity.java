@@ -103,6 +103,9 @@ public class ContainerEntity extends AbstractChestedHorse implements GeoEntity{
         for(ItemStack item : player.getInventory().items){
             this.inventory.addItem(item);
         }
+        for(ItemStack item : player.getInventory().armor){
+            this.inventory.addItem(item);
+        }
     }
     public void deserializeInventory(Player player){
         for(int i = 0; i < this.getInventorySize(); i++){
@@ -125,5 +128,17 @@ public class ContainerEntity extends AbstractChestedHorse implements GeoEntity{
     @Override
     public boolean isPickable() {
         return false;
+    }
+    @Override
+    public boolean isNoAi() {
+        return true;
+    }
+    @Override
+    public boolean isNoGravity() {
+        return true;
+    }
+    @Override
+    public boolean isInvisible() {
+        return true;
     }
 }
