@@ -2,6 +2,8 @@ package com.daragetsu.callsofthewars.entities;
 
 import com.daragetsu.callsofthewars.CallsofTheWars;
 import com.daragetsu.callsofthewars.entities.common.BaseSoldierEntity;
+import com.daragetsu.callsofthewars.entities.container.ContainerEntity;
+import com.daragetsu.callsofthewars.entities.container.ContainerEntityRenderer;
 import com.daragetsu.callsofthewars.entities.heightened.BaseHeightenedEntity;
 import com.daragetsu.callsofthewars.entities.heightened.HeightenedEntityBlue;
 import com.daragetsu.callsofthewars.entities.heightened.HeightenedEntityGreen;
@@ -43,6 +45,7 @@ public class ModEntities {
     public static final RegistryObject<EntityType<SoldierEntityBlue>> SOLDIER_BLUE = ENTITY_TYPES.register("soldier_blue", () -> EntityType.Builder.of(SoldierEntityBlue::new, MobCategory.CREATURE).sized(0.6F, 2F).build("soldier_blue"));
     public static final RegistryObject<EntityType<HeightenedEntityBlue>> HEIGHTENED_BLUE = ENTITY_TYPES.register("heightened_blue", () -> EntityType.Builder.of(HeightenedEntityBlue::new, MobCategory.CREATURE).sized(0.6F, 2F).build("heightened_blue"));
     public static final RegistryObject<EntityType<UnitSpawnerEntity>> UNIT_SPAWNER = ENTITY_TYPES.register("unit_spawner", () -> EntityType.Builder.of(UnitSpawnerEntity::new, MobCategory.CREATURE).sized(0.3F, 0.3F).build("unit_spawner"));
+    public static final RegistryObject<EntityType<ContainerEntity>> CONTAINER_ENTITY = ENTITY_TYPES.register("container_entity", () -> EntityType.Builder.of(ContainerEntity::new, MobCategory.CREATURE).sized(0.1F, 0.1F).build("container_entity"));
 
     public static final void register(IEventBus eventBus){
         ENTITY_TYPES.register(eventBus);
@@ -62,6 +65,7 @@ public class ModEntities {
         event.put(ModEntities.HEIGHTENED_GREEN.get(), BaseHeightenedEntity.createAttributes().build());
         event.put(ModEntities.HEIGHTENED_BLUE.get(), BaseHeightenedEntity.createAttributes().build());
         event.put(ModEntities.UNIT_SPAWNER.get(), BaseSoldierEntity.createAttributes().build());
+        event.put(ModEntities.CONTAINER_ENTITY.get(), BaseSoldierEntity.createAttributes().build());
     }
 
     private static void onCommonSetup(FMLCommonSetupEvent event) {
@@ -84,6 +88,7 @@ public class ModEntities {
         EntityRenderers.register(ModEntities.HEIGHTENED_BLUE.get(), (ctx) -> new SoldierEntityRenderer<>(ctx, new DefaultedEntityGeoModel<>(ResourceLocation.fromNamespaceAndPath(CallsofTheWars.MOD_ID, "heightened"))));
         
         EntityRenderers.register(ModEntities.UNIT_SPAWNER.get(), (ctx)->new SoldierEntityRenderer<>(ctx, new DefaultedEntityGeoModel<>(ResourceLocation.fromNamespaceAndPath(CallsofTheWars.MOD_ID, "soldier"))));
+        EntityRenderers.register(ModEntities.CONTAINER_ENTITY.get(), (ctx)->new ContainerEntityRenderer(ctx));
     }
     public static void registerSpawnPlacements(SpawnPlacementRegisterEvent event) {
         event.register(
