@@ -19,6 +19,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity.RemovalReason;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.scores.Objective;
 import net.minecraft.world.scores.criteria.ObjectiveCriteria;
@@ -66,6 +67,13 @@ public class EnlistHandler {
         player.getInventory().add(1, new ItemStack(top.ribs.scguns.init.ModItems.STANDARD_COPPER_ROUND.get(), 64));
         player.getInventory().add(2, new ItemStack(top.ribs.scguns.init.ModItems.STANDARD_COPPER_ROUND.get(), 64));
         player.getInventory().add(3, new ItemStack(top.ribs.scguns.init.ModItems.STANDARD_COPPER_ROUND.get(), 64));
+        player.getInventory().add(4, new ItemStack(Items.GOLDEN_CARROT, 64));
+
+        player.getInventory().add(36, new ItemStack(top.ribs.scguns.init.ModItems.ANTHRALITE_BOOTS.get()));
+        player.getInventory().add(37, new ItemStack(top.ribs.scguns.init.ModItems.ANTHRALITE_LEGGINGS.get()));
+        player.getInventory().add(38, new ItemStack(top.ribs.scguns.init.ModItems.ANTHRALITE_CHESTPLATE.get()));
+        player.getInventory().add(39, new ItemStack(top.ribs.scguns.init.ModItems.ANTHRALITE_HELMET.get()));
+
         player.teleportTo(player.serverLevel().getServer().getLevel(ResourceKey.create(Registries.DIMENSION, ResourceLocation.fromNamespaceAndPath(CallsofTheWars.MOD_ID, "warring_states"))), 5000, 100, 5000, 0, 0);
         player.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, 200));
         int i = player.getRandom().nextInt(3);

@@ -118,4 +118,12 @@ public class ContainerEntity extends AbstractChestedHorse implements GeoEntity{
     public AnimatableInstanceCache getAnimatableInstanceCache() {
         return this.geocache;
     }
+    @Override
+    public ItemStack getPickResult() {
+        return ItemStack.EMPTY;
+    }
+    @Override
+    public boolean isPickable() {
+        return false;
+    }
 }
