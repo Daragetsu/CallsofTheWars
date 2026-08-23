@@ -1,0 +1,111 @@
+{
+  "type": "minecraft:generic",
+  "pools": [
+    {
+      "rolls": 30,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "scguns:standard_copper_round",
+          "weight": 7,
+          "conditions": [],
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 10,
+                "max": 64
+              },
+              "add": false
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "scguns:gibbs_round",
+          "weight": 7,
+          "conditions": [],
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 10,
+                "max": 64
+              },
+              "add": false
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "scguns:advanced_round",
+          "weight": 7,
+          "conditions": [],
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 10,
+                "max": 64
+              },
+              "add": false
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "scguns:birdfeeder",
+          "weight": 1,
+          "conditions": [],
+          "functions": []
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:golden_carrot",
+          "conditions": [],
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 10,
+                "max": 64
+              },
+              "add": false
+            }
+          ],
+          "weight": 5
+        },
+        {
+          "type": "minecraft:item",
+          "name": "scguns:whistler",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "scguns:llr_director",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "scguns:m3_carabine",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "scguns:iron_javelin",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "scguns:iron_spear",
+          "weight": 1
+        }
+      ]
+    }
+  ],
+  "functions": []
+}
