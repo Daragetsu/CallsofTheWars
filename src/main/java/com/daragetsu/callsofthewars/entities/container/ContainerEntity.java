@@ -33,7 +33,7 @@ public class ContainerEntity extends AbstractChestedHorse implements GeoEntity{
 
     @Override
     protected int getInventorySize() {
-        return 40;
+        return 41;
     }
     @Override
     protected void registerGoals() {
@@ -105,6 +105,9 @@ public class ContainerEntity extends AbstractChestedHorse implements GeoEntity{
         }
         for(ItemStack item : player.getInventory().armor){
             this.inventory.addItem(item);
+        }
+        if(player.getInventory().offhand.get(0)!=null){
+            this.inventory.addItem(player.getInventory().offhand.get(0));
         }
     }
     public void deserializeInventory(Player player){
