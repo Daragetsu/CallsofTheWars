@@ -1,0 +1,25 @@
+{
+  "structures": [
+    {
+      "structure": "callsofthewars:starter_base_red",
+      "weight": 2
+    },
+    {
+      "structure": "callsofthewars:starter_base_green",
+      "weight": 2
+    },
+    {
+      "structure": "callsofthewars:starter_base_blue",
+      "weight": 2
+    }
+  ],
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spacing": 20,
+    "separation": 10,
+    "spread_type": "linear",
+    "salt": 3725472,
+    "frequency_reduction_method": "default",
+    "frequency": 1
+  }
+}

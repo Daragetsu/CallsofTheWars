@@ -1,0 +1,15 @@
+{
+  "name": "callsofthewars:starter_camp_red",
+  "fallback": "minecraft:empty",
+  "elements": [
+    {
+      "weight": 1,
+      "element": {
+        "location": "callsofthewars:starter_bases/camp/red",
+        "processors": "minecraft:empty",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    }
+  ]
+}

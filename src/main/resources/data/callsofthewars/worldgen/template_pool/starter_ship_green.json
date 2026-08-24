@@ -1,0 +1,21 @@
+{
+  "name": "callsofthewars:starter_ship_green",
+  "fallback": "minecraft:empty",
+  "elements": [
+    {
+      "weight": 1,
+      "element": {
+        "location": "callsofthewars:starter_bases/ship/green",
+        "processors": [
+          {
+            "processor_type": "minecraft:gravity",
+            "heightmap": "WORLD_SURFACE",
+            "offset": -2
+          }
+        ],
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    }
+  ]
+}

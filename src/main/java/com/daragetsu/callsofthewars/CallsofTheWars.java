@@ -5,6 +5,7 @@ import com.daragetsu.callsofthewars.entities.common.BaseSoldierEntity.BelongsTo;
 import com.daragetsu.callsofthewars.entities.common.util.EnlistHandler;
 import com.daragetsu.callsofthewars.entities.container.ContainerEntity;
 import com.daragetsu.callsofthewars.item.ModItems;
+import com.daragetsu.callsofthewars.worldgen.structure.ModStructures;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.logging.LogUtils;
 
@@ -68,6 +69,7 @@ public class CallsofTheWars
 
         ModEntities.register(modEventBus);
         ModItems.register(modEventBus);
+        ModStructures.register(modEventBus);
 
         modEventBus.addListener(CallsofTheWars::addCreative);
     }
