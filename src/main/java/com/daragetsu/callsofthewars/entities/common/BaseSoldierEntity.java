@@ -1,12 +1,13 @@
 package com.daragetsu.callsofthewars.entities.common;
 
-import com.daragetsu.callsofthewars.item.ModItems;
+import com.daragetsu.callsofthewars.entities.common.util.EnlistHandler;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.entity.EntityType;
@@ -20,9 +21,7 @@ import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -47,8 +46,13 @@ public class BaseSoldierEntity extends GunnerEntity implements GeoEntity{
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, 1, true, false,
                 p -> {
-                    Player player = (Player) p;
-                    return !player.isCreative() && !player.isSpectator() && !this.alliedToPlayer(player);
+                    if(!this.level().isClientSide()){
+                        ServerPlayer player = (ServerPlayer) p;
+                        return !player.isCreative() && !player.isSpectator() && !EnlistHandler.alliedToPlayer(player, this);
+                    }else{
+                        Player player = (Player) p;
+                        return !player.isCreative() && !player.isSpectator();
+                    }
                 }
             )
         );
@@ -139,25 +143,16 @@ public class BaseSoldierEntity extends GunnerEntity implements GeoEntity{
     }
     @Override
     public void setTarget(LivingEntity target) {
-        if(target instanceof Player player){
-            if(!this.alliedToPlayer(player)){
+        if(!this.level().isClientSide()){
+            if(target instanceof ServerPlayer player){
+                if(!EnlistHandler.alliedToPlayer(player, this)){
+                    super.setTarget(target);
+                }
+            }else{
                 super.setTarget(target);
             }
         }else{
             super.setTarget(target);
         }
-    }
-    public boolean alliedToPlayer(Player player){
-        Inventory inv = player.getInventory();
-        if(inv.contains(new ItemStack(ModItems.RED_BELT.get()))){
-            return BelongsTo.RED == this.getBelongsTo() ? true : false;
-        }
-        if(inv.contains(new ItemStack(ModItems.GREEN_BELT.get()))){
-            return BelongsTo.GREEN == this.getBelongsTo() ? true : false;
-        }
-        if(inv.contains(new ItemStack(ModItems.BLUE_BELT.get()))){
-            return BelongsTo.BLUE == this.getBelongsTo() ? true : false;
-        }
-        return false;
     }
 }

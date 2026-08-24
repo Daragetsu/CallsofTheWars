@@ -5,6 +5,8 @@ import java.util.Optional;
 
 import com.daragetsu.callsofthewars.CallsofTheWars;
 import com.daragetsu.callsofthewars.entities.ModEntities;
+import com.daragetsu.callsofthewars.entities.common.BaseSoldierEntity;
+import com.daragetsu.callsofthewars.entities.common.BaseSoldierEntity.BelongsTo;
 import com.daragetsu.callsofthewars.entities.container.ContainerEntity;
 import com.daragetsu.callsofthewars.item.ModItems;
 import com.mojang.datafixers.util.Pair;
@@ -25,6 +27,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity.RemovalReason;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.Structure;
@@ -179,5 +182,18 @@ public class EnlistHandler {
             );
             player.teleportTo(pair.getFirst().getX(), 110, pair.getFirst().getZ());
         }
+    }
+    public static boolean alliedToPlayer(ServerPlayer player, BaseSoldierEntity entity){
+        Inventory inv = player.getInventory();
+        if(inv.contains(new ItemStack(ModItems.RED_BELT.get()))){
+            return BelongsTo.RED == entity.getBelongsTo() ? true : false;
+        }
+        if(inv.contains(new ItemStack(ModItems.GREEN_BELT.get()))){
+            return BelongsTo.GREEN == entity.getBelongsTo() ? true : false;
+        }
+        if(inv.contains(new ItemStack(ModItems.BLUE_BELT.get()))){
+            return BelongsTo.BLUE == entity.getBelongsTo() ? true : false;
+        }
+        return false;
     }
 }

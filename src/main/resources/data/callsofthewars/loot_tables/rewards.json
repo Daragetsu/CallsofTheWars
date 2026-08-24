@@ -1,0 +1,85 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": 17,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:diamond",
+          "weight": 8,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": 5
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "scguns:advanced_round",
+          "weight": 3,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": 64
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "scguns:standard_copper_round",
+          "weight": 3,
+          "conditions": [],
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": 64
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "scguns:gibbs_round",
+          "weight": 3,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": 64
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "scguns:birdfeeder",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "scguns:whistler",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "scguns:llr_director",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "scguns:m3_carabine",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "scguns:iron_javelin",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "scguns:iron_spear"
+        }
+      ]
+    }
+  ],
+  "functions": []
+}

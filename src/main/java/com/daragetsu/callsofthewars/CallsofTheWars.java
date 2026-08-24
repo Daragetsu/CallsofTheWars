@@ -1,8 +1,10 @@
 package com.daragetsu.callsofthewars;
 
 import com.daragetsu.callsofthewars.entities.ModEntities;
+import com.daragetsu.callsofthewars.entities.common.BaseSoldierEntity;
 import com.daragetsu.callsofthewars.entities.common.BaseSoldierEntity.BelongsTo;
 import com.daragetsu.callsofthewars.entities.common.util.EnlistHandler;
+import com.daragetsu.callsofthewars.entities.common.util.RewardHandler;
 import com.daragetsu.callsofthewars.entities.container.ContainerEntity;
 import com.daragetsu.callsofthewars.item.ModItems;
 import com.daragetsu.callsofthewars.worldgen.structure.ModStructureProcessors;
@@ -103,6 +105,7 @@ public class CallsofTheWars
                 Commands.literal("enlist").executes(context -> {
                     final ServerPlayer player = (ServerPlayer) context.getSource().getPlayer();
                     EnlistHandler.enlist(player);
+                    RewardHandler.startScore(player);
                     return 1;
                 })
             );
@@ -119,10 +122,14 @@ public class CallsofTheWars
             if(ogPlayer.level().dimension().location().compareTo(ResourceLocation.fromNamespaceAndPath(CallsofTheWars.MOD_ID, "warring_states")) == 0){
                 EnlistHandler.demobilize(player);
                 player.sendSystemMessage(Component.literal("General: if we fall, we just try again, and again, and again, and at the end, WE WILL WIN!"));
+                RewardHandler.giveRewards(player);
             }
         }
         @SubscribeEvent
-        public static void onPlayerDeath(LivingDeathEvent event){
+        public static void onEntityDeath(LivingDeathEvent event){
+            if(event.getEntity() instanceof BaseSoldierEntity sol && event.getSource().getEntity() instanceof ServerPlayer player){
+                RewardHandler.checkKill(player, sol);
+            }
             if(event.getEntity() instanceof ServerPlayer player){
                 if(player.level().dimension().location().compareTo(ResourceLocation.fromNamespaceAndPath(CallsofTheWars.MOD_ID, "warring_states")) == 0){
                     player.getInventory().clearContent();
