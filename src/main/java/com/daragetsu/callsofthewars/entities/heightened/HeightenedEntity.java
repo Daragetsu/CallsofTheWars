@@ -1,6 +1,6 @@
 package com.daragetsu.callsofthewars.entities.heightened;
 
-import com.daragetsu.callsofthewars.entities.common.BaseSoldierEntity;
+import com.daragetsu.callsofthewars.entities.soldier.SoldierEntity;
 
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -8,8 +8,8 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 
-public class BaseHeightenedEntity extends BaseSoldierEntity{
-    public BaseHeightenedEntity(EntityType<? extends Monster> entity, Level level) {
+public class HeightenedEntity extends SoldierEntity{
+    public HeightenedEntity(EntityType<? extends Monster> entity, Level level) {
         super(entity, level);
     }
     public static AttributeSupplier.Builder createAttributes() {

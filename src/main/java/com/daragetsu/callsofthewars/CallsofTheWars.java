@@ -1,8 +1,7 @@
 package com.daragetsu.callsofthewars;
 
 import com.daragetsu.callsofthewars.entities.ModEntities;
-import com.daragetsu.callsofthewars.entities.common.BaseSoldierEntity;
-import com.daragetsu.callsofthewars.entities.common.BaseSoldierEntity.BelongsTo;
+import com.daragetsu.callsofthewars.entities.soldier.SoldierEntity;
 import com.daragetsu.callsofthewars.entities.common.util.EnlistHandler;
 import com.daragetsu.callsofthewars.entities.common.util.RewardHandler;
 import com.daragetsu.callsofthewars.entities.container.ContainerEntity;
@@ -80,17 +79,8 @@ public class CallsofTheWars
 
     public static void addCreative(BuildCreativeModeTabContentsEvent event){
         if(event.getTabKey() == CreativeModeTabs.SPAWN_EGGS){
-            event.accept(ModItems.SOLDIER_RED_SPAWN_EGG);
-            event.accept(ModItems.SOLDIER_GREEN_SPAWN_EGG);
-            event.accept(ModItems.SOLDIER_BLUE_SPAWN_EGG);
-            event.accept(ModItems.HEIGHTENED_RED_SPAWN_EGG);
-            event.accept(ModItems.HEIGHTENED_GREEN_SPAWN_EGG);
-            event.accept(ModItems.HEIGHTENED_BLUE_SPAWN_EGG);
-        }
-        if (event.getTabKey() == CreativeModeTabs.TOOLS_AND_UTILITIES) {
-            event.accept(ModItems.RED_BELT);
-            event.accept(ModItems.GREEN_BELT);
-            event.accept(ModItems.BLUE_BELT);
+            event.accept(ModItems.SOLDIER_SPAWN_EGG);
+            event.accept(ModItems.HEIGHTENED_SPAWN_EGG);
         }
     }
 
@@ -127,7 +117,7 @@ public class CallsofTheWars
         }
         @SubscribeEvent
         public static void onEntityDeath(LivingDeathEvent event){
-            if(event.getEntity() instanceof BaseSoldierEntity sol && event.getSource().getEntity() instanceof ServerPlayer player){
+            if(event.getEntity() instanceof SoldierEntity sol && event.getSource().getEntity() instanceof ServerPlayer player){
                 RewardHandler.checkKill(player, sol);
             }
             if(event.getEntity() instanceof ServerPlayer player){

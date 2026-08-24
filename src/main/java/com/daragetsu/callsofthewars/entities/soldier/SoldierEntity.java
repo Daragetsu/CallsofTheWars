@@ -1,18 +1,19 @@
-package com.daragetsu.callsofthewars.entities.common;
+package com.daragetsu.callsofthewars.entities.soldier;
 
-import com.daragetsu.callsofthewars.entities.common.util.EnlistHandler;
+import com.daragetsu.callsofthewars.entities.common.GunnerEntity;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.ServerScoreboard;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
@@ -24,6 +25,7 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.scores.PlayerTeam;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimationController;
@@ -31,13 +33,11 @@ import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.animation.AnimatableManager.ControllerRegistrar;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class BaseSoldierEntity extends GunnerEntity implements GeoEntity{
-
-    private static final EntityDataAccessor<String> BELONGS_TO = SynchedEntityData.defineId(BaseSoldierEntity.class, EntityDataSerializers.STRING);
+public class SoldierEntity extends GunnerEntity implements GeoEntity{
 
     private final AnimatableInstanceCache geocache = GeckoLibUtil.createInstanceCache(this);
 
-    public BaseSoldierEntity(EntityType<? extends Monster> entity, Level level) {
+    public SoldierEntity(EntityType<? extends Monster> entity, Level level) {
         super(entity, level);
     }
 
@@ -48,7 +48,7 @@ public class BaseSoldierEntity extends GunnerEntity implements GeoEntity{
                 p -> {
                     if(!this.level().isClientSide()){
                         ServerPlayer player = (ServerPlayer) p;
-                        return !player.isCreative() && !player.isSpectator() && !EnlistHandler.alliedToPlayer(player, this);
+                        return !player.isCreative() && !player.isSpectator() && !player.isAlliedTo(this);
                     }else{
                         Player player = (Player) p;
                         return !player.isCreative() && !player.isSpectator();
@@ -56,10 +56,10 @@ public class BaseSoldierEntity extends GunnerEntity implements GeoEntity{
                 }
             )
         );
-        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, BaseSoldierEntity.class, 1, true, false,
-                soldier -> !(((BaseSoldierEntity) soldier).getBelongsTo() == this.getBelongsTo())));
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, SoldierEntity.class, 1, true, false,
+                soldier -> !(((SoldierEntity) soldier).isAlliedTo(this))));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Monster.class, 1, true, false,
-                entity -> !(((entity instanceof BaseSoldierEntity)))));
+                entity -> !(((entity instanceof SoldierEntity)))));
         this.targetSelector.addGoal(2, new HurtByTargetGoal(this));
         this.goalSelector.addGoal(3, new WaterAvoidingRandomStrollGoal(this, 0.4f));
         this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 10));
@@ -92,7 +92,6 @@ public class BaseSoldierEntity extends GunnerEntity implements GeoEntity{
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(BELONGS_TO, BelongsTo.RED.name());
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -103,56 +102,53 @@ public class BaseSoldierEntity extends GunnerEntity implements GeoEntity{
                 .add(Attributes.ARMOR, 0.1D)
                 .add(Attributes.MAX_HEALTH, 20.0D);
     }
-
-    public enum BelongsTo{
-        RED,
-        GREEN,
-        BLUE
-    }
-    public void setBelongsTo(BelongsTo belongs){
-        this.entityData.set(BELONGS_TO, belongs.name());
-    }
-    public BelongsTo getBelongsTo(){
-        return BelongsTo.valueOf(this.entityData.get(BELONGS_TO));
-    }
-    @Override
-    public boolean save(CompoundTag compound) {
-        compound.putString("belongsTo", this.getBelongsTo().name());
-        return super.save(compound);
-    }
-    @Override
-    public void load(CompoundTag compound) {
-        super.load(compound);
-        if(compound.contains("belongsTo")){
-            this.setBelongsTo(BelongsTo.valueOf(compound.getString("belongsTo")));
-        }else{
-            this.setBelongsTo(BelongsTo.RED);
-        }
-    }
     public float getRed(){
-        return this.getBelongsTo() == BelongsTo.RED ? 1f : 0f;
+        return this.getTeam().isAlliedTo(this.level().getScoreboard().getPlayerTeam("red")) ? 1f : 0f;
     }
     public float getGreen(){
-        return this.getBelongsTo() == BelongsTo.GREEN ? 1f : 0f;
+        return this.getTeam().isAlliedTo(this.level().getScoreboard().getPlayerTeam("green")) ? 1f : 0f;
     }
     public float getBlue(){
-        return this.getBelongsTo() == BelongsTo.BLUE ? 1f : 0f;
+        return this.getTeam().isAlliedTo(this.level().getScoreboard().getPlayerTeam("blue")) ? 1f : 0f;
     }
     public static boolean checkMonsterSpawnRules(EntityType<? extends Monster> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
         return level.getDifficulty() != Difficulty.PEACEFUL && checkMobSpawnRules(type, level, spawnType, pos, random) && random.nextInt(100)<3;
     }
     @Override
     public void setTarget(LivingEntity target) {
-        if(!this.level().isClientSide()){
-            if(target instanceof ServerPlayer player){
-                if(!EnlistHandler.alliedToPlayer(player, this)){
-                    super.setTarget(target);
-                }
-            }else{
+        if(target instanceof Player player){
+            if(!player.isAlliedTo(this)){
                 super.setTarget(target);
             }
         }else{
             super.setTarget(target);
         }
+    }
+    @Override
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType reason,
+            SpawnGroupData spawnData, CompoundTag dataTag) {
+        ServerScoreboard scoreboard = level.getServer().getScoreboard();
+        PlayerTeam redTeam = scoreboard.getPlayerTeam("red");
+        PlayerTeam greenTeam = scoreboard.getPlayerTeam("green");
+        PlayerTeam blueTeam = scoreboard.getPlayerTeam("blue");
+        if(redTeam==null){
+            redTeam = scoreboard.addPlayerTeam("red");
+            redTeam.setColor(ChatFormatting.RED);
+        }
+        if(greenTeam==null){
+            greenTeam = scoreboard.addPlayerTeam("green");
+            greenTeam.setColor(ChatFormatting.GREEN);
+        }
+        if(blueTeam==null){
+            blueTeam = scoreboard.addPlayerTeam("blue");
+            blueTeam.setColor(ChatFormatting.BLUE);
+        }
+        PlayerTeam[] teams = {
+            redTeam,
+            greenTeam,
+            blueTeam
+        };
+        level.getServer().getScoreboard().addPlayerToTeam(this.getStringUUID(), teams[this.random.nextInt(teams.length)]);
+        return super.finalizeSpawn(level, difficulty, reason, spawnData, dataTag);
     }
 }

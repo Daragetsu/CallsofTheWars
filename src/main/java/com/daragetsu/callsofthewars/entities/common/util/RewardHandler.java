@@ -1,7 +1,7 @@
 package com.daragetsu.callsofthewars.entities.common.util;
 
 import com.daragetsu.callsofthewars.CallsofTheWars;
-import com.daragetsu.callsofthewars.entities.common.BaseSoldierEntity;
+import com.daragetsu.callsofthewars.entities.soldier.SoldierEntity;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.network.chat.Component;
@@ -21,7 +21,7 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.scores.Objective;
 import net.minecraft.world.scores.criteria.ObjectiveCriteria;
-import com.daragetsu.callsofthewars.entities.heightened.BaseHeightenedEntity;
+import com.daragetsu.callsofthewars.entities.heightened.HeightenedEntity;
 
 public class RewardHandler {
     public static void giveRewards(ServerPlayer player){
@@ -53,6 +53,7 @@ public class RewardHandler {
         scoreboard.resetPlayerScore(player.getName().getString(), yObj);
         scoreboard.resetPlayerScore(player.getName().getString(), zObj);
         scoreboard.resetPlayerScore(player.getName().getString(), pointsObj);
+        scoreboard.removePlayerFromTeam(player.getName().getString());
     }
 
     public static void startScore(ServerPlayer player){
@@ -71,14 +72,14 @@ public class RewardHandler {
         scoreboard.setDisplayObjective(ServerScoreboard.DISPLAY_SLOT_SIDEBAR, points);
     }
 
-    public static void checkKill(ServerPlayer player, BaseSoldierEntity killed){
-        if(EnlistHandler.alliedToPlayer(player, killed)){
+    public static void checkKill(ServerPlayer player, SoldierEntity killed){
+        if(player.isAlliedTo(killed)){
             RewardHandler.setScore(player, RewardHandler.getScore(player)-10);
         }else{
             RewardHandler.setScore(player, RewardHandler.getScore(player)+10);
         }
-        if(killed instanceof BaseHeightenedEntity){
-            if(EnlistHandler.alliedToPlayer(player, killed)){
+        if(killed instanceof HeightenedEntity){
+            if(player.isAlliedTo(killed)){
                 RewardHandler.setScore(player, RewardHandler.getScore(player)-10);
             }else{
                 RewardHandler.setScore(player, RewardHandler.getScore(player)+10);

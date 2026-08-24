@@ -57,19 +57,7 @@
           "weight": 1
         },
         {
-          "type": "callsofthewars:heightened_red",
-          "maxCount": 1,
-          "minCount": 1,
-          "weight": 1
-        },
-        {
-          "type": "callsofthewars:heightened_green",
-          "maxCount": 1,
-          "minCount": 1,
-          "weight": 1
-        },
-        {
-          "type": "callsofthewars:heightened_blue",
+          "type": "callsofthewars:heightened",
           "maxCount": 1,
           "minCount": 1,
           "weight": 1

@@ -1,6 +1,5 @@
 package com.daragetsu.callsofthewars.entities.soldier;
 
-import com.daragetsu.callsofthewars.entities.common.BaseSoldierEntity;
 import com.daragetsu.callsofthewars.entities.common.client.GunGeoLayer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -21,7 +20,7 @@ import software.bernie.geckolib.renderer.layer.AutoGlowingGeoLayer;
 /***
  * @author Krei, Daragetsu
  * ***/
-public class SoldierEntityRenderer <T extends BaseSoldierEntity> extends GeoEntityRenderer<T> {
+public class SoldierEntityRenderer <T extends SoldierEntity> extends GeoEntityRenderer<T> {
 
     protected boolean noDeathTilt = false;
     protected boolean noDeathRedTint = false;

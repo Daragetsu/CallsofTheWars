@@ -6,13 +6,13 @@ import net.minecraft.world.item.ItemStack;
 
 public class MagDumpGoal extends Goal{
 
-    private final BaseHeightenedEntity shooter;
+    private final HeightenedEntity shooter;
     private final int maxRunFor;
     private final int maxCooldown;
     private int ticks = 0;
     private int cooldown = 0;
 
-    public MagDumpGoal(BaseHeightenedEntity shooter, int cooldown, int runFor){
+    public MagDumpGoal(HeightenedEntity shooter, int cooldown, int runFor){
         this.shooter = shooter;
         this.maxCooldown = cooldown;
         this.maxRunFor = runFor;

@@ -5,13 +5,11 @@ import java.util.Optional;
 
 import com.daragetsu.callsofthewars.CallsofTheWars;
 import com.daragetsu.callsofthewars.entities.ModEntities;
-import com.daragetsu.callsofthewars.entities.common.BaseSoldierEntity;
-import com.daragetsu.callsofthewars.entities.common.BaseSoldierEntity.BelongsTo;
 import com.daragetsu.callsofthewars.entities.container.ContainerEntity;
-import com.daragetsu.callsofthewars.item.ModItems;
 import com.mojang.datafixers.util.Pair;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Holder.Reference;
@@ -27,7 +25,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity.RemovalReason;
-import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.Structure;
@@ -37,11 +34,27 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.scores.Objective;
+import net.minecraft.world.scores.PlayerTeam;
 import net.minecraft.world.scores.criteria.ObjectiveCriteria;
 
 public class EnlistHandler {
     public static void enlist(ServerPlayer player){
         ServerScoreboard scoreboard = player.level().getServer().getScoreboard();
+        PlayerTeam redTeam = scoreboard.getPlayerTeam("red");
+        PlayerTeam greenTeam = scoreboard.getPlayerTeam("green");
+        PlayerTeam blueTeam = scoreboard.getPlayerTeam("blue");
+        if(redTeam==null){
+            redTeam = scoreboard.addPlayerTeam("red");
+            redTeam.setColor(ChatFormatting.RED);
+        }
+        if(greenTeam==null){
+            greenTeam = scoreboard.addPlayerTeam("green");
+            greenTeam.setColor(ChatFormatting.GREEN);
+        }
+        if(blueTeam==null){
+            blueTeam = scoreboard.addPlayerTeam("blue");
+            blueTeam.setColor(ChatFormatting.BLUE);
+        }
         Objective x = scoreboard.getObjective("x");
         if (x == null) {
             x = scoreboard.addObjective(
@@ -106,19 +119,20 @@ public class EnlistHandler {
 
         switch (i) {
             case 0:
-                player.getInventory().add(new ItemStack(ModItems.RED_BELT.get()));
+                scoreboard.addPlayerToTeam(player.getName().getString(), redTeam);
                 break;
             case 1:
-                player.getInventory().add(new ItemStack(ModItems.GREEN_BELT.get()));
+                scoreboard.addPlayerToTeam(player.getName().getString(), greenTeam);
                 break;
             case 2:
-                player.getInventory().add(new ItemStack(ModItems.BLUE_BELT.get()));
+                scoreboard.addPlayerToTeam(player.getName().getString(), blueTeam);
                 break;
             default:
-                player.getInventory().add(new ItemStack(ModItems.RED_BELT.get()));
+                scoreboard.addPlayerToTeam(player.getName().getString(), redTeam);
                 break;
         }
         player.sendSystemMessage(Component.literal("General: MY SOLDIERS RAGE!!"));
+        player.addEffect(new MobEffectInstance(MobEffects.GLOWING, MobEffectInstance.INFINITE_DURATION));
     }
     public static void demobilize(ServerPlayer player){
         ServerScoreboard scoreboard = player.level().getServer().getScoreboard();
@@ -182,18 +196,5 @@ public class EnlistHandler {
             );
             player.teleportTo(pair.getFirst().getX(), 110, pair.getFirst().getZ());
         }
-    }
-    public static boolean alliedToPlayer(ServerPlayer player, BaseSoldierEntity entity){
-        Inventory inv = player.getInventory();
-        if(inv.contains(new ItemStack(ModItems.RED_BELT.get()))){
-            return BelongsTo.RED == entity.getBelongsTo() ? true : false;
-        }
-        if(inv.contains(new ItemStack(ModItems.GREEN_BELT.get()))){
-            return BelongsTo.GREEN == entity.getBelongsTo() ? true : false;
-        }
-        if(inv.contains(new ItemStack(ModItems.BLUE_BELT.get()))){
-            return BelongsTo.BLUE == entity.getBelongsTo() ? true : false;
-        }
-        return false;
     }
 }
