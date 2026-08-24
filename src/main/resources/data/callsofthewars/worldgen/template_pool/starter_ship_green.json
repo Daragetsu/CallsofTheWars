@@ -11,6 +11,9 @@
             "processor_type": "minecraft:gravity",
             "heightmap": "WORLD_SURFACE",
             "offset": -2
+          },
+          {
+            "processor_type": "callsofthewars:ship_processor"
           }
         ],
         "projection": "rigid",

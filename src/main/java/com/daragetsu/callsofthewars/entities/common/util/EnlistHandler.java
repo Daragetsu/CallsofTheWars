@@ -1,13 +1,20 @@
 package com.daragetsu.callsofthewars.entities.common.util;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.daragetsu.callsofthewars.CallsofTheWars;
 import com.daragetsu.callsofthewars.entities.ModEntities;
 import com.daragetsu.callsofthewars.entities.container.ContainerEntity;
 import com.daragetsu.callsofthewars.item.ModItems;
+import com.mojang.datafixers.util.Pair;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
+import net.minecraft.core.Holder.Reference;
+import net.minecraft.core.HolderSet;
+import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
@@ -19,6 +26,8 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity.RemovalReason;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
@@ -83,11 +92,15 @@ public class EnlistHandler {
         player.getInventory().add(37, new ItemStack(top.ribs.scguns.init.ModItems.ANTHRALITE_LEGGINGS.get()));
         player.getInventory().add(38, new ItemStack(top.ribs.scguns.init.ModItems.ANTHRALITE_CHESTPLATE.get()));
         player.getInventory().add(39, new ItemStack(top.ribs.scguns.init.ModItems.ANTHRALITE_HELMET.get()));
-
+        
         player.teleportTo(player.serverLevel().getServer().getLevel(ResourceKey.create(Registries.DIMENSION, ResourceLocation.fromNamespaceAndPath(CallsofTheWars.MOD_ID, "warring_states"))), 5000, 100, 5000, 0, 0);
+
         player.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, 200));
         
         int i = player.getRandom().nextInt(3);
+
+        teleportToBase(player, i);
+
         switch (i) {
             case 0:
                 player.getInventory().add(new ItemStack(ModItems.RED_BELT.get()));
@@ -129,6 +142,41 @@ public class EnlistHandler {
                     break;
                 }
             }
+        }
+    }
+    private static void teleportToBase(ServerPlayer player, int choice){
+        ChunkGenerator chunkGenerator = player.serverLevel().getChunkSource().getGenerator();
+
+        ResourceKey<Structure> structureKey;
+
+        switch (choice) {
+            case 0:
+                structureKey = ResourceKey.create(Registries.STRUCTURE, ResourceLocation.fromNamespaceAndPath(CallsofTheWars.MOD_ID, "starter_base_red"));
+                break;
+            case 1:
+                structureKey = ResourceKey.create(Registries.STRUCTURE, ResourceLocation.fromNamespaceAndPath(CallsofTheWars.MOD_ID, "starter_base_green"));
+                break;
+            case 2:
+                structureKey = ResourceKey.create(Registries.STRUCTURE, ResourceLocation.fromNamespaceAndPath(CallsofTheWars.MOD_ID, "starter_base_blue"));
+                break;
+            default:
+                structureKey = ResourceKey.create(Registries.STRUCTURE, ResourceLocation.fromNamespaceAndPath(CallsofTheWars.MOD_ID, "starter_base_red"));
+                break;
+        }
+        
+        Registry<Structure> registry = player.serverLevel().registryAccess().registryOrThrow(Registries.STRUCTURE);
+        Optional<Reference<Structure>> holderOpt = registry.getHolder(structureKey);
+        
+        if(holderOpt.isPresent()){
+            HolderSet<Structure> holderSet = HolderSet.direct(holderOpt.get());
+            Pair<BlockPos, Holder<Structure>> pair = chunkGenerator.findNearestMapStructure(
+                player.serverLevel(), 
+                holderSet, 
+                player.getOnPos(), 
+                512, 
+                false
+            );
+            player.teleportTo(pair.getFirst().getX(), 110, pair.getFirst().getZ());
         }
     }
 }
