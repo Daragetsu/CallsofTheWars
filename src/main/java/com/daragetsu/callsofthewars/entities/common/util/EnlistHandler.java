@@ -93,7 +93,7 @@ public class EnlistHandler {
         player.getInventory().add(38, new ItemStack(top.ribs.scguns.init.ModItems.ANTHRALITE_CHESTPLATE.get()));
         player.getInventory().add(39, new ItemStack(top.ribs.scguns.init.ModItems.ANTHRALITE_HELMET.get()));
         
-        player.teleportTo(player.serverLevel().getServer().getLevel(ResourceKey.create(Registries.DIMENSION, ResourceLocation.fromNamespaceAndPath(CallsofTheWars.MOD_ID, "warring_states"))), 5000, 100, 5000, 0, 0);
+        player.teleportTo(player.serverLevel().getServer().getLevel(ResourceKey.create(Registries.DIMENSION, ResourceLocation.fromNamespaceAndPath(CallsofTheWars.MOD_ID, "warring_states"))), player.getRandom().nextInt(-10000, 10000), 100, player.getRandom().nextInt(-10000, 10000), 0, 0);
 
         player.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, 200));
         
@@ -115,6 +115,7 @@ public class EnlistHandler {
                 player.getInventory().add(new ItemStack(ModItems.RED_BELT.get()));
                 break;
         }
+        player.sendSystemMessage(Component.literal("General: MY SOLDIERS RAGE!!"));
     }
     public static void demobilize(ServerPlayer player){
         ServerScoreboard scoreboard = player.level().getServer().getScoreboard();

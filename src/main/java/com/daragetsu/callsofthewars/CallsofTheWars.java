@@ -118,6 +118,7 @@ public class CallsofTheWars
             }
             if(ogPlayer.level().dimension().location().compareTo(ResourceLocation.fromNamespaceAndPath(CallsofTheWars.MOD_ID, "warring_states")) == 0){
                 EnlistHandler.demobilize(player);
+                player.sendSystemMessage(Component.literal("General: if we fall, we just try again, and again, and again, and at the end, WE WILL WIN!"));
             }
         }
         @SubscribeEvent
