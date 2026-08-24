@@ -31,7 +31,6 @@ import top.ribs.scguns.common.headshot.BasicHeadshotBox;
 
 public class ModEntities {
     public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, CallsofTheWars.MOD_ID);
-    //TODO: REFACTOR ALL THESE INTO BASE CLASSES INSTEAD OF 3 DIFFERENT CLASSES
     public static final RegistryObject<EntityType<SoldierEntity>> SOLDIER = ENTITY_TYPES.register("soldier", () -> EntityType.Builder.of(SoldierEntity::new, MobCategory.CREATURE).sized(0.6F, 2F).build("soldier"));
     public static final RegistryObject<EntityType<HeightenedEntity>> HEIGHTENED = ENTITY_TYPES.register("heightened", () -> EntityType.Builder.of(HeightenedEntity::new, MobCategory.CREATURE).sized(0.6F, 2F).build("heightened"));
     
