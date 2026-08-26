@@ -9,6 +9,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.ServerScoreboard;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -22,6 +24,9 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.scores.Objective;
 import net.minecraft.world.scores.Score;
 import net.minecraft.world.scores.criteria.ObjectiveCriteria;
+import top.ribs.scguns.entity.monster.CogMinionEntity;
+import top.ribs.scguns.entity.monster.SkyCarrierEntity;
+
 import com.daragetsu.callsofthewars.entities.heightened.HeightenedEntity;
 
 public class RewardHandler {
@@ -78,7 +83,7 @@ public class RewardHandler {
         scoreboard.setDisplayObjective(ServerScoreboard.DISPLAY_SLOT_SIDEBAR, points);
     }
 
-    public static void checkKill(ServerPlayer player, SoldierEntity killed){
+    public static void checkSoldierKill(ServerPlayer player, SoldierEntity killed){
         if(player.isAlliedTo(killed)){
             RewardHandler.setScore(player, RewardHandler.getScore(player)-10);
         }else{
@@ -90,6 +95,14 @@ public class RewardHandler {
             }else{
                 RewardHandler.setScore(player, RewardHandler.getScore(player)+10);
             }
+        }
+    }
+
+    public static <T extends LivingEntity> void checkGeneralKill(ServerPlayer player, T killed){
+        if(killed instanceof CogMinionEntity){
+            RewardHandler.setScore(player, RewardHandler.getScore(player)+2);
+        }else if(killed instanceof SkyCarrierEntity){
+            RewardHandler.setScore(player, RewardHandler.getScore(player)+5);
         }
     }
 

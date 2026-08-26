@@ -26,6 +26,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity.RemovalReason;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.storage.loot.LootParams;
@@ -194,7 +195,14 @@ public class EnlistHandler {
                 512, 
                 false
             );
-            player.teleportTo(pair.getFirst().getX(), 110, pair.getFirst().getZ());
+            int x = pair.getFirst().getX();
+            int y = 110;
+            int z = pair.getFirst().getZ();
+            BlockPos pos = new BlockPos(x, y, z);
+            while(!player.level().getBlockState(pos).is(Blocks.AIR)){
+                pos = new BlockPos(x, y+=10, z);
+            }
+            player.teleportTo(x, y, z);
         }
     }
 }

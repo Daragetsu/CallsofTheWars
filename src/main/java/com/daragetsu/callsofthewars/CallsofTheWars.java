@@ -27,6 +27,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.Entity.RemovalReason;
 import net.minecraft.world.entity.player.Player;
@@ -51,6 +52,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.items.IItemHandler;
+import top.ribs.scguns.entity.monster.CogMinionEntity;
 import top.ribs.scguns.event.ModCommonEventBus;
 
 import java.util.Map;
@@ -119,7 +121,12 @@ public class CallsofTheWars
         @SubscribeEvent
         public static void onEntityDeath(LivingDeathEvent event){
             if(event.getEntity() instanceof SoldierEntity sol && event.getSource().getEntity() instanceof ServerPlayer player){
-                RewardHandler.checkKill(player, sol);
+                RewardHandler.checkSoldierKill(player, sol);
+            }
+            if(event.getSource().getEntity() instanceof ServerPlayer player){
+                if(player.level().dimension().location().compareTo(ResourceLocation.fromNamespaceAndPath(CallsofTheWars.MOD_ID, "warring_states")) == 0){
+                    RewardHandler.checkGeneralKill(player, event.getEntity());
+                }
             }
             if(event.getEntity() instanceof ServerPlayer player){
                 if(player.level().dimension().location().compareTo(ResourceLocation.fromNamespaceAndPath(CallsofTheWars.MOD_ID, "warring_states")) == 0){
