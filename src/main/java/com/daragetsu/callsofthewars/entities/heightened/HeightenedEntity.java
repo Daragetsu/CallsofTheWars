@@ -6,6 +6,7 @@ import com.daragetsu.callsofthewars.entities.soldier.SoldierEntity;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
@@ -41,5 +42,10 @@ public class HeightenedEntity extends SoldierEntity{
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(3, new MagDumpGoal(this, 200, 200));
+    }
+
+    @Override
+    protected void dropAllDeathLoot(DamageSource damageSource) {
+        super.dropAllDeathLoot(damageSource);
     }
 }

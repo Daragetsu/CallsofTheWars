@@ -20,6 +20,7 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.scores.Objective;
+import net.minecraft.world.scores.Score;
 import net.minecraft.world.scores.criteria.ObjectiveCriteria;
 import com.daragetsu.callsofthewars.entities.heightened.HeightenedEntity;
 
@@ -54,6 +55,10 @@ public class RewardHandler {
         scoreboard.resetPlayerScore(player.getName().getString(), zObj);
         scoreboard.resetPlayerScore(player.getName().getString(), pointsObj);
         scoreboard.removePlayerFromTeam(player.getName().getString());
+        scoreboard.onScoreChanged(scoreboard.getOrCreatePlayerScore(player.getName().getString(), xObj));
+        scoreboard.onScoreChanged(scoreboard.getOrCreatePlayerScore(player.getName().getString(), yObj));
+        scoreboard.onScoreChanged(scoreboard.getOrCreatePlayerScore(player.getName().getString(), zObj));
+        scoreboard.onScoreChanged(scoreboard.getOrCreatePlayerScore(player.getName().getString(), pointsObj));
     }
 
     public static void startScore(ServerPlayer player){
@@ -67,8 +72,9 @@ public class RewardHandler {
                 ObjectiveCriteria.RenderType.INTEGER
             );
         }
-        scoreboard.getOrCreatePlayerScore(player.getName().getString(), points).setScore(0);
-        
+        Score sp = scoreboard.getOrCreatePlayerScore(player.getName().getString(), points);
+        sp.setScore(0);
+        scoreboard.onScoreChanged(sp);
         scoreboard.setDisplayObjective(ServerScoreboard.DISPLAY_SLOT_SIDEBAR, points);
     }
 
