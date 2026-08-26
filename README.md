@@ -1,4 +1,4 @@
-** Calls of The Wars
+** Calls of The Wars **
 
 an addon mod for the Scorched Guns mod that adds new conflict grounds and mobs,
 
