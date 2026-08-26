@@ -7,6 +7,8 @@ import com.daragetsu.callsofthewars.entities.air_plane.AirPlaneRenderer;
 import com.daragetsu.callsofthewars.entities.container.ContainerEntity;
 import com.daragetsu.callsofthewars.entities.container.ContainerEntityRenderer;
 import com.daragetsu.callsofthewars.entities.heightened.HeightenedEntity;
+import com.daragetsu.callsofthewars.entities.mailer.MailerEntity;
+import com.daragetsu.callsofthewars.entities.mailer.MailerEntityRenderer;
 import com.daragetsu.callsofthewars.entities.soldier.SoldierEntityRenderer;
 import com.daragetsu.callsofthewars.entities.unit_spawner.UnitSpawnerEntity;
 
@@ -40,6 +42,8 @@ public class ModEntities {
     public static final RegistryObject<EntityType<ContainerEntity>> CONTAINER_ENTITY = ENTITY_TYPES.register("container_entity", () -> EntityType.Builder.of(ContainerEntity::new, MobCategory.CREATURE).sized(0.1F, 0.1F).build("container_entity"));
     
     public static final RegistryObject<EntityType<AirPlaneEntity>> AIR_PLANE = ENTITY_TYPES.register("air_plane", () -> EntityType.Builder.of(AirPlaneEntity::new, MobCategory.CREATURE).sized(0.5F, 0.5F).build("air_plane"));
+    
+    public static final RegistryObject<EntityType<MailerEntity>> MAILER = ENTITY_TYPES.register("mailer", () -> EntityType.Builder.of(MailerEntity::new, MobCategory.MONSTER).sized(0.6F, 2F).build("mailer"));
 
     public static final void register(IEventBus eventBus){
         ENTITY_TYPES.register(eventBus);
@@ -57,11 +61,13 @@ public class ModEntities {
         event.put(ModEntities.UNIT_SPAWNER.get(), SoldierEntity.createAttributes().build());
         event.put(ModEntities.CONTAINER_ENTITY.get(), SoldierEntity.createAttributes().build());
         event.put(ModEntities.AIR_PLANE.get(), AirPlaneEntity.createAttributes().build());
+        event.put(ModEntities.MAILER.get(), SoldierEntity.createAttributes().build());
     }
 
     private static void onCommonSetup(FMLCommonSetupEvent event) {
         BoundingBoxManager.registerHeadshotBox(ModEntities.SOLDIER.get(), new BasicHeadshotBox<>((double)8.0F, (double)24.0F));
         BoundingBoxManager.registerHeadshotBox(ModEntities.HEIGHTENED.get(), new BasicHeadshotBox<>((double)8.0F, (double)24.0F));
+        BoundingBoxManager.registerHeadshotBox(ModEntities.MAILER.get(), new BasicHeadshotBox<>((double)8.0F, (double)24.0F));
     }
 
     @OnlyIn(value = Dist.CLIENT)
@@ -73,6 +79,7 @@ public class ModEntities {
         EntityRenderers.register(ModEntities.UNIT_SPAWNER.get(), (ctx)->new SoldierEntityRenderer<>(ctx, new DefaultedEntityGeoModel<>(ResourceLocation.fromNamespaceAndPath(CallsofTheWars.MOD_ID, "soldier"))));
         EntityRenderers.register(ModEntities.CONTAINER_ENTITY.get(), (ctx)->new ContainerEntityRenderer(ctx));
         EntityRenderers.register(ModEntities.AIR_PLANE.get(), (ctx)->new AirPlaneRenderer(ctx));
+        EntityRenderers.register(ModEntities.MAILER.get(), (ctx)->new MailerEntityRenderer(ctx));
     }
     public static void registerSpawnPlacements(SpawnPlacementRegisterEvent event) {
         event.register(
@@ -87,6 +94,13 @@ public class ModEntities {
             SpawnPlacements.Type.ON_GROUND,
             Heightmap.Types.WORLD_SURFACE,
             SoldierEntity::checkMonsterSpawnRules,
+            SpawnPlacementRegisterEvent.Operation.REPLACE
+        );
+        event.register(
+            ModEntities.MAILER.get(),
+            SpawnPlacements.Type.ON_GROUND,
+            Heightmap.Types.WORLD_SURFACE,
+            (type, level, spawnType, pos, random) -> true,
             SpawnPlacementRegisterEvent.Operation.REPLACE
         );
     }

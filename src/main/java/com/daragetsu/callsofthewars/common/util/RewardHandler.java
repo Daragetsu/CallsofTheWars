@@ -1,4 +1,4 @@
-package com.daragetsu.callsofthewars.entities.common.util;
+package com.daragetsu.callsofthewars.common.util;
 
 import com.daragetsu.callsofthewars.CallsofTheWars;
 import com.daragetsu.callsofthewars.entities.soldier.SoldierEntity;

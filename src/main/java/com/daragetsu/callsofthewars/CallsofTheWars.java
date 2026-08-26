@@ -1,9 +1,9 @@
 package com.daragetsu.callsofthewars;
 
+import com.daragetsu.callsofthewars.common.util.EnlistHandler;
+import com.daragetsu.callsofthewars.common.util.RewardHandler;
 import com.daragetsu.callsofthewars.entities.ModEntities;
 import com.daragetsu.callsofthewars.entities.soldier.SoldierEntity;
-import com.daragetsu.callsofthewars.entities.common.util.EnlistHandler;
-import com.daragetsu.callsofthewars.entities.common.util.RewardHandler;
 import com.daragetsu.callsofthewars.entities.container.ContainerEntity;
 import com.daragetsu.callsofthewars.item.ModItems;
 import com.daragetsu.callsofthewars.worldgen.structure.ModStructureProcessors;

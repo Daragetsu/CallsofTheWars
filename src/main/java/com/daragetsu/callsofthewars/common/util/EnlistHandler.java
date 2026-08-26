@@ -1,4 +1,4 @@
-package com.daragetsu.callsofthewars.entities.common.util;
+package com.daragetsu.callsofthewars.common.util;
 
 import java.util.List;
 import java.util.Optional;
