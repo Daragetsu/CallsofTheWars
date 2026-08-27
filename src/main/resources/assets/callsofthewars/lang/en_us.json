@@ -7,5 +7,7 @@
     "item.callsofthewars.soldier_spawn_egg": "Soldier Spawn Egg",
     "item.callsofthewars.heightened_spawn_egg": "Heightened Spawn Egg",
 
-    "biome.callsofthewars.warring_states": "Warring States"
+    "biome.callsofthewars.warring_states": "Warring States",
+    "biome.callsofthewars.frozen_hellscape": "Land of The Snow",
+    "biome.callsofthewars.desert_hellscape": "Land of The Dunes"
 }

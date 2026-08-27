@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.daragetsu.callsofthewars.CallsofTheWars;
+import com.daragetsu.callsofthewars.data.ConflictZonesDataManager;
 import com.daragetsu.callsofthewars.entities.ModEntities;
 import com.daragetsu.callsofthewars.entities.container.ContainerEntity;
 import com.mojang.datafixers.util.Pair;
@@ -110,7 +111,7 @@ public class EnlistHandler {
         player.getInventory().add(38, new ItemStack(top.ribs.scguns.init.ModItems.ANTHRALITE_CHESTPLATE.get()));
         player.getInventory().add(39, new ItemStack(top.ribs.scguns.init.ModItems.ANTHRALITE_HELMET.get()));
         
-        player.teleportTo(player.serverLevel().getServer().getLevel(ResourceKey.create(Registries.DIMENSION, ResourceLocation.fromNamespaceAndPath(CallsofTheWars.MOD_ID, "warring_states"))), player.getRandom().nextInt(-10000, 10000), 100, player.getRandom().nextInt(-10000, 10000), 0, 0);
+        player.teleportTo(player.serverLevel().getServer().getLevel(ResourceKey.create(Registries.DIMENSION, ConflictZonesDataManager.CONFLICT_ZONES.get(player.getRandom().nextInt(ConflictZonesDataManager.CONFLICT_ZONES.size())))), player.getRandom().nextInt(-10000, 10000), 100, player.getRandom().nextInt(-10000, 10000), 0, 0);
 
         player.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, 200));
         

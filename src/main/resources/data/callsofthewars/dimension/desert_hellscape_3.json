@@ -1,0 +1,11 @@
+{
+    "type": "callsofthewars:warring_states",
+    "generator": {
+        "type": "minecraft:noise",
+        "settings": "callsofthewars:desert_hellscape",
+        "biome_source": {
+            "type": "minecraft:fixed",
+            "biome": "callsofthewars:desert_hellscape"
+        }
+    }
+}

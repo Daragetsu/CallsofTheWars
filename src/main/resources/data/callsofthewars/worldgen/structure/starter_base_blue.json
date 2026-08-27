@@ -11,6 +11,10 @@
   "project_start_to_heightmap": "WORLD_SURFACE",
   "step": "surface_structures",
   "terrain_adaptation": "none",
-  "biomes": "callsofthewars:warring_states",
+  "biomes": [
+    "callsofthewars:warring_states",
+    "callsofthewars:frozen_hellscape",
+    "callsofthewars:desert_hellscape"
+  ],
   "use_expansion_hack": false
 }

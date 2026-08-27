@@ -2,6 +2,7 @@ package com.daragetsu.callsofthewars;
 
 import com.daragetsu.callsofthewars.common.util.EnlistHandler;
 import com.daragetsu.callsofthewars.common.util.RewardHandler;
+import com.daragetsu.callsofthewars.data.ConflictZonesDataManager;
 import com.daragetsu.callsofthewars.entities.ModEntities;
 import com.daragetsu.callsofthewars.entities.soldier.SoldierEntity;
 import com.daragetsu.callsofthewars.entities.container.ContainerEntity;
@@ -38,6 +39,7 @@ import net.minecraft.world.scores.Objective;
 import net.minecraft.world.scores.criteria.ObjectiveCriteria;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.TickEvent;
@@ -75,6 +77,7 @@ public class CallsofTheWars
         ModItems.register(modEventBus);
         ModStructures.register(modEventBus);
         ModStructureProcessors.register(modEventBus);
+        MinecraftForge.EVENT_BUS.register(this);
 
         modEventBus.addListener(CallsofTheWars::addCreative);
     }
@@ -111,7 +114,7 @@ public class CallsofTheWars
             if (!(event.getOriginal() instanceof ServerPlayer ogPlayer)) {
                 return;
             }
-            if(ogPlayer.level().dimension().location().compareTo(ResourceLocation.fromNamespaceAndPath(CallsofTheWars.MOD_ID, "warring_states")) == 0){
+            if(ConflictZonesDataManager.CONFLICT_ZONES.contains(ogPlayer.level().dimension().location())){
                 EnlistHandler.demobilize(player);
                 player.sendSystemMessage(Component.literal("General: if we fall, we just try again, and again, and again, and at the end, WE WILL WIN!"));
                 RewardHandler.giveRewards(player);
@@ -123,15 +126,19 @@ public class CallsofTheWars
                 RewardHandler.checkSoldierKill(player, sol);
             }
             if(event.getSource().getEntity() instanceof ServerPlayer player){
-                if(player.level().dimension().location().compareTo(ResourceLocation.fromNamespaceAndPath(CallsofTheWars.MOD_ID, "warring_states")) == 0){
+                if(ConflictZonesDataManager.CONFLICT_ZONES.contains(player.level().dimension().location())){
                     RewardHandler.checkGeneralKill(player, event.getEntity());
                 }
             }
             if(event.getEntity() instanceof ServerPlayer player){
-                if(player.level().dimension().location().compareTo(ResourceLocation.fromNamespaceAndPath(CallsofTheWars.MOD_ID, "warring_states")) == 0){
+                if(ConflictZonesDataManager.CONFLICT_ZONES.contains(player.level().dimension().location())){
                     player.getInventory().clearContent();
                 }
             }
         }
+    }
+    @SubscribeEvent
+    public void onRegisterReloadListeners(AddReloadListenerEvent event) {
+        event.addListener(new ConflictZonesDataManager());
     }
 }
