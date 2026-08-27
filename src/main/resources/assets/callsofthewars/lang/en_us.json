@@ -1,6 +1,8 @@
 {
     "entity.callsofthewars.soldier": "Soldier",
     "entity.callsofthewars.heightened": "Heightened",
+    "entity.callsofthewars.mailer": "Mailer",
+    "entity.callsofthewars.air_plane": "Air Plane",
 
     "item.callsofthewars.soldier_spawn_egg": "Soldier Spawn Egg",
     "item.callsofthewars.heightened_spawn_egg": "Heightened Spawn Egg",
