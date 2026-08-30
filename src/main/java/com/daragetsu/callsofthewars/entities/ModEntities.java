@@ -10,6 +10,8 @@ import com.daragetsu.callsofthewars.entities.heightened.HeightenedEntity;
 import com.daragetsu.callsofthewars.entities.mailer.MailerEntity;
 import com.daragetsu.callsofthewars.entities.mailer.MailerEntityRenderer;
 import com.daragetsu.callsofthewars.entities.soldier.SoldierEntityRenderer;
+import com.daragetsu.callsofthewars.entities.tank.TankEntity;
+import com.daragetsu.callsofthewars.entities.tank.TankEntityRenderer;
 import com.daragetsu.callsofthewars.entities.unit_spawner.UnitSpawnerEntity;
 
 import net.minecraft.client.renderer.entity.EntityRenderers;
@@ -44,6 +46,8 @@ public class ModEntities {
     public static final RegistryObject<EntityType<AirPlaneEntity>> AIR_PLANE = ENTITY_TYPES.register("air_plane", () -> EntityType.Builder.of(AirPlaneEntity::new, MobCategory.CREATURE).sized(0.5F, 0.5F).build("air_plane"));
     
     public static final RegistryObject<EntityType<MailerEntity>> MAILER = ENTITY_TYPES.register("mailer", () -> EntityType.Builder.of(MailerEntity::new, MobCategory.MONSTER).sized(0.6F, 2F).build("mailer"));
+    
+    public static final RegistryObject<EntityType<TankEntity>> TANK = ENTITY_TYPES.register("tank", () -> EntityType.Builder.of(TankEntity::new, MobCategory.MONSTER).sized(2F, 2F).build("tank"));
 
     public static final void register(IEventBus eventBus){
         ENTITY_TYPES.register(eventBus);
@@ -80,6 +84,7 @@ public class ModEntities {
         EntityRenderers.register(ModEntities.CONTAINER_ENTITY.get(), (ctx)->new ContainerEntityRenderer(ctx));
         EntityRenderers.register(ModEntities.AIR_PLANE.get(), (ctx)->new AirPlaneRenderer(ctx));
         EntityRenderers.register(ModEntities.MAILER.get(), (ctx)->new MailerEntityRenderer(ctx));
+        EntityRenderers.register(ModEntities.TANK.get(), (ctx)->new TankEntityRenderer(ctx));
     }
     public static void registerSpawnPlacements(SpawnPlacementRegisterEvent event) {
         event.register(
@@ -98,6 +103,13 @@ public class ModEntities {
         );
         event.register(
             ModEntities.MAILER.get(),
+            SpawnPlacements.Type.ON_GROUND,
+            Heightmap.Types.WORLD_SURFACE,
+            (type, level, spawnType, pos, random) -> true,
+            SpawnPlacementRegisterEvent.Operation.REPLACE
+        );
+        event.register(
+            ModEntities.TANK.get(),
             SpawnPlacements.Type.ON_GROUND,
             Heightmap.Types.WORLD_SURFACE,
             (type, level, spawnType, pos, random) -> true,
