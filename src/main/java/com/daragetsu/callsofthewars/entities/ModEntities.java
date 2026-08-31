@@ -66,6 +66,7 @@ public class ModEntities {
         event.put(ModEntities.CONTAINER_ENTITY.get(), SoldierEntity.createAttributes().build());
         event.put(ModEntities.AIR_PLANE.get(), AirPlaneEntity.createAttributes().build());
         event.put(ModEntities.MAILER.get(), SoldierEntity.createAttributes().build());
+        event.put(ModEntities.TANK.get(), TankEntity.createAttributes().build());
     }
 
     private static void onCommonSetup(FMLCommonSetupEvent event) {

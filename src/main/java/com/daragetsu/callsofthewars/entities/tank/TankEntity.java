@@ -1,62 +1,81 @@
 package com.daragetsu.callsofthewars.entities.tank;
 
-import java.util.List;
-
 import javax.annotation.Nullable;
 
-import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.Mth;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MoverType;
-import net.minecraft.world.entity.animal.WaterAnimal;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager.ControllerRegistrar;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 
-public class TankEntity extends Entity implements GeoEntity {
+public class TankEntity extends Mob implements GeoEntity {
 
-    private float deltaRotation;
-    private boolean inputLeft;
-    private boolean inputRight;
-    private boolean inputUp;
-    private boolean inputDown;
+    public static final EntityDataAccessor<Boolean> OPEN = SynchedEntityData.defineId(TankEntity.class, EntityDataSerializers.BOOLEAN);
+
+    public TankEntity(EntityType<? extends Mob> entityType, Level level) {
+        super(entityType, level);
+    }
     private final AnimatableInstanceCache geocache = GeckoLibUtil.createInstanceCache(this);
 
-    public TankEntity(EntityType<?> entityType, Level level) {
-        super(entityType, level);
+    public static AttributeSupplier.Builder createAttributes() {
+        return Monster.createMonsterAttributes()
+                .add(Attributes.FOLLOW_RANGE, 28.0D)
+                .add(Attributes.MOVEMENT_SPEED, 0.1F)
+                .add(Attributes.ATTACK_DAMAGE, 2.0D)
+                .add(Attributes.ARMOR, 10D)
+                .add(Attributes.MAX_HEALTH, 50.0D)
+                .add(Attributes.KNOCKBACK_RESISTANCE, 999.0D)
+                ;
+    }
+
+    @Override
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(OPEN, false);
+    }
+
+    public boolean isOpen(){
+        return this.entityData.get(OPEN);
+    }
+
+    public void setOpen(boolean op){
+        this.entityData.set(OPEN, op);
     }
 
     @Override
     public void registerControllers(ControllerRegistrar controllers) {
+        controllers.add(new AnimationController<>(this, "controller", 2,
+                state -> {
+                    if(state.getAnimatable().isOpen()){
+                        return state.setAndContinue(RawAnimation.begin().thenPlay("open"));
+                    }else{
+                        return state.setAndContinue(RawAnimation.begin().thenPlay("close"));
+                    }
+                }
+        ).triggerableAnim("fire", RawAnimation.begin().thenPlay("fire")));
     }
 
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
         return this.geocache;
-    }
-
-    @Override
-    protected void addAdditionalSaveData(CompoundTag arg0) {
-    }
-
-    @Override
-    protected void defineSynchedData() {
-    }
-
-    @Override
-    protected void readAdditionalSaveData(CompoundTag arg0) {
-    }
-
-    public static boolean canVehicleCollide(Entity vehicle, Entity entity) {
-        return (entity.canBeCollidedWith() || entity.isPushable()) && !vehicle.isPassengerOfSameVehicle(entity);
     }
 
     public boolean canBeCollidedWith() {
@@ -68,42 +87,28 @@ public class TankEntity extends Entity implements GeoEntity {
     }
 
     public double getPassengersRidingOffset() {
-        return -0.1;
+        return 0.3;
     }
 
-    public Direction getMotionDirection() {
-        return this.getDirection().getClockWise();
+
+
+    @Override
+    protected void tickRidden(Player player, Vec3 travelVector) {
+        super.tickRidden(player, travelVector);
+        Vec2 vec2 = this.getRiddenRotation(player);
+        this.setRot(vec2.y, vec2.x);
+        this.yRotO = this.yBodyRot = this.yHeadRot = this.getYRot();
     }
-
-    private void controlBoat() {
-        if (this.isVehicle()) {
-            float f = 0.0F;
-            if (this.inputLeft) {
-                --this.deltaRotation;
-            }
-
-            if (this.inputRight) {
-                ++this.deltaRotation;
-            }
-
-            if (this.inputRight != this.inputLeft && !this.inputUp && !this.inputDown) {
-                f += 0.005F;
-            }
-
-            this.setYRot(this.getYRot() + this.deltaRotation);
-            if (this.inputUp) {
-                f += 0.04F;
-            }
-
-            if (this.inputDown) {
-                f -= 0.005F;
-            }
-
-            this.setDeltaMovement(
-                    this.getDeltaMovement().add((double) (Mth.sin(-this.getYRot() * ((float) Math.PI / 180F)) * f),
-                            (double) 0.0F, (double) (Mth.cos(this.getYRot() * ((float) Math.PI / 180F)) * f)));
+    protected Vec2 getRiddenRotation(LivingEntity entity) {
+        return new Vec2(entity.getXRot() * 0.5F, entity.getYRot());
+    }
+    protected Vec3 getRiddenInput(Player player, Vec3 travelVector) {
+        float f = player.xxa * 0.5F;
+        float f1 = player.zza;
+        if (f1 <= 0.0F) {
+            f1 *= 0.25F;
         }
-
+        return new Vec3((double)f, (double)0.0F, (double)f1);
     }
 
     protected boolean canAddPassenger(Entity passenger) {
@@ -111,7 +116,7 @@ public class TankEntity extends Entity implements GeoEntity {
     }
 
     protected int getMaxPassengers() {
-        return 2;
+        return 1;
     }
 
     @Nullable
@@ -127,44 +132,47 @@ public class TankEntity extends Entity implements GeoEntity {
         return livingentity1;
     }
 
-    public void setInput(boolean inputLeft, boolean inputRight, boolean inputUp, boolean inputDown) {
-        this.inputLeft = inputLeft;
-        this.inputRight = inputRight;
-        this.inputUp = inputUp;
-        this.inputDown = inputDown;
+    @Override
+    public InteractionResult interactAt(Player player, Vec3 vec, InteractionHand hand) {
+        if(hand == InteractionHand.MAIN_HAND){
+            player.startRiding(this);
+            return InteractionResult.SUCCESS;
+        }
+        return super.interactAt(player, vec, hand);
+    }
+    @Override
+    public void travel(Vec3 travelVector) {
+        if (this.isAlive()) {
+            if (this.isVehicle() &&
+            this.getPassengers().get(0) instanceof LivingEntity passenger) {
+                this.setYRot(passenger.getYRot());
+                this.yRotO = this.getYRot();
+                this.setXRot(passenger.getXRot() * 0.5F);
+                this.setRot(this.getYRot(), this.getXRot());
+                this.yBodyRot = this.getYRot();
+                this.yHeadRot = this.yBodyRot;
+
+                float strafe = passenger.xxa * 0.5F;
+                float straight = passenger.zza;
+                if (straight <= 0.0F) {
+                    straight *= 0.25F; 
+                }
+                this.setSpeed((float) this.getAttributeValue(Attributes.MOVEMENT_SPEED));
+                super.travel(new Vec3(strafe, travelVector.y, straight));
+                return;
+            }
+        }
+        super.travel(travelVector);
+    }
+    @Override
+    public boolean hurt(DamageSource source, float amount) {
+        if(this.isVehicle() && source.getEntity().is(this.getPassengers().get(0))){
+            return false;
+        }
+        return super.hurt(source, amount);
     }
 
-    public void tick() {
-        super.tick();
-        if (this.isControlledByLocalInstance()) {
-            if (this.level().isClientSide) {
-                this.controlBoat();
-            }
-
-            this.move(MoverType.SELF, this.getDeltaMovement());
-        } else {
-            this.setDeltaMovement(Vec3.ZERO);
-        }
-
-        this.checkInsideBlocks();
-        List<Entity> list = this.level().getEntities(this,
-                this.getBoundingBox().inflate((double) 0.2F, (double) -0.01F, (double) 0.2F),
-                EntitySelector.pushableBy(this));
-        if (!list.isEmpty()) {
-            boolean flag = !this.level().isClientSide && !(this.getControllingPassenger() instanceof Player);
-
-            for (int j = 0; j < list.size(); ++j) {
-                Entity entity = (Entity) list.get(j);
-                if (!entity.hasPassenger(this)) {
-                    if (flag && this.getPassengers().size() < this.getMaxPassengers() && !entity.isPassenger()
-                            && entity instanceof LivingEntity && !(entity instanceof WaterAnimal)
-                            && !(entity instanceof Player)) {
-                        entity.startRiding(this);
-                    } else {
-                        this.push(entity);
-                    }
-                }
-            }
-        }
+    public void fire(){
+        this.triggerAnim("controller", "fire");
     }
 }
