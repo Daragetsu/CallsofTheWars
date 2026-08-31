@@ -30,6 +30,14 @@ public class TankEntity extends Mob implements GeoEntity {
 
     public static final EntityDataAccessor<Boolean> OPEN = SynchedEntityData.defineId(TankEntity.class, EntityDataSerializers.BOOLEAN);
 
+    public static final RawAnimation OPEN_ANIM = RawAnimation.begin().thenPlay("open");
+    public static final RawAnimation CLOSE_ANIM = RawAnimation.begin().thenPlay("close");
+    public static final RawAnimation FIRE_ANIM = RawAnimation.begin().thenPlay("fire");
+
+    private int COOLDOWN_TIME = 200;
+
+    public static final EntityDataAccessor<Long> CAN_FIRE_AFTER = SynchedEntityData.defineId(TankEntity.class, EntityDataSerializers.LONG);
+
     public TankEntity(EntityType<? extends Mob> entityType, Level level) {
         super(entityType, level);
     }
@@ -50,6 +58,7 @@ public class TankEntity extends Mob implements GeoEntity {
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(OPEN, false);
+        this.entityData.define(CAN_FIRE_AFTER, this.level().getGameTime());
     }
 
     public boolean isOpen(){
@@ -60,17 +69,25 @@ public class TankEntity extends Mob implements GeoEntity {
         this.entityData.set(OPEN, op);
     }
 
+    public boolean canFire(){
+        return this.level().getGameTime() > this.entityData.get(CAN_FIRE_AFTER);
+    }
+
+    public void addCooldown(){
+        this.entityData.set(CAN_FIRE_AFTER, this.level().getGameTime()+COOLDOWN_TIME);
+    }
+
     @Override
     public void registerControllers(ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(this, "controller", 2,
                 state -> {
-                    if(state.getAnimatable().isOpen()){
-                        return state.setAndContinue(RawAnimation.begin().thenPlay("open"));
+                    if(state.getAnimatable().isVehicle() && state.getAnimatable().getPassengers().get(0).isSprinting()){
+                        return state.setAndContinue(OPEN_ANIM);
                     }else{
-                        return state.setAndContinue(RawAnimation.begin().thenPlay("close"));
+                        return state.setAndContinue(CLOSE_ANIM);
                     }
                 }
-        ).triggerableAnim("fire", RawAnimation.begin().thenPlay("fire")));
+        ).triggerableAnim("fire", FIRE_ANIM));
     }
 
     @Override
@@ -89,8 +106,6 @@ public class TankEntity extends Mob implements GeoEntity {
     public double getPassengersRidingOffset() {
         return 0.3;
     }
-
-
 
     @Override
     protected void tickRidden(Player player, Vec3 travelVector) {
@@ -135,8 +150,13 @@ public class TankEntity extends Mob implements GeoEntity {
     @Override
     public InteractionResult interactAt(Player player, Vec3 vec, InteractionHand hand) {
         if(hand == InteractionHand.MAIN_HAND){
-            player.startRiding(this);
-            return InteractionResult.SUCCESS;
+            if(this.isVehicle() && this.getPassengers().get(0).is(player)){
+                fire();
+            }
+            if(this.canAddPassenger(player)){
+                player.startRiding(this);
+                return InteractionResult.SUCCESS;
+            }
         }
         return super.interactAt(player, vec, hand);
     }
@@ -173,6 +193,7 @@ public class TankEntity extends Mob implements GeoEntity {
     }
 
     public void fire(){
+        if(!this.canFire())return;
         this.triggerAnim("controller", "fire");
     }
 }
