@@ -19,3 +19,6 @@ Special thanks to [Krei](https://github.com/rekales), a bit of his code was used
 ---
 
 for the devs, if you are wondering why there's so many dimensions entries for the 3 biomes, it's because minecraft only allows one instance for each dimension per world, and I couldn't figure out how to make it reset the dimension every 'enlist' so I just made this many entries so it's random enough to not feel repetitive
+
+
+This mod is under GNU GPL v3, please check the License for detaild
