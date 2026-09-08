@@ -5,14 +5,42 @@
 			"loop": true,
 			"animation_length": 0.5,
 			"bones": {
-				"bone9": {
+				"Showcase": {
+					"rotation": {
+						"vector": [2.5, 0, 0]
+					}
+				},
+				"bone": {
 					"rotation": {
 						"0.0": {
 							"vector": [0, 0, 0]
 						},
+						"0.25": {
+							"vector": [0, 0, 180]
+						},
 						"0.5": {
 							"vector": [0, 0, 360]
 						}
+					}
+				},
+				"bone3": {
+					"rotation": {
+						"vector": [0, 0, 0]
+					}
+				},
+				"ST_23": {
+					"rotation": {
+						"vector": [0, 0, -5]
+					}
+				},
+				"rider1": {
+					"position": {
+						"vector": [5, 18, 4]
+					}
+				},
+				"rider2": {
+					"position": {
+						"vector": [5, 18, 4]
 					}
 				}
 			}

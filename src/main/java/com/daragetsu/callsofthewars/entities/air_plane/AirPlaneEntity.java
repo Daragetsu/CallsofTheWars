@@ -4,9 +4,17 @@ import java.util.EnumSet;
 
 import javax.annotation.Nullable;
 
+import com.daragetsu.callsofthewars.entities.common.VariantEntity;
+
+import net.minecraft.ChatFormatting;
 import net.minecraft.commands.arguments.EntityAnchorArgument.Anchor;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.ServerScoreboard;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.FlyingMoveControl;
@@ -17,8 +25,10 @@ import net.minecraft.world.entity.animal.FlyingAnimal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.scores.PlayerTeam;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager.ControllerRegistrar;
@@ -26,7 +36,7 @@ import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class AirPlaneEntity extends Monster implements FlyingAnimal, GeoEntity{
+public class AirPlaneEntity extends Monster implements FlyingAnimal, GeoEntity, VariantEntity{
     private final AnimatableInstanceCache geocache = GeckoLibUtil.createInstanceCache(this);
 
     public AirPlaneEntity(EntityType<? extends Monster> entityType, Level level) {
@@ -136,5 +146,41 @@ public class AirPlaneEntity extends Monster implements FlyingAnimal, GeoEntity{
             }
             return target;
         }
+    }
+    @SuppressWarnings("deprecation")
+    @Override
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType reason,
+            SpawnGroupData spawnData, CompoundTag dataTag) {
+        ServerScoreboard scoreboard = level.getServer().getScoreboard();
+        PlayerTeam redTeam = scoreboard.getPlayerTeam("red");
+        PlayerTeam greenTeam = scoreboard.getPlayerTeam("green");
+        PlayerTeam blueTeam = scoreboard.getPlayerTeam("blue");
+        if(redTeam==null){
+            redTeam = scoreboard.addPlayerTeam("red");
+            redTeam.setColor(ChatFormatting.RED);
+        }
+        if(greenTeam==null){
+            greenTeam = scoreboard.addPlayerTeam("green");
+            greenTeam.setColor(ChatFormatting.GREEN);
+        }
+        if(blueTeam==null){
+            blueTeam = scoreboard.addPlayerTeam("blue");
+            blueTeam.setColor(ChatFormatting.BLUE);
+        }
+        PlayerTeam[] teams = {
+            redTeam,
+            greenTeam,
+            blueTeam
+        };
+        level.getServer().getScoreboard().addPlayerToTeam(this.getStringUUID(), teams[this.random.nextInt(teams.length)]);
+        return super.finalizeSpawn(level, difficulty, reason, spawnData, dataTag);
+    }
+    @Override
+    public int getVariant() {
+        Variants v;
+        if((v = VariantEntity.VariantMap.get(this.getTeam().getColor()))!=null){
+            return v.get();
+        }
+        return Variants.Red.get();
     }
 }

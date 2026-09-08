@@ -1,6 +1,7 @@
 package com.daragetsu.callsofthewars.entities.soldier;
 
 import com.daragetsu.callsofthewars.entities.common.GunnerEntity;
+import com.daragetsu.callsofthewars.entities.common.VariantEntity;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -33,7 +34,7 @@ import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.animation.AnimatableManager.ControllerRegistrar;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class SoldierEntity extends GunnerEntity implements GeoEntity{
+public class SoldierEntity extends GunnerEntity implements GeoEntity, VariantEntity{
 
     private final AnimatableInstanceCache geocache = GeckoLibUtil.createInstanceCache(this);
 
@@ -102,15 +103,6 @@ public class SoldierEntity extends GunnerEntity implements GeoEntity{
                 .add(Attributes.ARMOR, 0.1D)
                 .add(Attributes.MAX_HEALTH, 20.0D);
     }
-    public float getRed(){
-        return this.getTeam().isAlliedTo(this.level().getScoreboard().getPlayerTeam("red")) ? 1f : 0f;
-    }
-    public float getGreen(){
-        return this.getTeam().isAlliedTo(this.level().getScoreboard().getPlayerTeam("green")) ? 1f : 0f;
-    }
-    public float getBlue(){
-        return this.getTeam().isAlliedTo(this.level().getScoreboard().getPlayerTeam("blue")) ? 1f : 0f;
-    }
     public static boolean checkMonsterSpawnRules(EntityType<? extends Monster> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
         return level.getDifficulty() != Difficulty.PEACEFUL && checkMobSpawnRules(type, level, spawnType, pos, random) && random.nextInt(100)<3;
     }
@@ -150,5 +142,14 @@ public class SoldierEntity extends GunnerEntity implements GeoEntity{
         };
         level.getServer().getScoreboard().addPlayerToTeam(this.getStringUUID(), teams[this.random.nextInt(teams.length)]);
         return super.finalizeSpawn(level, difficulty, reason, spawnData, dataTag);
+    }
+
+    @Override
+    public int getVariant() {
+        Variants v;
+        if((v = VariantEntity.VariantMap.get(this.getTeam().getColor()))!=null){
+            return v.get();
+        }
+        return Variants.Red.get();
     }
 }

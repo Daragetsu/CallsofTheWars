@@ -15,6 +15,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.scores.PlayerTeam;
 
 public class HeightenedEntity extends SoldierEntity{
     public HeightenedEntity(EntityType<? extends Monster> entity, Level level) {
@@ -32,10 +33,12 @@ public class HeightenedEntity extends SoldierEntity{
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType reason,
             SpawnGroupData spawnData, CompoundTag dataTag) {
+        SpawnGroupData data = super.finalizeSpawn(level, difficulty, reason, spawnData, dataTag);
         AirPlaneEntity plane = new AirPlaneEntity(ModEntities.AIR_PLANE.get(), level.getLevel());
         plane.moveTo(this.getX(), this.getY()+40, this.getZ());
         level.addFreshEntity(plane);
-        return super.finalizeSpawn(level, difficulty, reason, spawnData, dataTag);
+        level.getLevel().getScoreboard().addPlayerToTeam(plane.getStringUUID(), (PlayerTeam)this.getTeam());
+        return data;
     }
 
     @Override

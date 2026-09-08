@@ -3,7 +3,7 @@ package com.daragetsu.callsofthewars.entities;
 import com.daragetsu.callsofthewars.CallsofTheWars;
 import com.daragetsu.callsofthewars.entities.soldier.SoldierEntity;
 import com.daragetsu.callsofthewars.entities.air_plane.AirPlaneEntity;
-import com.daragetsu.callsofthewars.entities.air_plane.AirPlaneRenderer;
+import com.daragetsu.callsofthewars.entities.common.client.VariantEntityRenderer;
 import com.daragetsu.callsofthewars.entities.container.ContainerEntity;
 import com.daragetsu.callsofthewars.entities.container.ContainerEntityRenderer;
 import com.daragetsu.callsofthewars.entities.heightened.HeightenedEntity;
@@ -43,7 +43,7 @@ public class ModEntities {
     public static final RegistryObject<EntityType<UnitSpawnerEntity>> UNIT_SPAWNER = ENTITY_TYPES.register("unit_spawner", () -> EntityType.Builder.of(UnitSpawnerEntity::new, MobCategory.CREATURE).sized(0.3F, 0.3F).build("unit_spawner"));
     public static final RegistryObject<EntityType<ContainerEntity>> CONTAINER_ENTITY = ENTITY_TYPES.register("container_entity", () -> EntityType.Builder.of(ContainerEntity::new, MobCategory.CREATURE).sized(0.1F, 0.1F).build("container_entity"));
     
-    public static final RegistryObject<EntityType<AirPlaneEntity>> AIR_PLANE = ENTITY_TYPES.register("air_plane", () -> EntityType.Builder.of(AirPlaneEntity::new, MobCategory.CREATURE).sized(0.5F, 0.5F).build("air_plane"));
+    public static final RegistryObject<EntityType<AirPlaneEntity>> AIR_PLANE = ENTITY_TYPES.register("air_plane", () -> EntityType.Builder.of(AirPlaneEntity::new, MobCategory.CREATURE).sized(3F, 3F).build("air_plane"));
     
     public static final RegistryObject<EntityType<MailerEntity>> MAILER = ENTITY_TYPES.register("mailer", () -> EntityType.Builder.of(MailerEntity::new, MobCategory.MONSTER).sized(0.6F, 2F).build("mailer"));
     
@@ -77,13 +77,13 @@ public class ModEntities {
 
     @OnlyIn(value = Dist.CLIENT)
     private static void onClientSetup(FMLClientSetupEvent event) {
-        EntityRenderers.register(ModEntities.SOLDIER.get(), (ctx) -> new SoldierEntityRenderer<>(ctx, new DefaultedEntityGeoModel<>(ResourceLocation.fromNamespaceAndPath(CallsofTheWars.MOD_ID, "soldier"))));
+        EntityRenderers.register(ModEntities.SOLDIER.get(), (ctx) -> new VariantEntityRenderer<>(ctx, "soldier"));
         
         EntityRenderers.register(ModEntities.HEIGHTENED.get(), (ctx) -> new SoldierEntityRenderer<>(ctx, new DefaultedEntityGeoModel<>(ResourceLocation.fromNamespaceAndPath(CallsofTheWars.MOD_ID, "heightened"))));
         
         EntityRenderers.register(ModEntities.UNIT_SPAWNER.get(), (ctx)->new SoldierEntityRenderer<>(ctx, new DefaultedEntityGeoModel<>(ResourceLocation.fromNamespaceAndPath(CallsofTheWars.MOD_ID, "soldier"))));
         EntityRenderers.register(ModEntities.CONTAINER_ENTITY.get(), (ctx)->new ContainerEntityRenderer(ctx));
-        EntityRenderers.register(ModEntities.AIR_PLANE.get(), (ctx)->new AirPlaneRenderer(ctx));
+        EntityRenderers.register(ModEntities.AIR_PLANE.get(), (ctx)->new VariantEntityRenderer<>(ctx, "air_plane"));
         EntityRenderers.register(ModEntities.MAILER.get(), (ctx)->new MailerEntityRenderer(ctx));
         EntityRenderers.register(ModEntities.TANK.get(), (ctx)->new TankEntityRenderer(ctx));
     }
