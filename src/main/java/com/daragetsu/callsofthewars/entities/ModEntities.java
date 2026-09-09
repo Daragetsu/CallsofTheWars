@@ -79,7 +79,7 @@ public class ModEntities {
     private static void onClientSetup(FMLClientSetupEvent event) {
         EntityRenderers.register(ModEntities.SOLDIER.get(), (ctx) -> new VariantEntityRenderer<>(ctx, "soldier"));
         
-        EntityRenderers.register(ModEntities.HEIGHTENED.get(), (ctx) -> new SoldierEntityRenderer<>(ctx, new DefaultedEntityGeoModel<>(ResourceLocation.fromNamespaceAndPath(CallsofTheWars.MOD_ID, "heightened"))));
+        EntityRenderers.register(ModEntities.HEIGHTENED.get(), (ctx) -> new VariantEntityRenderer<>(ctx, "soldier"));
         
         EntityRenderers.register(ModEntities.UNIT_SPAWNER.get(), (ctx)->new SoldierEntityRenderer<>(ctx, new DefaultedEntityGeoModel<>(ResourceLocation.fromNamespaceAndPath(CallsofTheWars.MOD_ID, "soldier"))));
         EntityRenderers.register(ModEntities.CONTAINER_ENTITY.get(), (ctx)->new ContainerEntityRenderer(ctx));
