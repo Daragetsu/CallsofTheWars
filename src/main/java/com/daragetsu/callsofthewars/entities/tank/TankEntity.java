@@ -34,8 +34,7 @@ import net.minecraft.world.phys.Vec3;
 public class TankEntity extends Mob implements GeoEntity {
 
     public static final RawAnimation FIRE_ANIM = RawAnimation.begin().thenPlay("fire");
-    private int COOLDOWN_TIME = 200;
-
+    private int COOLDOWN_TIME = 100;
 
     public static final EntityDataAccessor<Long> CAN_FIRE_AFTER = SynchedEntityData.defineId(TankEntity.class, EntityDataSerializers.LONG);
 
@@ -193,6 +192,7 @@ public class TankEntity extends Mob implements GeoEntity {
             entity.shootFromRotation(this, 0.0f, this.getYRot(), 0.0F, 2F, 0.3F);
             entity.setOwner(this.getPassengers().get(0));
             this.level().addFreshEntity(entity);
+            this.addCooldown();
         }
     }
 
