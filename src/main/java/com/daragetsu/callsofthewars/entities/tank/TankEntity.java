@@ -212,5 +212,6 @@ public class TankEntity extends Mob implements GeoEntity {
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(0, new TankFireGoal(this));
+        this.goalSelector.addGoal(1, new TrampleGoal(this));
     }
 }
