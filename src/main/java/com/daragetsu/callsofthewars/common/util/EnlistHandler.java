@@ -110,8 +110,16 @@ public class EnlistHandler {
         player.getInventory().add(37, new ItemStack(top.ribs.scguns.init.ModItems.ANTHRALITE_LEGGINGS.get()));
         player.getInventory().add(38, new ItemStack(top.ribs.scguns.init.ModItems.ANTHRALITE_CHESTPLATE.get()));
         player.getInventory().add(39, new ItemStack(top.ribs.scguns.init.ModItems.ANTHRALITE_HELMET.get()));
+
+        ServerLevel emptyDimension = player.serverLevel().getServer().getLevel(ResourceKey.create(Registries.DIMENSION, ConflictZonesDataManager.CONFLICT_ZONES.get(player.getRandom().nextInt(ConflictZonesDataManager.CONFLICT_ZONES.size()))));
+        int tries = 0;
+
+        while(!emptyDimension.players().isEmpty() && tries<200){
+            emptyDimension = player.serverLevel().getServer().getLevel(ResourceKey.create(Registries.DIMENSION, ConflictZonesDataManager.CONFLICT_ZONES.get(player.getRandom().nextInt(ConflictZonesDataManager.CONFLICT_ZONES.size()))));
+            tries++;
+        }
         
-        player.teleportTo(player.serverLevel().getServer().getLevel(ResourceKey.create(Registries.DIMENSION, ConflictZonesDataManager.CONFLICT_ZONES.get(player.getRandom().nextInt(ConflictZonesDataManager.CONFLICT_ZONES.size())))), player.getRandom().nextInt(-10000, 10000), 100, player.getRandom().nextInt(-10000, 10000), 0, 0);
+        player.teleportTo(emptyDimension, player.getRandom().nextInt(-10000, 10000), 100, player.getRandom().nextInt(-10000, 10000), 0, 0);
 
         player.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, 200));
         
