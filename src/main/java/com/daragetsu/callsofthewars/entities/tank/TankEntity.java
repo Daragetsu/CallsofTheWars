@@ -3,12 +3,9 @@ package com.daragetsu.callsofthewars.entities.tank;
 
 import javax.annotation.Nullable;
 
-import com.daragetsu.callsofthewars.client.KeyBinds;
 import com.daragetsu.callsofthewars.entities.ModEntities;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -33,19 +30,12 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class TankEntity extends Mob implements GeoEntity {
 
-    public static final EntityDataAccessor<Boolean> OPEN = SynchedEntityData.defineId(TankEntity.class, EntityDataSerializers.BOOLEAN);
-
-    public static final RawAnimation OPEN_ANIM = RawAnimation.begin().thenPlay("open");
-    public static final RawAnimation CLOSE_ANIM = RawAnimation.begin().thenPlay("close");
     public static final RawAnimation FIRE_ANIM = RawAnimation.begin().thenPlay("fire");
     private int COOLDOWN_TIME = 200;
 
-    private long shouldbeOpenTill = 0;
 
     public static final EntityDataAccessor<Long> CAN_FIRE_AFTER = SynchedEntityData.defineId(TankEntity.class, EntityDataSerializers.LONG);
 
@@ -68,19 +58,7 @@ public class TankEntity extends Mob implements GeoEntity {
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(OPEN, false);
         this.entityData.define(CAN_FIRE_AFTER, this.level().getGameTime());
-    }
-
-    public boolean isOpen(){
-        return this.entityData.get(OPEN);
-    }
-
-    public void setOpen(boolean op){
-        this.entityData.set(OPEN, op);
-        if(op){
-            this.shouldbeOpenTill = this.level().getGameTime()+1;
-        }
     }
 
     public boolean canFire(){
@@ -93,15 +71,6 @@ public class TankEntity extends Mob implements GeoEntity {
 
     @Override
     public void registerControllers(ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "controller", 2,
-                state -> {
-                    if(state.getAnimatable().isVehicle() && state.getAnimatable().isOpen()){
-                        return state.setAndContinue(OPEN_ANIM);
-                    }else{
-                        return state.setAndContinue(CLOSE_ANIM);
-                    }
-                }
-        ));
         controllers.add(new AnimationController<>(this, "attack", 0, state -> {
             return PlayState.CONTINUE;
         })
@@ -173,19 +142,10 @@ public class TankEntity extends Mob implements GeoEntity {
             }
             if(this.canAddPassenger(player)){
                 player.startRiding(this);
-                if(player.level().isClientSide()){
-                    this.showMessage();
-                }
                 return InteractionResult.SUCCESS;
             }
         }
         return super.interactAt(player, vec, hand);
-    }
-    @OnlyIn(Dist.CLIENT)
-    public void showMessage(){
-        Minecraft.getInstance().player.displayClientMessage(
-            Component.literal("Press "+KeyBinds.OPEN_TANK_WINDOW_KEY.getKey().getName()+" to open window"), true
-        );
     }
     @Override
     public void travel(Vec3 travelVector) {
@@ -233,13 +193,6 @@ public class TankEntity extends Mob implements GeoEntity {
             entity.shootFromRotation(this, 0.0f, this.getYRot(), 0.0F, 2F, 0.3F);
             entity.setOwner(this.getPassengers().get(0));
             this.level().addFreshEntity(entity);
-        }
-    }
-    @Override
-    public void tick() {
-        super.tick();
-        if(this.level().getGameTime()>this.shouldbeOpenTill){
-            this.setOpen(false);
         }
     }
 
