@@ -1,7 +1,14 @@
 package com.daragetsu.callsofthewars.entities.tank;
 
+
 import javax.annotation.Nullable;
 
+import com.daragetsu.callsofthewars.client.KeyBinds;
+import com.daragetsu.callsofthewars.entities.ModEntities;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -21,10 +28,13 @@ import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache
 import software.bernie.geckolib.core.animation.AnimatableManager.ControllerRegistrar;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class TankEntity extends Mob implements GeoEntity {
 
@@ -33,8 +43,9 @@ public class TankEntity extends Mob implements GeoEntity {
     public static final RawAnimation OPEN_ANIM = RawAnimation.begin().thenPlay("open");
     public static final RawAnimation CLOSE_ANIM = RawAnimation.begin().thenPlay("close");
     public static final RawAnimation FIRE_ANIM = RawAnimation.begin().thenPlay("fire");
-
     private int COOLDOWN_TIME = 200;
+
+    private long shouldbeOpenTill = 0;
 
     public static final EntityDataAccessor<Long> CAN_FIRE_AFTER = SynchedEntityData.defineId(TankEntity.class, EntityDataSerializers.LONG);
 
@@ -67,6 +78,9 @@ public class TankEntity extends Mob implements GeoEntity {
 
     public void setOpen(boolean op){
         this.entityData.set(OPEN, op);
+        if(op){
+            this.shouldbeOpenTill = this.level().getGameTime()+1;
+        }
     }
 
     public boolean canFire(){
@@ -81,13 +95,17 @@ public class TankEntity extends Mob implements GeoEntity {
     public void registerControllers(ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(this, "controller", 2,
                 state -> {
-                    if(state.getAnimatable().isVehicle() && state.getAnimatable().getPassengers().get(0).isSprinting()){
+                    if(state.getAnimatable().isVehicle() && state.getAnimatable().isOpen()){
                         return state.setAndContinue(OPEN_ANIM);
                     }else{
                         return state.setAndContinue(CLOSE_ANIM);
                     }
                 }
-        ).triggerableAnim("fire", FIRE_ANIM));
+        ));
+        controllers.add(new AnimationController<>(this, "attack", 0, state -> {
+            return PlayState.CONTINUE;
+        })
+        .triggerableAnim("fire", FIRE_ANIM));
     }
 
     @Override
@@ -155,10 +173,19 @@ public class TankEntity extends Mob implements GeoEntity {
             }
             if(this.canAddPassenger(player)){
                 player.startRiding(this);
+                if(player.level().isClientSide()){
+                    this.showMessage();
+                }
                 return InteractionResult.SUCCESS;
             }
         }
         return super.interactAt(player, vec, hand);
+    }
+    @OnlyIn(Dist.CLIENT)
+    public void showMessage(){
+        Minecraft.getInstance().player.displayClientMessage(
+            Component.literal("Press "+KeyBinds.OPEN_TANK_WINDOW_KEY.getKey().getName()+" to open window"), true
+        );
     }
     @Override
     public void travel(Vec3 travelVector) {
@@ -186,14 +213,51 @@ public class TankEntity extends Mob implements GeoEntity {
     }
     @Override
     public boolean hurt(DamageSource source, float amount) {
-        if(this.isVehicle() && source.getEntity().is(this.getPassengers().get(0))){
+        if(this.isVehicle() && source.getEntity()!=null && source.getEntity().is(this.getPassengers().get(0))){
             return false;
+        }
+        if(this.isVehicle()){
+            this.getPassengers().forEach((en)->{
+                en.hurt(source, amount/2);
+            });
         }
         return super.hurt(source, amount);
     }
 
     public void fire(){
         if(!this.canFire())return;
-        this.triggerAnim("controller", "fire");
+        this.triggerAnim("attack", "fire");
+        if(!this.level().isClientSide()){
+            ProjectileEntity entity = new ProjectileEntity(ModEntities.TANK_PROJECTILE.get(), this.level());
+            entity.moveTo(this.getX(), this.getY()+3, this.getZ());
+            entity.shootFromRotation(this, 0.0f, this.getYRot(), 0.0F, 2F, 0.3F);
+            entity.setOwner(this.getPassengers().get(0));
+            this.level().addFreshEntity(entity);
+        }
+    }
+    @Override
+    public void tick() {
+        super.tick();
+        if(this.level().getGameTime()>this.shouldbeOpenTill){
+            this.setOpen(false);
+        }
+    }
+
+    @Override
+    public boolean save(CompoundTag compound) {
+        compound.putLong("canfireAfter", this.entityData.get(CAN_FIRE_AFTER));
+        return super.save(compound);
+    }
+    @Override
+    public void load(CompoundTag compound) {
+        super.load(compound);
+        if(compound.contains("canFireAfter")){
+            this.entityData.set(CAN_FIRE_AFTER, compound.getLong("canFireAfter"));
+        }
+    }
+    @Override
+    protected void registerGoals() {
+        super.registerGoals();
+        this.goalSelector.addGoal(0, new TankFireGoal(this));
     }
 }

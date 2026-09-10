@@ -10,6 +10,8 @@ import com.daragetsu.callsofthewars.entities.heightened.HeightenedEntity;
 import com.daragetsu.callsofthewars.entities.mailer.MailerEntity;
 import com.daragetsu.callsofthewars.entities.mailer.MailerEntityRenderer;
 import com.daragetsu.callsofthewars.entities.soldier.SoldierEntityRenderer;
+import com.daragetsu.callsofthewars.entities.tank.ProjectileEntity;
+import com.daragetsu.callsofthewars.entities.tank.ProjectileRenderer;
 import com.daragetsu.callsofthewars.entities.tank.TankEntity;
 import com.daragetsu.callsofthewars.entities.tank.TankEntityRenderer;
 import com.daragetsu.callsofthewars.entities.unit_spawner.UnitSpawnerEntity;
@@ -48,6 +50,8 @@ public class ModEntities {
     public static final RegistryObject<EntityType<MailerEntity>> MAILER = ENTITY_TYPES.register("mailer", () -> EntityType.Builder.of(MailerEntity::new, MobCategory.MONSTER).sized(0.6F, 2F).build("mailer"));
     
     public static final RegistryObject<EntityType<TankEntity>> TANK = ENTITY_TYPES.register("tank", () -> EntityType.Builder.of(TankEntity::new, MobCategory.MONSTER).sized(2F, 2F).build("tank"));
+    
+    public static final RegistryObject<EntityType<ProjectileEntity>> TANK_PROJECTILE = ENTITY_TYPES.register("tank_projectile", () -> EntityType.Builder.of(ProjectileEntity::new, MobCategory.MONSTER).sized(0.2F, 0.2F).build("tank_projectile"));
 
     public static final void register(IEventBus eventBus){
         ENTITY_TYPES.register(eventBus);
@@ -86,6 +90,7 @@ public class ModEntities {
         EntityRenderers.register(ModEntities.AIR_PLANE.get(), (ctx)->new VariantEntityRenderer<>(ctx, "air_plane"));
         EntityRenderers.register(ModEntities.MAILER.get(), (ctx)->new MailerEntityRenderer(ctx));
         EntityRenderers.register(ModEntities.TANK.get(), (ctx)->new TankEntityRenderer(ctx));
+        EntityRenderers.register(ModEntities.TANK_PROJECTILE.get(), (ctx)->new ProjectileRenderer(ctx));
     }
     public static void registerSpawnPlacements(SpawnPlacementRegisterEvent event) {
         event.register(

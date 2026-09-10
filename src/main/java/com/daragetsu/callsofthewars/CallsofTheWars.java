@@ -1,5 +1,6 @@
 package com.daragetsu.callsofthewars;
 
+import com.daragetsu.callsofthewars.client.KeyBinds;
 import com.daragetsu.callsofthewars.common.util.EnlistHandler;
 import com.daragetsu.callsofthewars.common.util.RewardHandler;
 import com.daragetsu.callsofthewars.data.ConflictZonesDataManager;
@@ -7,12 +8,15 @@ import com.daragetsu.callsofthewars.entities.ModEntities;
 import com.daragetsu.callsofthewars.entities.soldier.SoldierEntity;
 import com.daragetsu.callsofthewars.entities.container.ContainerEntity;
 import com.daragetsu.callsofthewars.item.ModItems;
+import com.daragetsu.callsofthewars.network.KeyPressed;
+import com.daragetsu.callsofthewars.network.ModNetwork;
 import com.daragetsu.callsofthewars.worldgen.structure.ModStructureProcessors;
 import com.daragetsu.callsofthewars.worldgen.structure.ModStructures;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.logging.LogUtils;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.commands.CommandSource;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
@@ -38,11 +42,13 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.scores.Objective;
 import net.minecraft.world.scores.criteria.ObjectiveCriteria;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.TickEvent.ClientTickEvent;
 import net.minecraftforge.event.TickEvent.ServerTickEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -77,6 +83,7 @@ public class CallsofTheWars
         ModItems.register(modEventBus);
         ModStructures.register(modEventBus);
         ModStructureProcessors.register(modEventBus);
+        ModNetwork.register();
         MinecraftForge.EVENT_BUS.register(this);
 
         modEventBus.addListener(CallsofTheWars::addCreative);
@@ -140,5 +147,25 @@ public class CallsofTheWars
     @SubscribeEvent
     public void onRegisterReloadListeners(AddReloadListenerEvent event) {
         event.addListener(new ConflictZonesDataManager());
+    }
+    @Mod.EventBusSubscriber(modid = CallsofTheWars.MOD_ID, value = Dist.CLIENT)
+    public class ClientEvents {
+        @SubscribeEvent
+        public static void onClientTick(ClientTickEvent event) {
+            if (event.phase == TickEvent.Phase.END) {
+                if (Minecraft.getInstance().level != null && Minecraft.getInstance().player != null) {
+                    while (KeyBinds.OPEN_TANK_WINDOW_KEY.consumeClick()) {
+                        ModNetwork.sendToServer(new KeyPressed());
+                    }
+                }
+            }
+        }
+    }
+    @Mod.EventBusSubscriber(modid = CallsofTheWars.MOD_ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
+    public class ClientModEvents {
+        @SubscribeEvent
+        public static void onRegisterKeyMappings(RegisterKeyMappingsEvent event) {
+            event.register(KeyBinds.OPEN_TANK_WINDOW_KEY);
+        }
     }
 }
