@@ -120,6 +120,12 @@ public class AirPlaneEntity extends Monster implements FlyingAnimal, GeoEntity, 
         public void tick() {
             super.tick();
             AirPlaneEntity.this.lookAt(Anchor.EYES, this.goTo);
+            BlockPos pos = new BlockPos((int)this.goTo.x, (int)this.goTo.y-40, (int)this.goTo.z);
+            while(!AirPlaneEntity.this.level().getBlockState(pos).isAir()){
+                this.goTo = new Vec3(this.goTo.x, this.goTo.y+1, this.goTo.z);
+                pos = pos.above();
+            }
+            AirPlaneEntity.this.navigation.moveTo(AirPlaneEntity.this.navigation.createPath(BlockPos.containing(this.goTo), 1), (double)1.0F);
         }
 
         @Nullable
