@@ -27,38 +27,6 @@
 					}
 				}
 			}
-		},
-		"open": {
-			"loop": "hold_on_last_frame",
-			"animation_length": 1,
-			"bones": {
-				"bone9": {
-					"position": {
-						"0.0": {
-							"vector": [0, 0, 0]
-						},
-						"1.0": {
-							"vector": [9, 0, 0]
-						}
-					}
-				}
-			}
-		},
-		"close": {
-			"loop": "hold_on_last_frame",
-			"animation_length": 1,
-			"bones": {
-				"bone9": {
-					"position": {
-						"0.0": {
-							"vector": [9, 0, 0]
-						},
-						"1.0": {
-							"vector": [0, 0, 0]
-						}
-					}
-				}
-			}
 		}
 	}
 }
