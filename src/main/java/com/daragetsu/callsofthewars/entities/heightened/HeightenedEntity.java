@@ -55,6 +55,7 @@ public class HeightenedEntity extends SoldierEntity{
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(3, new MagDumpGoal(this, 200, 200));
+        this.goalSelector.addGoal(4, new CallAirStrikeGoal(this));
     }
 
     @Override

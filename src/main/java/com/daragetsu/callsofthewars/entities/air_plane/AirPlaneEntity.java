@@ -82,6 +82,7 @@ public class AirPlaneEntity extends Monster implements FlyingAnimal, GeoEntity, 
         super.registerGoals();
         this.goalSelector.addGoal(3, new WanderGoal());
         this.goalSelector.addGoal(4, new AirDropGoal(this));
+        this.goalSelector.addGoal(2, new AirStrikeGoal(this));
     }
     protected PathNavigation createNavigation(Level p_level) {
         FlyingPathNavigation navigation = new FlyingPathNavigation(this, p_level);
@@ -97,11 +98,11 @@ public class AirPlaneEntity extends Monster implements FlyingAnimal, GeoEntity, 
         }
 
         public boolean canUse() {
-            return AirPlaneEntity.this.navigation.isDone();
+            return AirPlaneEntity.this.navigation.isDone() && !AirPlaneEntity.this.goalSelector.getRunningGoals().anyMatch((e)->{return e.getGoal() instanceof AirStrikeGoal;});
         }
 
         public boolean canContinueToUse() {
-            return AirPlaneEntity.this.navigation.isInProgress();
+            return AirPlaneEntity.this.navigation.isInProgress() && !AirPlaneEntity.this.goalSelector.getRunningGoals().anyMatch((e)->{return e.getGoal() instanceof AirStrikeGoal;});
         }
 
         public void start() {
