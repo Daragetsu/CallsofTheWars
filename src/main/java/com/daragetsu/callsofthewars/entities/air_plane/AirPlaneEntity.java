@@ -80,9 +80,10 @@ public class AirPlaneEntity extends Monster implements FlyingAnimal, GeoEntity, 
     @Override
     protected void registerGoals() {
         super.registerGoals();
+        this.goalSelector.addGoal(2, new AirStrikeGoal(this));
         this.goalSelector.addGoal(3, new WanderGoal());
         this.goalSelector.addGoal(4, new AirDropGoal(this));
-        this.goalSelector.addGoal(2, new AirStrikeGoal(this));
+        this.goalSelector.addGoal(5, new DeployParatroopersGoal(this));
     }
     protected PathNavigation createNavigation(Level p_level) {
         FlyingPathNavigation navigation = new FlyingPathNavigation(this, p_level);

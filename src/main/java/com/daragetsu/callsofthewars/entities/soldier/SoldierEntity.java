@@ -147,8 +147,10 @@ public class SoldierEntity extends GunnerEntity implements GeoEntity, VariantEnt
     @Override
     public int getVariant() {
         Variants v;
-        if((v = VariantEntity.VariantMap.get(this.getTeam().getColor()))!=null){
-            return v.get();
+        if(this.getTeam()!=null){
+            if((v = VariantEntity.VariantMap.get(this.getTeam().getColor()))!=null){
+                return v.get();
+            }
         }
         return Variants.Red.get();
     }

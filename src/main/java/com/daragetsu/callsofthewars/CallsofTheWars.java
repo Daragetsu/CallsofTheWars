@@ -89,6 +89,7 @@ public class CallsofTheWars
         if(event.getTabKey() == CreativeModeTabs.SPAWN_EGGS){
             event.accept(ModItems.SOLDIER_SPAWN_EGG);
             event.accept(ModItems.HEIGHTENED_SPAWN_EGG);
+            event.accept(ModItems.PARATROOPER_SPAWN_EGG);
         }
     }
 

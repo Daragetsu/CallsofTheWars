@@ -16,6 +16,7 @@ public class ModItems {
 
     public static final RegistryObject<SpawnEggItem> SOLDIER_SPAWN_EGG = ITEMS.register("soldier_spawn_egg", () -> new ForgeSpawnEggItem(ModEntities.SOLDIER, 0x990000, 0x990000, new Item.Properties()));
     public static final RegistryObject<SpawnEggItem> HEIGHTENED_SPAWN_EGG = ITEMS.register("heightened_spawn_egg", () -> new ForgeSpawnEggItem(ModEntities.HEIGHTENED, 0xFF0000, 0xFF0000, new Item.Properties()));
+    public static final RegistryObject<SpawnEggItem> PARATROOPER_SPAWN_EGG = ITEMS.register("paratrooper_spawn_egg", () -> new ForgeSpawnEggItem(ModEntities.PARATROOPER, 0xFF0000, 0xFF0000, new Item.Properties()));
     
     public static final void register(IEventBus eventBus){
         ITEMS.register(eventBus);

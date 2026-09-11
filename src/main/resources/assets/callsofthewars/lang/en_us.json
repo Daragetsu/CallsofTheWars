@@ -3,9 +3,12 @@
     "entity.callsofthewars.heightened": "Heightened",
     "entity.callsofthewars.mailer": "Mailer",
     "entity.callsofthewars.air_plane": "Air Plane",
+    "entity.callsofthewars.tank": "Tank",
+    "entity.callsofthewars.paratrooper": "Paratrooper",
 
     "item.callsofthewars.soldier_spawn_egg": "Soldier Spawn Egg",
     "item.callsofthewars.heightened_spawn_egg": "Heightened Spawn Egg",
+    "item.callsofthewars.paratrooper_spawn_egg": "Paratrooper Spawn Egg",
 
     "biome.callsofthewars.warring_states": "Warring States",
     "biome.callsofthewars.frozen_hellscape": "Land of The Snow",

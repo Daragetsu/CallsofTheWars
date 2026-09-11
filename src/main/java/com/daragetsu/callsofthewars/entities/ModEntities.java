@@ -1,6 +1,7 @@
 package com.daragetsu.callsofthewars.entities;
 
 import com.daragetsu.callsofthewars.CallsofTheWars;
+import com.daragetsu.callsofthewars.entities.soldier.ParatrooperEntity;
 import com.daragetsu.callsofthewars.entities.soldier.SoldierEntity;
 import com.daragetsu.callsofthewars.entities.air_plane.AirPlaneEntity;
 import com.daragetsu.callsofthewars.entities.common.client.VariantEntityRenderer;
@@ -40,6 +41,7 @@ import top.ribs.scguns.common.headshot.BasicHeadshotBox;
 public class ModEntities {
     public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, CallsofTheWars.MOD_ID);
     public static final RegistryObject<EntityType<SoldierEntity>> SOLDIER = ENTITY_TYPES.register("soldier", () -> EntityType.Builder.of(SoldierEntity::new, MobCategory.CREATURE).sized(0.6F, 2F).build("soldier"));
+    public static final RegistryObject<EntityType<ParatrooperEntity>> PARATROOPER = ENTITY_TYPES.register("paratrooper", () -> EntityType.Builder.of(ParatrooperEntity::new, MobCategory.CREATURE).sized(0.6F, 2F).build("paratrooper"));
     public static final RegistryObject<EntityType<HeightenedEntity>> HEIGHTENED = ENTITY_TYPES.register("heightened", () -> EntityType.Builder.of(HeightenedEntity::new, MobCategory.CREATURE).sized(0.6F, 2F).build("heightened"));
     
     public static final RegistryObject<EntityType<UnitSpawnerEntity>> UNIT_SPAWNER = ENTITY_TYPES.register("unit_spawner", () -> EntityType.Builder.of(UnitSpawnerEntity::new, MobCategory.CREATURE).sized(0.3F, 0.3F).build("unit_spawner"));
@@ -65,6 +67,7 @@ public class ModEntities {
     }
     private static void registerAttributes(EntityAttributeCreationEvent event) {
         event.put(ModEntities.SOLDIER.get(), SoldierEntity.createAttributes().build());
+        event.put(ModEntities.PARATROOPER.get(), SoldierEntity.createAttributes().build());
         event.put(ModEntities.HEIGHTENED.get(), HeightenedEntity.createAttributes().build());
         event.put(ModEntities.UNIT_SPAWNER.get(), SoldierEntity.createAttributes().build());
         event.put(ModEntities.CONTAINER_ENTITY.get(), SoldierEntity.createAttributes().build());
@@ -75,6 +78,7 @@ public class ModEntities {
 
     private static void onCommonSetup(FMLCommonSetupEvent event) {
         BoundingBoxManager.registerHeadshotBox(ModEntities.SOLDIER.get(), new BasicHeadshotBox<>((double)8.0F, (double)24.0F));
+        BoundingBoxManager.registerHeadshotBox(ModEntities.PARATROOPER.get(), new BasicHeadshotBox<>((double)8.0F, (double)24.0F));
         BoundingBoxManager.registerHeadshotBox(ModEntities.HEIGHTENED.get(), new BasicHeadshotBox<>((double)8.0F, (double)24.0F));
         BoundingBoxManager.registerHeadshotBox(ModEntities.MAILER.get(), new BasicHeadshotBox<>((double)8.0F, (double)24.0F));
     }
@@ -82,6 +86,8 @@ public class ModEntities {
     @OnlyIn(value = Dist.CLIENT)
     private static void onClientSetup(FMLClientSetupEvent event) {
         EntityRenderers.register(ModEntities.SOLDIER.get(), (ctx) -> new VariantEntityRenderer<>(ctx, "soldier"));
+
+        EntityRenderers.register(ModEntities.PARATROOPER.get(), (ctx) -> new VariantEntityRenderer<>(ctx, "paratrooper"));
         
         EntityRenderers.register(ModEntities.HEIGHTENED.get(), (ctx) -> new VariantEntityRenderer<>(ctx, "soldier"));
         
