@@ -23,7 +23,7 @@ public class ProjectileEntity extends AbstractArrow implements GeoEntity{
     @Override
     protected void onHitEntity(EntityHitResult result) {
         if(!this.level().isClientSide()){
-            this.level().explode(this, this.getX(), this.getY(), this.getZ(), 5, ExplosionInteraction.TNT);
+            this.level().explode(this, this.getX(), this.getY(), this.getZ(), 5, ExplosionInteraction.MOB);
             this.discard();
         }
     }
@@ -31,7 +31,7 @@ public class ProjectileEntity extends AbstractArrow implements GeoEntity{
     @Override
     protected void onHitBlock(BlockHitResult result) {
         if(!this.level().isClientSide()){
-            this.level().explode(this, this.getX(), this.getY(), this.getZ(), 5, ExplosionInteraction.TNT);
+            this.level().explode(this, this.getX(), this.getY(), this.getZ(), 5, ExplosionInteraction.MOB);
             this.discard();
         }
     }
