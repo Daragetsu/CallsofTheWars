@@ -68,6 +68,9 @@ public class SoldierEntity extends GunnerEntity implements GeoEntity, VariantEnt
     public void registerControllers(ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(this, "walk/idle/aim", 2,
                 state -> {
+                    if(state.getAnimatable().isPassenger()){
+                        return state.setAndContinue(RawAnimation.begin().thenLoop("sit"));
+                    }
                     if(((this.getX() - this.xo)*(this.getX() - this.xo))+((this.getZ() - this.zo)*(this.getZ() - this.zo))>0.0002){
                         if(state.getAnimatable().isAiming()){
                             return state.setAndContinue(RawAnimation.begin().thenPlay("walk_aim"));

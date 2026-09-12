@@ -59,9 +59,8 @@ public class TankEntity extends Mob implements GeoEntity, VariantEntity {
                 .add(Attributes.MOVEMENT_SPEED, 0.1F)
                 .add(Attributes.ATTACK_DAMAGE, 2.0D)
                 .add(Attributes.ARMOR, 10D)
-                .add(Attributes.MAX_HEALTH, 50.0D)
-                .add(Attributes.KNOCKBACK_RESISTANCE, 999.0D)
-                ;
+                .add(Attributes.MAX_HEALTH, 150.0D)
+                .add(Attributes.KNOCKBACK_RESISTANCE, 999.0D);
     }
 
     @Override
