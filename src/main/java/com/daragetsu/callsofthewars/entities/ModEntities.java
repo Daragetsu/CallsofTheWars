@@ -121,7 +121,7 @@ public class ModEntities {
             ModEntities.TANK.get(),
             SpawnPlacements.Type.ON_GROUND,
             Heightmap.Types.WORLD_SURFACE,
-            (type, level, spawnType, pos, random) -> true,
+            TankEntity::checkMonsterSpawnRules,
             SpawnPlacementRegisterEvent.Operation.REPLACE
         );
     }

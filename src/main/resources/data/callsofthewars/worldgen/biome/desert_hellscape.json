@@ -63,6 +63,12 @@
           "weight": 1
         },
         {
+          "type": "callsofthewars:tank",
+          "maxCount": 1,
+          "minCount": 1,
+          "weight": 1
+        },
+        {
           "type": "scguns:cog_minion",
           "maxCount": 1,
           "minCount": 1,
