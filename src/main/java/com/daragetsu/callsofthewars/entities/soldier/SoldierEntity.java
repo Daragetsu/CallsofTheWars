@@ -1,12 +1,11 @@
 package com.daragetsu.callsofthewars.entities.soldier;
 
+import com.daragetsu.callsofthewars.common.util.TeamHandler;
 import com.daragetsu.callsofthewars.entities.common.GunnerEntity;
 import com.daragetsu.callsofthewars.entities.common.VariantEntity;
 
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.server.ServerScoreboard;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
@@ -26,7 +25,6 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.scores.PlayerTeam;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimationController;
@@ -119,39 +117,12 @@ public class SoldierEntity extends GunnerEntity implements GeoEntity, VariantEnt
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType reason,
             SpawnGroupData spawnData, CompoundTag dataTag) {
-        ServerScoreboard scoreboard = level.getServer().getScoreboard();
-        PlayerTeam redTeam = scoreboard.getPlayerTeam("red");
-        PlayerTeam greenTeam = scoreboard.getPlayerTeam("green");
-        PlayerTeam blueTeam = scoreboard.getPlayerTeam("blue");
-        if(redTeam==null){
-            redTeam = scoreboard.addPlayerTeam("red");
-            redTeam.setColor(ChatFormatting.RED);
-        }
-        if(greenTeam==null){
-            greenTeam = scoreboard.addPlayerTeam("green");
-            greenTeam.setColor(ChatFormatting.GREEN);
-        }
-        if(blueTeam==null){
-            blueTeam = scoreboard.addPlayerTeam("blue");
-            blueTeam.setColor(ChatFormatting.BLUE);
-        }
-        PlayerTeam[] teams = {
-            redTeam,
-            greenTeam,
-            blueTeam
-        };
-        level.getServer().getScoreboard().addPlayerToTeam(this.getStringUUID(), teams[this.random.nextInt(teams.length)]);
+        TeamHandler.AddToTeam(level.getLevel(), this);
         return super.finalizeSpawn(level, difficulty, reason, spawnData, dataTag);
     }
 
     @Override
     public int getVariant() {
-        Variants v;
-        if(this.getTeam()!=null){
-            if((v = VariantEntity.VariantMap.get(this.getTeam().getColor()))!=null){
-                return v.get();
-            }
-        }
-        return Variants.Red.get();
+        return TeamHandler.getVariant(this);
     }
 }

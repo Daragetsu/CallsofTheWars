@@ -3,17 +3,16 @@ package com.daragetsu.callsofthewars.entities.tank;
 
 import javax.annotation.Nullable;
 
+import com.daragetsu.callsofthewars.common.util.TeamHandler;
 import com.daragetsu.callsofthewars.entities.ModEntities;
 import com.daragetsu.callsofthewars.entities.common.VariantEntity;
 
-import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.server.ServerScoreboard;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -233,40 +232,13 @@ public class TankEntity extends Mob implements GeoEntity, VariantEntity {
 
     @Override
     public int getVariant() {
-        Variants v;
-        if(this.getTeam()!=null){
-            if((v = VariantEntity.VariantMap.get(this.getTeam().getColor()))!=null){
-                return v.get();
-            }
-        }
-        return Variants.Red.get();
+        return TeamHandler.getVariant(this);
     }
-    //TODO: MAKE TEAM ASSIGNING A COMMON METHOD SOMEWHERE
+    @SuppressWarnings("deprecation")
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType reason,
             SpawnGroupData spawnData, CompoundTag dataTag) {
-        ServerScoreboard scoreboard = level.getServer().getScoreboard();
-        PlayerTeam redTeam = scoreboard.getPlayerTeam("red");
-        PlayerTeam greenTeam = scoreboard.getPlayerTeam("green");
-        PlayerTeam blueTeam = scoreboard.getPlayerTeam("blue");
-        if(redTeam==null){
-            redTeam = scoreboard.addPlayerTeam("red");
-            redTeam.setColor(ChatFormatting.RED);
-        }
-        if(greenTeam==null){
-            greenTeam = scoreboard.addPlayerTeam("green");
-            greenTeam.setColor(ChatFormatting.GREEN);
-        }
-        if(blueTeam==null){
-            blueTeam = scoreboard.addPlayerTeam("blue");
-            blueTeam.setColor(ChatFormatting.BLUE);
-        }
-        PlayerTeam[] teams = {
-            redTeam,
-            greenTeam,
-            blueTeam
-        };
-        level.getServer().getScoreboard().addPlayerToTeam(this.getStringUUID(), teams[this.random.nextInt(teams.length)]);
+        TeamHandler.AddToTeam(level.getLevel(), this);
         return super.finalizeSpawn(level, difficulty, reason, spawnData, dataTag);
     }
 }
