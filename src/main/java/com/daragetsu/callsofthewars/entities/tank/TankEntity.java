@@ -4,11 +4,17 @@ package com.daragetsu.callsofthewars.entities.tank;
 import javax.annotation.Nullable;
 
 import com.daragetsu.callsofthewars.entities.ModEntities;
+import com.daragetsu.callsofthewars.entities.common.VariantEntity;
 
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.ServerScoreboard;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -16,6 +22,8 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
@@ -28,10 +36,12 @@ import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.scores.PlayerTeam;
 
-public class TankEntity extends Mob implements GeoEntity {
+public class TankEntity extends Mob implements GeoEntity, VariantEntity {
 
     public static final RawAnimation FIRE_ANIM = RawAnimation.begin().thenPlay("fire");
     private int COOLDOWN_TIME = 100;
@@ -90,7 +100,7 @@ public class TankEntity extends Mob implements GeoEntity {
     }
 
     public double getPassengersRidingOffset() {
-        return 0.3;
+        return 0.15;
     }
 
     @Override
@@ -141,6 +151,12 @@ public class TankEntity extends Mob implements GeoEntity {
             }
             if(this.canAddPassenger(player)){
                 player.startRiding(this);
+                if(!player.level().isClientSide() && player.getTeam()!=null){
+                    player.level().getScoreboard().addPlayerToTeam(this.getStringUUID(), (PlayerTeam)player.getTeam());
+                }
+                if(player.level().isClientSide()){
+                    Minecraft.getInstance().player.displayClientMessage(Component.literal("Right Click to fire, 5 seconds cooldown"), true);
+                }
                 return InteractionResult.SUCCESS;
             }
         }
@@ -189,7 +205,7 @@ public class TankEntity extends Mob implements GeoEntity {
         if(!this.level().isClientSide()){
             ProjectileEntity entity = new ProjectileEntity(ModEntities.TANK_PROJECTILE.get(), this.level());
             entity.moveTo(this.getX(), this.getY()+3, this.getZ());
-            entity.shootFromRotation(this, 0.0f, this.getYRot(), 0.0F, 2F, 0.3F);
+            entity.shootFromRotation(this, 0.0f, this.getYRot(), 0.0F, 3F, 0.3F);
             entity.setOwner(this.getPassengers().get(0));
             this.level().addFreshEntity(entity);
             this.addCooldown();
@@ -213,5 +229,44 @@ public class TankEntity extends Mob implements GeoEntity {
         super.registerGoals();
         this.goalSelector.addGoal(0, new TankFireGoal(this));
         this.goalSelector.addGoal(1, new TrampleGoal(this));
+    }
+
+    @Override
+    public int getVariant() {
+        Variants v;
+        if(this.getTeam()!=null){
+            if((v = VariantEntity.VariantMap.get(this.getTeam().getColor()))!=null){
+                return v.get();
+            }
+        }
+        return Variants.Red.get();
+    }
+    //TODO: MAKE TEAM ASSIGNING A COMMON METHOD SOMEWHERE
+    @Override
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType reason,
+            SpawnGroupData spawnData, CompoundTag dataTag) {
+        ServerScoreboard scoreboard = level.getServer().getScoreboard();
+        PlayerTeam redTeam = scoreboard.getPlayerTeam("red");
+        PlayerTeam greenTeam = scoreboard.getPlayerTeam("green");
+        PlayerTeam blueTeam = scoreboard.getPlayerTeam("blue");
+        if(redTeam==null){
+            redTeam = scoreboard.addPlayerTeam("red");
+            redTeam.setColor(ChatFormatting.RED);
+        }
+        if(greenTeam==null){
+            greenTeam = scoreboard.addPlayerTeam("green");
+            greenTeam.setColor(ChatFormatting.GREEN);
+        }
+        if(blueTeam==null){
+            blueTeam = scoreboard.addPlayerTeam("blue");
+            blueTeam.setColor(ChatFormatting.BLUE);
+        }
+        PlayerTeam[] teams = {
+            redTeam,
+            greenTeam,
+            blueTeam
+        };
+        level.getServer().getScoreboard().addPlayerToTeam(this.getStringUUID(), teams[this.random.nextInt(teams.length)]);
+        return super.finalizeSpawn(level, difficulty, reason, spawnData, dataTag);
     }
 }

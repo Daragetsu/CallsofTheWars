@@ -90,6 +90,8 @@ public class CallsofTheWars
             event.accept(ModItems.SOLDIER_SPAWN_EGG);
             event.accept(ModItems.HEIGHTENED_SPAWN_EGG);
             event.accept(ModItems.PARATROOPER_SPAWN_EGG);
+            event.accept(ModItems.TANK_SPAWN_EGG);
+            event.accept(ModItems.AIR_PLANE_SPAWN_EGG);
         }
     }
 
