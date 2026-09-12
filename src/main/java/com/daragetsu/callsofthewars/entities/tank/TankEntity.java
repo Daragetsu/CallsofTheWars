@@ -6,6 +6,7 @@ import javax.annotation.Nullable;
 import com.daragetsu.callsofthewars.common.util.TeamHandler;
 import com.daragetsu.callsofthewars.entities.ModEntities;
 import com.daragetsu.callsofthewars.entities.common.VariantEntity;
+import com.daragetsu.callsofthewars.entities.soldier.SoldierEntity;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
@@ -234,11 +235,15 @@ public class TankEntity extends Mob implements GeoEntity, VariantEntity {
     public int getVariant() {
         return TeamHandler.getVariant(this);
     }
+
     @SuppressWarnings("deprecation")
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType reason,
             SpawnGroupData spawnData, CompoundTag dataTag) {
         TeamHandler.AddToTeam(level.getLevel(), this);
+        SoldierEntity entity = ModEntities.SOLDIER.get().spawn(level.getLevel(), this.blockPosition(), reason);
+        TeamHandler.AddToTeam(level.getLevel(), entity, this.getTeam());
+        entity.startRiding(this);
         return super.finalizeSpawn(level, difficulty, reason, spawnData, dataTag);
     }
 }
