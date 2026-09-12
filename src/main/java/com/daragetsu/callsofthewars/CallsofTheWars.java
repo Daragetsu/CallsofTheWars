@@ -35,6 +35,7 @@ import net.minecraft.world.entity.Entity.RemovalReason;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.storage.LevelResource;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.scores.Objective;
 import net.minecraft.world.scores.criteria.ObjectiveCriteria;
@@ -49,6 +50,7 @@ import net.minecraftforge.event.TickEvent.ClientTickEvent;
 import net.minecraftforge.event.TickEvent.ServerTickEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -61,6 +63,13 @@ import top.ribs.scguns.entity.monster.CogMinionEntity;
 import top.ribs.scguns.event.ModCommonEventBus;
 
 import java.util.Map;
+import java.util.stream.Stream;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.FileVisitOption;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Comparator;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -146,5 +155,21 @@ public class CallsofTheWars
     @SubscribeEvent
     public void onRegisterReloadListeners(AddReloadListenerEvent event) {
         event.addListener(new ConflictZonesDataManager());
+    }
+    @SubscribeEvent
+    public void onServerStarting(ServerStartingEvent event) {
+        MinecraftServer server = event.getServer();
+        File dimensions = new File(server.getWorldPath(LevelResource.ROOT).toFile(), "dimensions/"+MOD_ID);
+        try (Stream<Path> paths = Files.walk(dimensions.toPath())) {
+            paths.sorted(Comparator.reverseOrder()).forEach(file -> {
+                try {
+                    file.toFile().delete();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
