@@ -15,8 +15,11 @@ so what are you waiting for? go and win!
 Special thanks to [Krei](https://github.com/rekales), a bit of his code was used for this project
 
 Special thanks to [FootballHead](https://www.curseforge.com/members/footballhead/projects) for the new Tank Models!
+
 Special thanks to [Albatroz_Feroz](https://www.curseforge.com/members/albatroz_feroz/projects) for the new Air Plane Models!
+
 Special thanks to [FootballHead](https://www.curseforge.com/members/footballhead/projects) for the new Soldier Models!
+
 Special thanks to [FootballHead](https://www.curseforge.com/members/footballhead/projects) for the new Heightened Models!
 
 ---
