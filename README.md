@@ -14,11 +14,14 @@ so what are you waiting for? go and win!
 
 Special thanks to [Krei](https://github.com/rekales), a bit of his code was used for this project
 
-
+Special thanks to [FootballHead](https://www.curseforge.com/members/footballhead/projects) for the new Tank Models!
+Special thanks to [Albatroz_Feroz](https://www.curseforge.com/members/albatroz_feroz/projects) for the new Air Plane Models!
+Special thanks to [FootballHead](https://www.curseforge.com/members/footballhead/projects) for the new Soldier Models!
+Special thanks to [FootballHead](https://www.curseforge.com/members/footballhead/projects) for the new Heightened Models!
 
 ---
 
-for the devs, if you are wondering why there's so many dimensions entries for the 3 biomes, it's because minecraft only allows one instance for each dimension per world, and I couldn't figure out how to make it reset the dimension every 'enlist' so I just made this many entries so it's random enough to not feel repetitive and also because every player is currently sent to a different dimension
+for the devs, if you are wondering why there's so many dimensions entries for the 3 biomes, it's because minecraft only allows one instance for each dimension per world, and resetting per enlist is hard and I'm pretty sure it will cause issues so I just made this many entries so it's random enough to not feel repetitive and also because every player is currently sent to a different dimension
 
 
 ## License
