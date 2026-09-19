@@ -10,11 +10,13 @@ import com.daragetsu.callsofthewars.entities.soldier.SoldierEntity;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
@@ -48,6 +50,8 @@ public class TankEntity extends Mob implements GeoEntity, VariantEntity {
 
     public static final RawAnimation FIRE_ANIM = RawAnimation.begin().thenPlay("fire");
     private int COOLDOWN_TIME = 100;
+
+    public static final Vec3 EXHAUST = new Vec3(1D/16.0D, 40D/16.0D, -14.5D/16.0D);
 
     public static final EntityDataAccessor<Long> CAN_FIRE_AFTER = SynchedEntityData.defineId(TankEntity.class, EntityDataSerializers.LONG);
 
@@ -250,5 +254,11 @@ public class TankEntity extends Mob implements GeoEntity, VariantEntity {
     }
     public static boolean checkMonsterSpawnRules(EntityType<? extends TankEntity> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
         return level.getDifficulty() != Difficulty.PEACEFUL && checkMobSpawnRules(type, level, spawnType, pos, random) && random.nextInt(100)<3;
+    }
+    @Override
+    public void tick() {
+        super.tick();
+        Vec3 ex_pos = this.position().add(TankEntity.EXHAUST.yRot(-this.yBodyRot * Mth.DEG_TO_RAD));
+        for(int i = 0; i < 5; i++)this.level().addAlwaysVisibleParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, ex_pos.x, ex_pos.y, ex_pos.z, 0, 0.2, 0);
     }
 }
