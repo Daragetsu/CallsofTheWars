@@ -9,6 +9,7 @@ import com.daragetsu.callsofthewars.entities.common.VariantEntity;
 
 import net.minecraft.commands.arguments.EntityAnchorArgument.Anchor;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.EntityType;
@@ -89,6 +90,7 @@ public class AirPlaneEntity extends Monster implements FlyingAnimal, GeoEntity, 
         navigation.setCanPassDoors(true);
         return navigation;
     }
+    
     class WanderGoal extends Goal {
         Vec3 goTo = null;
         WanderGoal() {
@@ -162,5 +164,10 @@ public class AirPlaneEntity extends Monster implements FlyingAnimal, GeoEntity, 
     @Override
     public int getVariant() {
         return TeamHandler.getVariant(this);
+    }
+    @Override
+    public void tick() {
+        super.tick();
+        for(int i = 0; i < 5; i++)this.level().addAlwaysVisibleParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, this.getX(), this.getY(), this.getZ(), 0, 0, 0);
     }
 }
