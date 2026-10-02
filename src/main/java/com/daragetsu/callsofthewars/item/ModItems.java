@@ -1,8 +1,10 @@
 package com.daragetsu.callsofthewars.item;
 
 import com.daragetsu.callsofthewars.CallsofTheWars;
+import com.daragetsu.callsofthewars.block.ModBlocks;
 import com.daragetsu.callsofthewars.entities.ModEntities;
 
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SpawnEggItem;
 import net.minecraftforge.common.ForgeSpawnEggItem;
@@ -19,6 +21,7 @@ public class ModItems {
     public static final RegistryObject<SpawnEggItem> PARATROOPER_SPAWN_EGG = ITEMS.register("paratrooper_spawn_egg", () -> new ForgeSpawnEggItem(ModEntities.PARATROOPER, 0x990099, 0x990099, new Item.Properties()));
     public static final RegistryObject<SpawnEggItem> TANK_SPAWN_EGG = ITEMS.register("tank_spawn_egg", () -> new ForgeSpawnEggItem(ModEntities.TANK, 0x111111, 0x111111, new Item.Properties()));
     public static final RegistryObject<SpawnEggItem> AIR_PLANE_SPAWN_EGG = ITEMS.register("air_plane_spawn_egg", () -> new ForgeSpawnEggItem(ModEntities.AIR_PLANE, 0x555555, 0x555555, new Item.Properties()));
+    public static final RegistryObject<BlockItem> BOSS_MUSIC_BLOCK_ITEM = ITEMS.register("boss_music_block", () -> new BlockItem(ModBlocks.BOSS_MUSIC_BLOCK.get(), new Item.Properties()));
     
     public static final void register(IEventBus eventBus){
         ITEMS.register(eventBus);

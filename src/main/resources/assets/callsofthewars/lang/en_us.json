@@ -11,6 +11,9 @@
     "item.callsofthewars.paratrooper_spawn_egg": "Paratrooper Spawn Egg",
     "item.callsofthewars.tank_spawn_egg": "Tank Spawn Egg",
     "item.callsofthewars.air_plane_spawn_egg": "Air Plane Spawn Egg",
+    "item.callsofthewars.boss_music_block": "Boss Music Block",
+    
+    "block.callsofthewars.boss_music_block": "Boss Music Block",
 
     "biome.callsofthewars.warring_states": "Warring States",
     "biome.callsofthewars.frozen_hellscape": "Land of The Snow",

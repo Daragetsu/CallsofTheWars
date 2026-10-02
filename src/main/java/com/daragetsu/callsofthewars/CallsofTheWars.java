@@ -1,5 +1,6 @@
 package com.daragetsu.callsofthewars;
 
+import com.daragetsu.callsofthewars.block.ModBlocks;
 import com.daragetsu.callsofthewars.common.util.EnlistHandler;
 import com.daragetsu.callsofthewars.common.util.RewardHandler;
 import com.daragetsu.callsofthewars.data.ConflictZonesDataManager;
@@ -7,6 +8,7 @@ import com.daragetsu.callsofthewars.entities.ModEntities;
 import com.daragetsu.callsofthewars.entities.soldier.SoldierEntity;
 import com.daragetsu.callsofthewars.entities.container.ContainerEntity;
 import com.daragetsu.callsofthewars.item.ModItems;
+import com.daragetsu.callsofthewars.sounds.ModSounds;
 import com.daragetsu.callsofthewars.worldgen.structure.ModStructureProcessors;
 import com.daragetsu.callsofthewars.worldgen.structure.ModStructures;
 import com.mojang.brigadier.CommandDispatcher;
@@ -88,6 +90,8 @@ public class CallsofTheWars
         ModEntities.register(modEventBus);
         ModItems.register(modEventBus);
         ModStructures.register(modEventBus);
+        ModBlocks.register(modEventBus);
+        ModSounds.register(modEventBus);
         ModStructureProcessors.register(modEventBus);
         MinecraftForge.EVENT_BUS.register(this);
 
@@ -101,6 +105,9 @@ public class CallsofTheWars
             event.accept(ModItems.PARATROOPER_SPAWN_EGG);
             event.accept(ModItems.TANK_SPAWN_EGG);
             event.accept(ModItems.AIR_PLANE_SPAWN_EGG);
+        }
+        if(event.getTabKey() == CreativeModeTabs.FUNCTIONAL_BLOCKS){
+            event.accept(ModBlocks.BOSS_MUSIC_BLOCK);
         }
     }
 
