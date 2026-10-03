@@ -34,11 +34,14 @@ import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache
 import software.bernie.geckolib.core.animation.AnimatableManager.ControllerRegistrar;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class GeneralEntity extends GunnerEntity implements GeoEntity, VariantEntity{
     
     private final AnimatableInstanceCache geocache = GeckoLibUtil.createInstanceCache(this);
+
+    private static final RawAnimation AIMING = RawAnimation.begin().thenPlayAndHold("idle_shoot");
 
     private final ServerBossEvent bossEvent =
             new ServerBossEvent(this.getDisplayName(), BossEvent.BossBarColor.BLUE, BossEvent.BossBarOverlay.PROGRESS);
@@ -66,6 +69,7 @@ public class GeneralEntity extends GunnerEntity implements GeoEntity, VariantEnt
                 soldier -> !(((SoldierEntity) soldier).isAlliedTo(this))));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Monster.class, 1, true, false,
                 entity -> !(((entity instanceof SoldierEntity)))));
+        this.targetSelector.addGoal(2, new SummonReinforcementsGoal(this, 400, 5, 1, 20, 10));
         this.targetSelector.addGoal(2, new HurtByTargetGoal(this));
         this.goalSelector.addGoal(3, new WaterAvoidingRandomStrollGoal(this, 0.4f));
         this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 10));
@@ -75,22 +79,41 @@ public class GeneralEntity extends GunnerEntity implements GeoEntity, VariantEnt
     public void registerControllers(ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(this, "walk/idle/aim", 2,
                 state -> {
-                    if(state.getAnimatable().isPassenger()){
-                        return state.setAndContinue(RawAnimation.begin().thenLoop("sit"));
-                    }
-                    if(((this.getX() - this.xo)*(this.getX() - this.xo))+((this.getZ() - this.zo)*(this.getZ() - this.zo))>0.0002){
-                        if(state.getAnimatable().isAiming()){
-                            return state.setAndContinue(RawAnimation.begin().thenPlay("walk_aim"));
+                    if (state.getAnimatable().isAiming()) {
+                        if(((this.getX() - this.xo)*(this.getX() - this.xo))+((this.getZ() - this.zo)*(this.getZ() - this.zo))>0.0002){
+                            return state.setAndContinue(RawAnimation.begin().thenLoop("walk_holding_aim"));
                         }else{
-                            return state.setAndContinue(RawAnimation.begin().thenPlay("walk_idle"));
+                            return state.setAndContinue(AIMING);
+                        }
+                    } else {
+                        RawAnimation anim = RawAnimation.begin();
+                        if (state.isCurrentAnimation(AIMING)) {
+                            anim = anim.thenPlay("shoot_idle");
+                        }
+                        if (((this.getX() - this.xo)*(this.getX() - this.xo))+((this.getZ() - this.zo)*(this.getZ() - this.zo))>0.0002){
+                            return state.setAndContinue(anim.thenLoop("walk"));
+                        } else {
+                            return state.setAndContinue(RawAnimation.begin()
+                                .thenLoop("idle"));
                         }
                     }
-                    if(state.getAnimatable().isAiming()){
-                        return state.setAndContinue(RawAnimation.begin().thenPlay("aim"));
-                    }
-                    return state.setAndContinue(RawAnimation.begin().thenPlay("idle"));
                 }
         ).setAnimationSpeed(1.3));
+        controllers.add(new AnimationController<>(this, "death", 2, state -> {
+            if (state.getAnimatable().isDeadOrDying()) {
+                return state.setAndContinue(RawAnimation.begin().thenPlayAndHold("death"));
+            } else {
+                return PlayState.STOP;
+            }
+        }));
+        controllers.add(new AnimationController<>(this, "phase", 2, state -> {
+            if (state.getAnimatable().isDeadOrDying()) {
+                return state.setAndContinue(RawAnimation.begin().thenPlayAndHold("phase_2"));
+            }
+            return PlayState.CONTINUE;
+        }));
+        controllers.add(new AnimationController<>(this, "summon", 0, state -> PlayState.CONTINUE)
+        .triggerableAnim("summon_reinforcements", RawAnimation.begin().thenPlay("summon_reinforcements")));
     }
 
     @Override
