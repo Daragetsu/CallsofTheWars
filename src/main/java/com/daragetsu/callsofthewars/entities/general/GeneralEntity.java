@@ -14,6 +14,8 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobSpawnType;
@@ -42,6 +44,9 @@ public class GeneralEntity extends GunnerEntity implements GeoEntity, VariantEnt
     private final AnimatableInstanceCache geocache = GeckoLibUtil.createInstanceCache(this);
 
     private static final RawAnimation AIMING = RawAnimation.begin().thenPlayAndHold("idle_shoot");
+
+    private boolean played = false;
+    private int ticksSince = 0;
 
     private final ServerBossEvent bossEvent =
             new ServerBossEvent(this.getDisplayName(), BossEvent.BossBarColor.BLUE, BossEvent.BossBarOverlay.PROGRESS);
@@ -106,12 +111,8 @@ public class GeneralEntity extends GunnerEntity implements GeoEntity, VariantEnt
                 return PlayState.STOP;
             }
         }));
-        controllers.add(new AnimationController<>(this, "phase", 2, state -> {
-            if (state.getAnimatable().isDeadOrDying()) {
-                return state.setAndContinue(RawAnimation.begin().thenPlayAndHold("phase_2"));
-            }
-            return PlayState.CONTINUE;
-        }));
+        controllers.add(new AnimationController<>(this, "phase", 0, state -> PlayState.CONTINUE)
+        .triggerableAnim("phase_2", RawAnimation.begin().thenPlay("phase_2")));
         controllers.add(new AnimationController<>(this, "summon", 0, state -> PlayState.CONTINUE)
         .triggerableAnim("summon_reinforcements", RawAnimation.begin().thenPlay("summon_reinforcements")));
     }
@@ -121,9 +122,12 @@ public class GeneralEntity extends GunnerEntity implements GeoEntity, VariantEnt
         return this.geocache;
     }
 
-    @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
+    private boolean hasPlayed(){
+        return this.played;
+    }
+
+    private void setPlayed(boolean bool){
+        this.played = bool;
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -131,7 +135,7 @@ public class GeneralEntity extends GunnerEntity implements GeoEntity, VariantEnt
                 .add(Attributes.FOLLOW_RANGE, 48.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.4F)
                 .add(Attributes.ATTACK_DAMAGE, 2.0D)
-                .add(Attributes.ARMOR, 10D)
+                .add(Attributes.ARMOR, 20D)
                 .add(Attributes.MAX_HEALTH, 200.0D);
     }
     public static boolean checkMonsterSpawnRules(EntityType<? extends Monster> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
@@ -162,7 +166,16 @@ public class GeneralEntity extends GunnerEntity implements GeoEntity, VariantEnt
     @Override
     public void tick() {
         super.tick();
-        if(!this.level().isClientSide())this.bossEvent.setProgress(this.getHealth() / this.getMaxHealth());
+        if(this.level().isClientSide())return;
+        this.bossEvent.setProgress(this.getHealth() / this.getMaxHealth());
+        if(this.hasPlayed())this.ticksSince++;
+        if((this.getHealth() < (this.getMaxHealth() * 0.1)) && !this.hasPlayed()){
+            this.triggerAnim("phase", "phase_2");
+            this.setPlayed(true);
+        }
+        if(this.ticksSince == 40){
+            this.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 100, 60));
+        }
     }
     
     @Override
@@ -187,4 +200,5 @@ public class GeneralEntity extends GunnerEntity implements GeoEntity, VariantEnt
     public boolean removeWhenFarAway(double distance) {
         return false;
     }
+    
 }
