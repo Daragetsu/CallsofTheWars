@@ -105,6 +105,7 @@ public class CallsofTheWars
             event.accept(ModItems.PARATROOPER_SPAWN_EGG);
             event.accept(ModItems.TANK_SPAWN_EGG);
             event.accept(ModItems.AIR_PLANE_SPAWN_EGG);
+            event.accept(ModItems.GENERAL_SPAWN_EGG);
         }
         if(event.getTabKey() == CreativeModeTabs.FUNCTIONAL_BLOCKS){
             event.accept(ModBlocks.BOSS_MUSIC_BLOCK);

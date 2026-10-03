@@ -26,6 +26,7 @@ public class AirStrikeGoal extends Goal{
         super.tick();
         if(this.plane.getTarget()==null)return;
         Vec3 pos = this.plane.getTarget().position();
+        if(this.plane.getNavigation().getTargetPos() == null)return;
         if(this.plane.getNavigation().getTargetPos().distToCenterSqr(pos.x, this.plane.getY(), pos.z)>20){
             this.plane.getNavigation().moveTo(pos.x, this.plane.getY(), pos.z, 1);
         }
