@@ -14,6 +14,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.BossEvent.BossBarColor;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -164,6 +165,20 @@ public class GeneralEntity extends GunnerEntity implements GeoEntity, VariantEnt
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType reason,
             SpawnGroupData spawnData, CompoundTag dataTag) {
         TeamHandler.AddToTeam(level.getLevel(), this);
+        switch (this.getTeamColor()) {
+            case 16733525:
+                bossEvent.setColor(BossBarColor.RED);
+                break;
+            case 5635925:
+                bossEvent.setColor(BossBarColor.GREEN);
+                break;
+            case 5592575:
+                bossEvent.setColor(BossBarColor.BLUE);
+                break;
+            default:
+                bossEvent.setColor(BossBarColor.RED);
+                break;
+        };
         return super.finalizeSpawn(level, difficulty, reason, spawnData, dataTag);
     }
 
