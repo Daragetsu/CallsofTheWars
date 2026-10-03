@@ -40,6 +40,7 @@ public class TeamHandler {
     }
     public static <T extends LivingEntity & VariantEntity> int getVariant(T entity){
         Variants v;
+        if(entity.getTeam()==null)return Variants.Red.get();
         if((v = VariantEntity.VariantMap.get(entity.getTeam().getColor()))!=null){
             return v.get();
         }

@@ -14,6 +14,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
@@ -31,6 +32,7 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.phys.Vec3;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager.ControllerRegistrar;
@@ -47,6 +49,9 @@ public class GeneralEntity extends GunnerEntity implements GeoEntity, VariantEnt
 
     private boolean played = false;
     private int ticksSince = 0;
+    public boolean isAuraFarming = false;;
+
+    public static final Vec3 EXHAUST = new Vec3(-1D/16.0D, 12D/16.0D, -5.5D/16.0D);
 
     private final ServerBossEvent bossEvent =
             new ServerBossEvent(this.getDisplayName(), BossEvent.BossBarColor.BLUE, BossEvent.BossBarOverlay.PROGRESS);
@@ -78,6 +83,7 @@ public class GeneralEntity extends GunnerEntity implements GeoEntity, VariantEnt
         this.targetSelector.addGoal(2, new HurtByTargetGoal(this));
         this.goalSelector.addGoal(3, new WaterAvoidingRandomStrollGoal(this, 0.4f));
         this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 10));
+        this.goalSelector.addGoal(5, new FlyUpGoal(this));
     }
 
     @Override
@@ -85,6 +91,9 @@ public class GeneralEntity extends GunnerEntity implements GeoEntity, VariantEnt
         controllers.add(new AnimationController<>(this, "walk/idle/aim", 2,
                 state -> {
                     if (state.getAnimatable().isAiming()) {
+                        if(!state.getAnimatable().onGround()){
+                           return state.setAndContinue(RawAnimation.begin().thenLoop("fly_holding_aim")); 
+                        }
                         if(((this.getX() - this.xo)*(this.getX() - this.xo))+((this.getZ() - this.zo)*(this.getZ() - this.zo))>0.0002){
                             return state.setAndContinue(RawAnimation.begin().thenLoop("walk_holding_aim"));
                         }else{
@@ -172,10 +181,19 @@ public class GeneralEntity extends GunnerEntity implements GeoEntity, VariantEnt
         if((this.getHealth() < (this.getMaxHealth() * 0.1)) && !this.hasPlayed()){
             this.triggerAnim("phase", "phase_2");
             this.setPlayed(true);
+            this.isAuraFarming = true;
         }
         if(this.ticksSince == 40){
             this.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 100, 60));
         }
+        if(this.ticksSince == 90){
+            this.isAuraFarming = false;
+        }
+    }
+
+    @Override
+    public boolean hurt(DamageSource source, float amount) {
+        return this.isAuraFarming ? false : super.hurt(source, amount);
     }
     
     @Override
@@ -200,5 +218,8 @@ public class GeneralEntity extends GunnerEntity implements GeoEntity, VariantEnt
     public boolean removeWhenFarAway(double distance) {
         return false;
     }
-    
+    @Override
+    public boolean causeFallDamage(float fallDistance, float multiplier, DamageSource source) {
+        return false;
+    }   
 }
