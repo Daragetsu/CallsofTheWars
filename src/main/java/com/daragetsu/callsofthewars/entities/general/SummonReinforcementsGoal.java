@@ -29,7 +29,7 @@ public class SummonReinforcementsGoal extends Goal{
 
     @Override
     public boolean canUse() {
-        return this.ge.level().getGameTime() > this.startAgainAt;
+        return this.ge.level().getGameTime() > this.startAgainAt && this.ge.getTarget()!=null;
     }
 
     @Override

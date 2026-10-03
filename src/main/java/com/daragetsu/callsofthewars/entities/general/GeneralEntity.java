@@ -81,6 +81,7 @@ public class GeneralEntity extends GunnerEntity implements GeoEntity, VariantEnt
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Monster.class, 1, true, false,
                 entity -> !(((entity instanceof SoldierEntity)))));
         this.targetSelector.addGoal(2, new SummonReinforcementsGoal(this, 400, 5, 1, 20, 10));
+        this.targetSelector.addGoal(2, new ICastFiiiireeebaaaalll(this, 800,90,30,60));
         this.targetSelector.addGoal(2, new HurtByTargetGoal(this));
         this.goalSelector.addGoal(3, new WaterAvoidingRandomStrollGoal(this, 0.4f));
         this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 10));
@@ -125,6 +126,8 @@ public class GeneralEntity extends GunnerEntity implements GeoEntity, VariantEnt
         .triggerableAnim("phase_2", RawAnimation.begin().thenPlay("phase_2")));
         controllers.add(new AnimationController<>(this, "summon", 0, state -> PlayState.CONTINUE)
         .triggerableAnim("summon_reinforcements", RawAnimation.begin().thenPlay("summon_reinforcements")));
+        controllers.add(new AnimationController<>(this, "flame", 0, state -> PlayState.CONTINUE)
+        .triggerableAnim("flame", RawAnimation.begin().thenPlay("flame")));
     }
 
     @Override

@@ -49,7 +49,7 @@ public class FlyUpGoal extends Goal{
 
     @Override
     public boolean canUse() {
-        return this.ge.level().getGameTime() > this.endTime && this.ge.getRandom().nextFloat() < 0.3f;
+        return this.ge.level().getGameTime() > this.endTime && this.ge.getRandom().nextFloat() < 0.3f  && this.ge.getTarget()!=null;
     }
 
     @Override
