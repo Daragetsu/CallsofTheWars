@@ -7,6 +7,7 @@ import com.daragetsu.callsofthewars.entities.air_plane.AirPlaneEntity;
 import com.daragetsu.callsofthewars.entities.common.client.VariantEntityRenderer;
 import com.daragetsu.callsofthewars.entities.container.ContainerEntity;
 import com.daragetsu.callsofthewars.entities.container.ContainerEntityRenderer;
+import com.daragetsu.callsofthewars.entities.general.GeneralEntity;
 import com.daragetsu.callsofthewars.entities.heightened.HeightenedEntity;
 import com.daragetsu.callsofthewars.entities.mailer.MailerEntity;
 import com.daragetsu.callsofthewars.entities.mailer.MailerEntityRenderer;
@@ -51,6 +52,8 @@ public class ModEntities {
     public static final RegistryObject<EntityType<MailerEntity>> MAILER = ENTITY_TYPES.register("mailer", () -> EntityType.Builder.of(MailerEntity::new, MobCategory.MONSTER).sized(0.6F, 2F).build("mailer"));
     
     public static final RegistryObject<EntityType<TankEntity>> TANK = ENTITY_TYPES.register("tank", () -> EntityType.Builder.of(TankEntity::new, MobCategory.MONSTER).sized(3F, 4F).build("tank"));
+
+    public static final RegistryObject<EntityType<GeneralEntity>> GENERAL = ENTITY_TYPES.register("general", () -> EntityType.Builder.of(GeneralEntity::new, MobCategory.CREATURE).sized(0.6F, 2F).build("general"));
     
     public static final RegistryObject<EntityType<ProjectileEntity>> TANK_PROJECTILE = ENTITY_TYPES.register("tank_projectile", () -> EntityType.Builder.of(ProjectileEntity::new, MobCategory.MONSTER).sized(0.2F, 0.2F).build("tank_projectile"));
 
@@ -73,6 +76,7 @@ public class ModEntities {
         event.put(ModEntities.AIR_PLANE.get(), AirPlaneEntity.createAttributes().build());
         event.put(ModEntities.MAILER.get(), SoldierEntity.createAttributes().build());
         event.put(ModEntities.TANK.get(), TankEntity.createAttributes().build());
+        event.put(ModEntities.GENERAL.get(), GeneralEntity.createAttributes().build());
     }
 
     private static void onCommonSetup(FMLCommonSetupEvent event) {
@@ -89,6 +93,7 @@ public class ModEntities {
         EntityRenderers.register(ModEntities.HEIGHTENED.get(), (ctx) -> new VariantEntityRenderer<>(ctx, "soldier"));
         EntityRenderers.register(ModEntities.AIR_PLANE.get(), (ctx)->new VariantEntityRenderer<>(ctx, "air_plane"));
         EntityRenderers.register(ModEntities.TANK.get(), (ctx)->new VariantEntityRenderer<>(ctx, "tank"));
+        EntityRenderers.register(ModEntities.GENERAL.get(), (ctx)->new VariantEntityRenderer<>(ctx, "general"));
         
         EntityRenderers.register(ModEntities.UNIT_SPAWNER.get(), (ctx)->new SoldierEntityRenderer<>(ctx, new DefaultedEntityGeoModel<>(ResourceLocation.fromNamespaceAndPath(CallsofTheWars.MOD_ID, "soldier"))));
         EntityRenderers.register(ModEntities.CONTAINER_ENTITY.get(), (ctx)->new ContainerEntityRenderer(ctx));
