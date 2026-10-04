@@ -13,9 +13,9 @@
     "item.callsofthewars.tank_spawn_egg": "Tank Spawn Egg",
     "item.callsofthewars.air_plane_spawn_egg": "Air Plane Spawn Egg",
     "item.callsofthewars.general_spawn_egg": "General Spawn Egg",
-    "item.callsofthewars.boss_music_block": "Boss Music Block",
+    "item.callsofthewars.general_summoner_block": "General Summoner Block",
     
-    "block.callsofthewars.boss_music_block": "Boss Music Block",
+    "block.callsofthewars.general_summoner_block": "General Summoner Block",
 
     "biome.callsofthewars.warring_states": "Warring States",
     "biome.callsofthewars.frozen_hellscape": "Land of The Snow",

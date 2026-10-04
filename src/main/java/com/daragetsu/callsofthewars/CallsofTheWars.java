@@ -8,7 +8,6 @@ import com.daragetsu.callsofthewars.entities.ModEntities;
 import com.daragetsu.callsofthewars.entities.soldier.SoldierEntity;
 import com.daragetsu.callsofthewars.entities.container.ContainerEntity;
 import com.daragetsu.callsofthewars.item.ModItems;
-import com.daragetsu.callsofthewars.sounds.ModSounds;
 import com.daragetsu.callsofthewars.worldgen.structure.ModStructureProcessors;
 import com.daragetsu.callsofthewars.worldgen.structure.ModStructures;
 import com.mojang.brigadier.CommandDispatcher;
@@ -91,7 +90,6 @@ public class CallsofTheWars
         ModItems.register(modEventBus);
         ModStructures.register(modEventBus);
         ModBlocks.register(modEventBus);
-        ModSounds.register(modEventBus);
         ModStructureProcessors.register(modEventBus);
         MinecraftForge.EVENT_BUS.register(this);
 

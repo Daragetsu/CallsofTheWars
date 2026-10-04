@@ -22,7 +22,6 @@ public class ModItems {
     public static final RegistryObject<SpawnEggItem> TANK_SPAWN_EGG = ITEMS.register("tank_spawn_egg", () -> new ForgeSpawnEggItem(ModEntities.TANK, 0x111111, 0x111111, new Item.Properties()));
     public static final RegistryObject<SpawnEggItem> AIR_PLANE_SPAWN_EGG = ITEMS.register("air_plane_spawn_egg", () -> new ForgeSpawnEggItem(ModEntities.AIR_PLANE, 0x555555, 0x555555, new Item.Properties()));
     public static final RegistryObject<SpawnEggItem> GENERAL_SPAWN_EGG = ITEMS.register("general_spawn_egg", () -> new ForgeSpawnEggItem(ModEntities.GENERAL, 0x999999, 0x999999, new Item.Properties()));
-    public static final RegistryObject<BlockItem> BOSS_MUSIC_BLOCK_ITEM = ITEMS.register("boss_music_block", () -> new BlockItem(ModBlocks.BOSS_MUSIC_BLOCK.get(), new Item.Properties()));
     public static final RegistryObject<BlockItem> GENERAL_SUMMONER_BLOCK_ITEM = ITEMS.register("general_summoner_block", () -> new BlockItem(ModBlocks.GENERAL_SUMMONER_BLOCK.get(), new Item.Properties()));
     
     public static final void register(IEventBus eventBus){

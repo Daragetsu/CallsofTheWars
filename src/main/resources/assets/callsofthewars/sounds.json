@@ -1,9 +1,0 @@
-{
-  "general_boss_music": {
-    "category": "hostile",
-    "subtitle": "callsofthewars.subtitle.general_boss_music",
-    "sounds": [
-      "callsofthewars:general_boss_music"
-    ]
-  }
-}
