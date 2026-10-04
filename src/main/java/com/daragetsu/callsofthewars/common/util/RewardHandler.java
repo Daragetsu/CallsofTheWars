@@ -26,6 +26,7 @@ import net.minecraft.world.scores.criteria.ObjectiveCriteria;
 import top.ribs.scguns.entity.monster.CogMinionEntity;
 import top.ribs.scguns.entity.monster.SkyCarrierEntity;
 
+import com.daragetsu.callsofthewars.entities.general.GeneralEntity;
 import com.daragetsu.callsofthewars.entities.heightened.HeightenedEntity;
 
 public class RewardHandler {
@@ -98,10 +99,21 @@ public class RewardHandler {
     }
 
     public static <T extends LivingEntity> void checkGeneralKill(ServerPlayer player, T killed){
-        if(killed instanceof CogMinionEntity){
+        if(killed instanceof GeneralEntity ge){
+            RewardHandler.checkGeneralEntityKill(player ,ge);
+        }
+        else if(killed instanceof CogMinionEntity){
             RewardHandler.setScore(player, RewardHandler.getScore(player)+2);
         }else if(killed instanceof SkyCarrierEntity){
             RewardHandler.setScore(player, RewardHandler.getScore(player)+5);
+        }
+    }
+
+    public static void checkGeneralEntityKill(ServerPlayer player, GeneralEntity killed){
+        if(player.isAlliedTo(killed)){
+            RewardHandler.setScore(player, RewardHandler.getScore(player)-80);
+        }else{
+            RewardHandler.setScore(player, RewardHandler.getScore(player)+80);
         }
     }
 
