@@ -168,6 +168,6 @@ public class AirPlaneEntity extends Monster implements FlyingAnimal, GeoEntity, 
     @Override
     public void tick() {
         super.tick();
-        for(int i = 0; i < 5; i++)this.level().addAlwaysVisibleParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, this.getX(), this.getY(), this.getZ(), 0, 0, 0);
+        for(int i = 0; i < 5; i++)this.level().addAlwaysVisibleParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, this.getX(), this.getY()+3, this.getZ(), 0, 0, 0);
     }
 }
