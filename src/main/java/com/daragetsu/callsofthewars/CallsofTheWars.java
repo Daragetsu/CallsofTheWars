@@ -107,9 +107,6 @@ public class CallsofTheWars
             event.accept(ModItems.AIR_PLANE_SPAWN_EGG);
             event.accept(ModItems.GENERAL_SPAWN_EGG);
         }
-        if(event.getTabKey() == CreativeModeTabs.FUNCTIONAL_BLOCKS){
-            event.accept(ModBlocks.BOSS_MUSIC_BLOCK);
-        }
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
