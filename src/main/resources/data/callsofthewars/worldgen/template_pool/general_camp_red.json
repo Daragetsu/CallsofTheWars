@@ -1,0 +1,38 @@
+{
+  "name": "callsofthewars:general_camp_red",
+  "fallback": "minecraft:empty",
+  "elements": [
+    {
+      "weight": 1,
+      "element": {
+        "location": "callsofthewars:general_camp/red",
+        "processors": {
+          "processors": [
+            {
+              "processor_type": "minecraft:rule",
+              "rules": [
+                {
+                  "location_predicate": {
+                    "predicate_type": "minecraft:always_true"
+                  },
+                  "input_predicate": {
+                    "predicate_type": "minecraft:block_match",
+                    "block": "callsofthewars:general_summoner_block"
+                  },
+                  "output_state": {
+                    "Name": "callsofthewars:general_summoner_block",
+                    "Properties": {
+                      "variant": "1"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    }
+  ]
+}

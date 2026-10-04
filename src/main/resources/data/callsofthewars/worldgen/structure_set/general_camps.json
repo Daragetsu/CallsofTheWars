@@ -1,0 +1,25 @@
+{
+  "structures": [
+    {
+      "structure": "callsofthewars:general_camp_red",
+      "weight": 2
+    },
+    {
+      "structure": "callsofthewars:general_camp_green",
+      "weight": 2
+    },
+    {
+      "structure": "callsofthewars:general_camp_blue",
+      "weight": 2
+    }
+  ],
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spacing": 40,
+    "separation": 30,
+    "spread_type": "linear",
+    "salt": 47625472716,
+    "frequency_reduction_method": "default",
+    "frequency": 1
+  }
+}
